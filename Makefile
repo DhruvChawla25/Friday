@@ -1,6 +1,6 @@
 .PHONY: project build test lint format check dmg run clean
 
-XCB = xcodebuild -project Friday.xcodeproj -scheme Friday -destination 'platform=macOS' -derivedDataPath build/DerivedData
+XCB = xcodebuild -project Friday.xcodeproj -scheme Friday -destination 'platform=macOS,arch=arm64' -derivedDataPath build/DerivedData
 
 project:            ## Regenerate Friday.xcodeproj from project.yml
 	xcodegen generate
