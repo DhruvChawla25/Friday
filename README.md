@@ -4,13 +4,15 @@
 
 Friday is a native Swift menu bar app that runs entirely on your Mac. You type a command and it carries the command out, then reports back in one or two factual lines. It has no network access: macOS blocks it through the App Sandbox. It needs no sign-in, and it stores nothing unless you turn memory on.
 
-> Status: **v0.1.0 (foundation).** The skills in this release are time/date, opening apps and opt-in memory. See the [roadmap](docs/ROADMAP.md).
+> Status: **v0.2.0 in progress (UI/UX).** See the [roadmap](docs/ROADMAP.md).
 
 ## Features
 
 | | |
 |---|---|
-| **Menu bar + floating panel** | Click the menu bar icon, or press **⌃⌥Space** from anywhere. |
+| **The orb** | A small rotating 3D ribbon that floats in a screen corner. Drag it anywhere and Friday remembers the spot per app. Otherwise it avoids toolbars and desktop icons, follows your cursor between screens, and moves away or hides when a screen is full screen. |
+| **Dashboard** | Click the orb, press **⌃⌥Space**, or click the Dock icon. It shows **Connected** apps with unread numbers and has the command bar. |
+| **Connected** | WhatsApp Web and each Gmail account show unread **numbers only**, read from Chrome tab titles. Calendar shows today's remaining events. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
 | **Opt-in memory** | `remember …`, `what do you remember`, `forget everything`. Memory is one plain `memory.txt` file you can read, edit, export or delete. |
@@ -20,7 +22,8 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 
 1. Download `Friday.dmg` and open it. Drag **Friday** into **Applications**.
 2. The first time you launch it, **right-click Friday → Open**. You only need to do this once, because the build is not notarized yet.
-3. Look for the hexagon icon in the menu bar, or press **⌃⌥Space**.
+3. The orb appears in a corner of your screen. Click it, or press **⌃⌥Space**.
+4. In the dashboard, click **Connect** on a tile. macOS asks once for Chrome or Calendar access.
 
 Requires macOS 26 or later on Apple silicon.
 
@@ -33,6 +36,7 @@ make project   # generate Friday.xcodeproj from project.yml
 make run       # build and launch (Debug)
 make check     # lint + tests + no-network check (what CI runs)
 make dmg       # Release build → build/Friday.dmg
+Scripts/make-icon.sh   # regenerate the app icon from the ribbon renderer
 ```
 
 Or open `Friday.xcodeproj` in Xcode and press ⌘R.
@@ -41,7 +45,11 @@ Or open `Friday.xcodeproj` in Xcode and press ⌘R.
 
 ```
 Friday/
-  App/       entry point, app delegate, global hot key, entitlements
+  App/          entry point, app delegate, global hot key, entitlements
+  Design/       Theme tokens, procedural 3D ribbon renderer (orb, dashboard, app icon)
+  Orb/          orb window, placement rules, per-app positions, screen tracking
+  Dashboard/    centred dashboard, connector tiles, command bar
+  Connections/  Chrome tab-title parser, Calendar (EventKit), live counts
   Core/      Command parsing, Skill protocol + registry, Persona, Assistant
   Skills/    one file per skill
   Memory/    MemoryStore (memory.txt)

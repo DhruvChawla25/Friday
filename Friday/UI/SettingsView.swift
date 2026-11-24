@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     let memory: MemoryStore
+    var onResetOrb: () -> Void = {}
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
     @State private var exporting = false
     @State private var status: String?
@@ -36,8 +37,16 @@ struct SettingsView: View {
             }
 
             Section {
+                LabeledContent("Position", value: "Drag the orb; Friday remembers it per app")
+                Button("Reset orb positions", action: onResetOrb)
+            } header: {
+                Text("Orb")
+            }
+
+            Section {
                 LabeledContent("Network access", value: "None (blocked by macOS sandbox)")
                 LabeledContent("Account", value: "Not required")
+                LabeledContent("Chrome", value: "Reads tab titles for unread numbers only")
                 LabeledContent("Shortcut", value: "⌃⌥Space")
             } header: {
                 Text("Privacy")

@@ -5,7 +5,9 @@ import SwiftUI
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let assistant = Assistant.makeDefault()
-    private var panel: FloatingPanel?
+    let connections = Connections()
+    private var orb: OrbController?
+    private var dashboard: DashboardController?
     private var hotKey: GlobalHotKey?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -19,54 +21,92 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        // ⌃⌥Space toggles the floating command panel from anywhere.
+        let dashboard = DashboardController(
+            rootView: DashboardView(assistant: assistant, connections: connections)
+                .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
+        )
+        self.dashboard = dashboard
+
+        let orb = OrbController()
+        orb.onClick = { [weak self] in self?.toggleDashboard() }
+        orb.menuProvider = { [weak self] in self?.orbMenu() ?? NSMenu() }
+        orb.start()
+        self.orb = orb
+
+        connections.start()
+        observeUnreadCount()
+
+        // ⌃⌥Space toggles the dashboard from anywhere.
         hotKey = GlobalHotKey(
             keyCode: UInt32(kVK_Space),
             modifiers: UInt32(controlKey | optionKey)
         ) { [weak self] in
-            self?.togglePanel()
+            self?.toggleDashboard()
         }
-
-        // The menu bar icon can be hidden (e.g. behind the notch), so always
-        // show the panel on launch to make it obvious Friday is running.
-        showPanel()
     }
 
-    /// Opening Friday again (Finder, Spotlight, `open`) shows the panel.
+    /// Clicking the Dock icon (or opening Friday again) opens the dashboard.
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        showPanel()
+        showDashboard()
         return false
     }
 
-    func togglePanel() {
-        if let panel, panel.isVisible, !panel.isMiniaturized {
-            panel.orderOut(nil)
-        } else {
-            showPanel()
-        }
+    func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
+        let menu = NSMenu()
+        menu.addItem(withTitle: "Open Friday", action: #selector(showDashboardAction), keyEquivalent: "")
+        menu.addItem(withTitle: "Reset Orb Positions", action: #selector(resetOrbAction), keyEquivalent: "")
+        return menu
     }
 
-    func showPanel() {
-        let panel = panel ?? makePanel()
-        self.panel = panel
-        if panel.isMiniaturized {
-            panel.deminiaturize(nil)
-        } else if !panel.isVisible {
-            panel.center()
-        }
+    func toggleDashboard() {
+        connections.refresh()
+        dashboard?.toggle(from: orb?.frame)
+    }
+
+    func showDashboard() {
+        connections.refresh()
+        dashboard?.show(from: orb?.frame)
+    }
+
+    func resetAllOrbPositions() {
+        orb?.resetAllPositions()
+    }
+
+    @objc private func showDashboardAction() { showDashboard() }
+    @objc private func resetOrbAction() { resetAllOrbPositions() }
+    @objc private func resetOrbForAppAction() { orb?.resetPositionForCurrentApp() }
+    @objc private func refreshAction() { connections.refresh() }
+    @objc private func settingsAction() {
         NSApp.activate()
-        panel.makeKeyAndOrderFront(nil)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
+    @objc private func quitAction() { NSApp.terminate(nil) }
+
+    private func orbMenu() -> NSMenu {
+        let menu = NSMenu()
+        let items: [(String, Selector)] = [
+            ("Open Friday", #selector(showDashboardAction)),
+            ("Refresh Counts", #selector(refreshAction)),
+            ("Reset Position for This App", #selector(resetOrbForAppAction)),
+            ("Settings…", #selector(settingsAction)),
+        ]
+        for (title, action) in items {
+            menu.addItem(withTitle: title, action: action, keyEquivalent: "").target = self
+        }
+        menu.addItem(.separator())
+        menu.addItem(withTitle: "Quit Friday", action: #selector(quitAction), keyEquivalent: "").target = self
+        return menu
     }
 
-    func minimizePanel() {
-        panel?.miniaturize(nil)
-    }
-
-    private func makePanel() -> FloatingPanel {
-        FloatingPanel(
-            rootView: CommandView(assistant: assistant) { [weak self] in self?.minimizePanel() }
-                .frame(width: 520, height: 420)
-        )
+    /// Keeps the orb badge and Dock badge in sync with the unread total.
+    private func observeUnreadCount() {
+        withObservationTracking {
+            let total = connections.totalUnread
+            orb?.model.unread = total
+            NSApp.dockTile.badgeLabel = total > 0 ? String(total) : nil
+        } onChange: { [weak self] in
+            Task { @MainActor in self?.observeUnreadCount() }
+        }
     }
 
     private func otherRunningInstance() -> NSRunningApplication? {

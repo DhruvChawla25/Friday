@@ -1,20 +1,12 @@
 # Roadmap
 
-Each phase ships as its own tested, reviewed change.
+Each phase ships as its own tested GitHub release.
 
-| Phase | Scope | Key Apple frameworks |
+| Phase | Release | Scope |
 |---|---|---|
-| **1. Foundation** ✅ | Menu bar app, ⌃⌥Space panel, skill system, time/date, open apps, opt-in `memory.txt`, DMG, CI | SwiftUI, AppKit, Carbon hot keys |
-| **2. Brain + voice** | On-device LLM to understand free-form requests and pick skills; push-to-talk; spoken replies | Foundation Models, Speech (SpeechAnalyzer), AVSpeechSynthesizer |
-| **3. Memory v2** | The model reads `memory.txt` as context and proposes edits; import/export UI | Foundation Models |
-| **4. Screen + WhatsApp** | Open WhatsApp, read the chat list, report **senders with unread messages only** | ScreenCaptureKit, Vision (OCR) |
-| **5. Gmail, all accounts** | Open each account (`mail.google.com/mail/u/N`) in Chrome and report **senders only**, per account | ScreenCaptureKit, Vision, Apple Events |
-| **6. Calendar & schedule** | Read, create and move events; reminders; daily briefing | EventKit |
-| **7. Claude commands** | "Ask Claude to …": Friday types the prompt into Claude.app or the `claude` CLI | Accessibility / Apple Events |
-| **8. Release polish** | Styled DMG, app icon, onboarding for permissions, Developer ID notarization | notarytool |
+| **1. Foundation** ✅ | v0.1.0 | Skill system, time/date, open apps, opt-in `memory.txt`, offline sandbox, DMG, CI |
+| **2. UI/UX** 🚧 | v0.2.0 | Rotating 3D ribbon orb (JARVIS orange). Draggable with per-app positions; avoids toolbars and desktop icons; follows the cursor's screen; moves away or hides in full screen. Click to open the centred dashboard with **Connected** tiles: WhatsApp (Chrome tab title), Gmail per account (Chrome tab titles), Calendar (EventKit). App icon in the Dock with an unread badge. |
+| **3. Commands** | v0.3.0 | Install DMGs for you. Send prompts to agents: Claude (app/CLI), Antigravity, Stitch and other Chrome web apps. |
+| **4. To decide** | v0.4.0 | Candidates: on-device AI (Foundation Models) and voice, screen reading for WhatsApp/Gmail senders, calendar editing. |
 
 Out of scope: Instagram and other private social apps, and Android phone linking, because it would need the internet.
-
-## Open design question
-
-Phases 4, 5 and 7 need Accessibility and Apple Events access, which the App Sandbox restricts. Before phase 4 we decide between scoped sandbox exceptions and running unsandboxed while keeping the CI no-network check.

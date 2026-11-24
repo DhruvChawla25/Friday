@@ -11,6 +11,14 @@ Friday is designed so it cannot leak your data.
    You can open it with **Settings → Show in Finder**, edit it in any text editor, export it, or wipe it.
 4. **Other apps do their own networking.** When Friday opens Chrome or WhatsApp, those apps connect to the internet as they normally would. Friday itself only opens them and, in later versions, reads what is on screen.
 
+## Unread counts (v0.2)
+
+- Friday asks Chrome (through macOS Apple Events, with your one-time permission) for the **titles** of open tabs.
+- It keeps only matches such as `(74) WhatsApp` and `Inbox (5) - you@gmail.com - Gmail`: the number, plus the Gmail address so each account gets its own count. Every other title is discarded right away. Nothing is written to disk.
+- Friday never opens Chrome, never reads page contents, and never sees message text or senders.
+- Calendar: Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
+- Orb placement uses only window **positions and sizes** from macOS. It never captures window contents.
+
 ## Rules for screen-reading features (planned)
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
