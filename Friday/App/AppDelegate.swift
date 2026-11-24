@@ -39,8 +39,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func togglePanel() {
-        if panel?.isVisible == true {
-            panel?.orderOut(nil)
+        if let panel, panel.isVisible, !panel.isMiniaturized {
+            panel.orderOut(nil)
         } else {
             showPanel()
         }
@@ -49,14 +49,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func showPanel() {
         let panel = panel ?? makePanel()
         self.panel = panel
-        if !panel.isVisible { panel.center() }
+        if panel.isMiniaturized {
+            panel.deminiaturize(nil)
+        } else if !panel.isVisible {
+            panel.center()
+        }
         NSApp.activate()
         panel.makeKeyAndOrderFront(nil)
     }
 
+    func minimizePanel() {
+        panel?.miniaturize(nil)
+    }
+
     private func makePanel() -> FloatingPanel {
         FloatingPanel(
-            rootView: CommandView(assistant: assistant).frame(width: 520, height: 420)
+            rootView: CommandView(assistant: assistant) { [weak self] in self?.minimizePanel() }
+                .frame(width: 520, height: 420)
         )
     }
 

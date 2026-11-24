@@ -3,6 +3,8 @@ import SwiftUI
 /// The main Friday surface: a log of exchanges and a command field.
 struct CommandView: View {
     let assistant: Assistant
+    /// Provided when shown in the floating panel; nil in the menu bar popover.
+    var onMinimize: (() -> Void)? = nil
     @State private var draft = ""
     @FocusState private var fieldFocused: Bool
 
@@ -29,6 +31,10 @@ struct CommandView: View {
                 .font(.caption.monospaced())
                 .foregroundStyle(.secondary)
             Menu {
+                if let onMinimize {
+                    Button("Minimize", action: onMinimize)
+                        .keyboardShortcut("m", modifiers: .command)
+                }
                 Button("Clear log") { assistant.clearLog() }
                     .disabled(assistant.exchanges.isEmpty)
                 SettingsLink { Text("Settings…") }

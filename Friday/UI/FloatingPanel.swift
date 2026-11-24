@@ -6,7 +6,7 @@ final class FloatingPanel: NSPanel {
     init<Content: View>(rootView: Content) {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 520, height: 420),
-            styleMask: [.titled, .fullSizeContentView, .nonactivatingPanel, .closable],
+            styleMask: [.titled, .fullSizeContentView, .nonactivatingPanel, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
         )
@@ -16,7 +16,6 @@ final class FloatingPanel: NSPanel {
         isReleasedWhenClosed = false
         level = .floating
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        standardWindowButton(.miniaturizeButton)?.isHidden = true
         standardWindowButton(.zoomButton)?.isHidden = true
 
         let effect = NSVisualEffectView()
@@ -36,6 +35,17 @@ final class FloatingPanel: NSPanel {
     }
 
     override var canBecomeKey: Bool { true }
+
+    /// ⌘M minimizes, like any Mac window.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+            event.charactersIgnoringModifiers == "m"
+        {
+            miniaturize(nil)
+            return true
+        }
+        return super.performKeyEquivalent(with: event)
+    }
 
     /// Escape hides the panel.
     override func cancelOperation(_ sender: Any?) {
