@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import Foundation
 
 /// One capability of Friday. Skills are small, independent, and testable.

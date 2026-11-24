@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import SwiftUI
 
 /// Draws the rotating 3D ribbon with SwiftUI Canvas: real-time geometry,

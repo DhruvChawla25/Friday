@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import AppKit
 
 /// Owns the orb window and keeps it in the right place:

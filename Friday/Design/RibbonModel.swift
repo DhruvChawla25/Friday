@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import Foundation
 
 /// Minimal 3D vector maths for the ribbon renderer.

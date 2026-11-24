@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import AppKit
 
 /// A snapshot of what is on screen: which screen the cursor is on, the

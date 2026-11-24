@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 // Renders Friday's app icon from the same ribbon renderer the app uses.
 // Usage: Scripts/make-icon.sh   (writes Friday/Assets.xcassets/AppIcon.appiconset)
 import AppKit

@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import Carbon.HIToolbox
 
 /// A system-wide keyboard shortcut using the Carbon hot key API.

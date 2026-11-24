@@ -69,6 +69,19 @@ docs/        PRIVACY.md, ROADMAP.md
 
 See [docs/PRIVACY.md](docs/PRIVACY.md). In short, nothing leaves your Mac, and Friday never reads message contents.
 
+## Contributing
+
+Issues are small, step-by-step tasks; start with [`good first issue`](../../issues?q=is%3Aopen+label%3A%22good+first+issue%22). See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security
+
+Found a privacy or security problem? Please email privately. See [SECURITY.md](SECURITY.md).
+
+## Author
+
+**Dhruv Chawla**: [@dhruvchawla2511](https://github.com/dhruvchawla2511) · dhruvchawla2511@gmail.com
+
 ## License
 
-[MIT](LICENSE) © 2026 Dhruv Chawla
+Friday is released under the [MIT License](LICENSE).
+Copyright (c) 2026 Dhruv Chawla. You may use, copy, modify and distribute it, including commercially, as long as the copyright notice and license text are kept. The software is provided "as is", without warranty.

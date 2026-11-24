@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 Dhruv Chawla · SPDX-License-Identifier: MIT
 # Fails if Friday's source uses networking APIs or requests a network entitlement.
 # Friday must stay fully offline: see docs/PRIVACY.md.
 set -euo pipefail

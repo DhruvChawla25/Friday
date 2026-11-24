@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 Dhruv Chawla · SPDX-License-Identifier: MIT
 # Regenerates the app icon from the ribbon renderer in Friday/Design.
 set -euo pipefail
 cd "$(dirname "$0")/.."

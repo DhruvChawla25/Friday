@@ -1,3 +1,7 @@
+// Friday — local-first macOS assistant
+// Copyright (c) 2026 Dhruv Chawla
+// SPDX-License-Identifier: MIT
+
 import SwiftUI
 
 /// Friday's design tokens. Every colour, font and spacing value comes from here.

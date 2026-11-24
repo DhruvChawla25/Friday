@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 Dhruv Chawla · SPDX-License-Identifier: MIT
 # Builds a Release Friday.app and packages it into build/Friday.dmg.
 # The app is ad-hoc signed. Until it is notarized, first launch on another Mac:
 # right-click Friday.app → Open (or System Settings → Privacy & Security → Open Anyway).
