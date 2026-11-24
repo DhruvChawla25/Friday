@@ -4,7 +4,7 @@
 
 Friday is a native Swift menu bar app that runs entirely on your Mac. You type a command and it carries the command out, then reports back in one or two factual lines. It has no network access: macOS blocks it through the App Sandbox. It needs no sign-in, and it stores nothing unless you turn memory on.
 
-> Status: **v0.2.0 in progress (UI/UX).** See the [roadmap](docs/ROADMAP.md).
+> Status: **v0.2.0 (Phase 2 — UI/UX).** Next: [planned updates](docs/PLANNED_UPDATES.md) and [open issues](../../issues). Contributions welcome — see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Features
 
