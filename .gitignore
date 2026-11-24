@@ -60,3 +60,9 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Friday
+legacy-jarvis/
+build/
+*.dmg
+.DS_Store

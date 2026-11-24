@@ -1,0 +1,68 @@
+name: Friday
+options:
+  bundleIdPrefix: com.dhruvchawla
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    DEAD_CODE_STRIPPING: YES
+  configs:
+    Release:
+      ENABLE_HARDENED_RUNTIME: YES
+      CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+
+targets:
+  Friday:
+    type: application
+    platform: macOS
+    sources: [Friday]
+    entitlements:
+      path: Friday/App/Friday.entitlements
+      properties:
+        # Sandboxed with NO network entitlement: macOS itself blocks Friday from the internet.
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-write: true
+    info:
+      path: Friday/App/Info.plist
+      properties:
+        CFBundleDisplayName: Friday
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.productivity
+        NSHumanReadableCopyright: "© 2026 Dhruv Chawla. MIT License."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dhruvchawla.friday
+        PRODUCT_NAME: Friday
+
+  FridayTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [FridayTests]
+    dependencies:
+      - target: Friday
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dhruvchawla.friday.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  Friday:
+    build:
+      targets:
+        Friday: all
+        FridayTests: [test]
+    test:
+      targets: [FridayTests]
+      gatherCoverageData: true

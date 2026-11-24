@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: No-network check
+        run: Scripts/check-no-network.sh
+      - name: Lint
+        run: make lint
+      - name: Test
+        run: make test
+      - name: Package DMG
+        run: make dmg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Friday-dmg
+          path: build/Friday.dmg
+          retention-days: 14
