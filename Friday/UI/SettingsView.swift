@@ -9,6 +9,7 @@ struct SettingsView: View {
     let memory: MemoryStore
     var onResetOrb: () -> Void = {}
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
+    @AppStorage(Connections.showNamesKey) private var whatsappShowNames = true
     @State private var exporting = false
     @State private var status: String?
 
@@ -41,6 +42,15 @@ struct SettingsView: View {
             }
 
             Section {
+                Toggle("Show who sent unread messages", isOn: $whatsappShowNames)
+                Text("Friday reads only chat names and unread numbers from WhatsApp's chat list, never messages.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("WhatsApp")
+            }
+
+            Section {
                 LabeledContent("Position", value: "Drag the orb; Friday remembers it per app")
                 Button("Reset orb positions", action: onResetOrb)
             } header: {
@@ -50,7 +60,7 @@ struct SettingsView: View {
             Section {
                 LabeledContent("Network access", value: "None (blocked by macOS sandbox)")
                 LabeledContent("Account", value: "Not required")
-                LabeledContent("WhatsApp", value: "Reads the Dock badge number only")
+                LabeledContent("WhatsApp", value: "Chat names and unread numbers only")
                 LabeledContent("Shortcut", value: "⌃⌥Space")
             } header: {
                 Text("Privacy")

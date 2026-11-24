@@ -13,7 +13,9 @@ Friday is designed so it cannot leak your data.
 
 ## Unread counts (v0.2)
 
-- **WhatsApp:** Friday reads the number in the red badge on the WhatsApp Dock icon, using macOS's built-in `lsappinfo` tool. That is the same number you see in the Dock. Friday never opens WhatsApp's data, never sees messages or senders, and needs no extra permission.
+- **WhatsApp, Dock badge:** Friday reads the number in the red badge on the WhatsApp Dock icon, using macOS's built-in `lsappinfo` tool. That is the same number you see in the Dock, and it needs no permission.
+- **WhatsApp, chat list (Screen Recording permission):** to see *which* chats are unread, Friday captures **only WhatsApp's own window**, never the whole screen. It finds the green unread bubbles, reads the number inside each one, and reads **only the chat-name line** next to it. Message previews and the open conversation are never passed to text recognition. The capture stays in memory for under a second and is never saved. Names can be turned off in Settings → WhatsApp.
+- **When it checks:** when you ask ("check whatsapp", "open whatsapp"), when the Dock badge changes, after the Mac wakes, and every 10 minutes. Background checks only read a window that is already visible and never change what is on your screen.
 - **Mail:** not connected yet, waiting for your new mail app. It will use the same Dock badge method.
 - **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
 - **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.

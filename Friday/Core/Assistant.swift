@@ -39,9 +39,10 @@ final class Assistant {
         exchanges.removeAll()
     }
 
-    static func makeDefault() -> Assistant {
+    static func makeDefault(connections: Connections) -> Assistant {
         let memory = MemoryStore.standard
         let registry = SkillRegistry(skills: [
+            WhatsAppSkill { staysInFront in await connections.checkWhatsApp(staysInFront: staysInFront) },
             TimeSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
             MemorySkill(memory: memory),

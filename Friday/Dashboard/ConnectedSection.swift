@@ -15,7 +15,7 @@ struct ConnectedSection: View {
                 ConnectorTile(
                     name: "WhatsApp",
                     icon: AppIcon(bundleID: Connections.whatsappBundleID, fallback: "message.fill"),
-                    value: connections.whatsappUnread.map(String.init),
+                    value: whatsappValue,
                     caption: whatsappCaption,
                     action: whatsappAction
                 )
@@ -39,16 +39,38 @@ struct ConnectedSection: View {
         }
     }
 
+    /// Unread chats from the screen reading when fresh, else the Dock badge (messages).
+    private var whatsappValue: String? {
+        if let report = connections.freshScreenReport { return String(report.unreadChats) }
+        return connections.whatsappBadge.map(String.init)
+    }
+
     private var whatsappAction: ConnectorTile.Action? {
-        guard connections.isWhatsAppInstalled, connections.whatsappStatus != .connected else { return nil }
-        return .init(title: "Open WhatsApp") { connections.openWhatsApp() }
+        guard connections.isWhatsAppInstalled else { return nil }
+        if !connections.screenPermission {
+            return .init(title: "Allow screen reading") { connections.requestScreenPermission() }
+        }
+        if connections.isReadingWhatsApp { return nil }
+        return .init(title: connections.whatsappStatus == .connected ? "Check now" : "Open WhatsApp") {
+            Task { await connections.readWhatsAppScreen(bringToFront: true) }
+        }
     }
 
     private var whatsappCaption: String {
+        if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
+        if let report = connections.freshScreenReport {
+            guard report.unreadChats > 0 else { return "No unread chats" }
+            let label = report.unreadChats == 1 ? "unread chat" : "unread chats"
+            guard connections.showsNames else { return "\(label) · \(report.unreadMessages) messages" }
+            let names = report.chats.prefix(2).map { $0.name ?? "Unknown" }
+            let more = report.chats.count > 2 ? " +\(report.chats.count - 2)" : ""
+            return "\(label): " + names.joined(separator: ", ") + more
+        }
         switch connections.whatsappStatus {
-        case .connected: connections.whatsappUnread == 1 ? "unread chat" : "unread chats"
-        case .unavailable(let reason): reason
-        case .denied, .notConnected: "Reads the badge on WhatsApp's Dock icon"
+        case .connected:
+            return connections.whatsappBadge == 1 ? "unread message (Dock badge)" : "unread messages (Dock badge)"
+        case .unavailable(let reason): return reason
+        case .denied, .notConnected: return "Reads WhatsApp's chat list on screen"
         }
     }
 

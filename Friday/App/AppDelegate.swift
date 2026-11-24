@@ -8,8 +8,15 @@ import SwiftUI
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    let assistant = Assistant.makeDefault()
-    let connections = Connections()
+    let connections: Connections
+    let assistant: Assistant
+
+    override init() {
+        let connections = Connections()
+        self.connections = connections
+        assistant = Assistant.makeDefault(connections: connections)
+        super.init()
+    }
     private var orb: OrbController?
     private var dashboard: DashboardController?
     private var hotKey: GlobalHotKey?

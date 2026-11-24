@@ -53,7 +53,10 @@ final class DashboardPanel: NSPanel {
 final class DashboardController: NSObject, NSWindowDelegate {
     private let panel: DashboardPanel
     private var lastHidden = Date.distantPast
-    var isVisible: Bool { panel.isVisible }
+    private var lastShown = Date.distantPast
+    /// Bumped on every show/hide so a stale animation can't finish the wrong way.
+    private var generation = 0
+    var isVisible: Bool { panel.isVisible && panel.alphaValue > 0.01 }
 
     init<Content: View>(rootView: Content) {
         panel = DashboardPanel(rootView: rootView)
@@ -84,6 +87,9 @@ final class DashboardController: NSObject, NSWindowDelegate {
             start.origin.x += (origin.midX - target.midX) * 0.08
             start.origin.y += (origin.midY - target.midY) * 0.08
         }
+        generation += 1
+        let current = generation
+        lastShown = .now
         panel.setFrame(start, display: false)
         panel.alphaValue = 0
         NSApp.activate()
@@ -94,23 +100,43 @@ final class DashboardController: NSObject, NSWindowDelegate {
             panel.animator().setFrame(target, display: true)
             panel.animator().alphaValue = 1
         }
+        // macOS may throttle animations for an app that is not frontmost, so
+        // the end state must not depend on the animation completing.
+        finish(after: 0.3, generation: current) { panel in
+            panel.alphaValue = 1
+            panel.setFrame(target, display: true)
+        }
     }
 
     func hide() {
         guard panel.isVisible else { return }
+        generation += 1
+        let current = generation
         lastHidden = .now
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.15
             panel.animator().alphaValue = 0
-        } completionHandler: {
-            MainActor.assumeIsolated {
-                self.panel.orderOut(nil)
-                self.panel.alphaValue = 1
-            }
+        }
+        finish(after: 0.2, generation: current) { panel in
+            panel.orderOut(nil)
+            panel.alphaValue = 1
+        }
+    }
+
+    /// Applies an animation's end state, unless a newer show/hide started since.
+    private func finish(
+        after delay: TimeInterval, generation expected: Int, _ apply: @escaping (DashboardPanel) -> Void
+    ) {
+        Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard let self, self.generation == expected else { return }
+            apply(self.panel)
         }
     }
 
     func windowDidResignKey(_ notification: Notification) {
+        // While Friday is still becoming the active app, focus can bounce; ignore that.
+        guard Date.now.timeIntervalSince(lastShown) > 0.4 else { return }
         hide()
     }
 }
