@@ -12,7 +12,7 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 |---|---|
 | **The orb** | A small rotating 3D ribbon that floats in a screen corner. Drag it anywhere and Friday remembers the spot per app. Otherwise it avoids toolbars and desktop icons, follows your cursor between screens, and moves away or hides when a screen is full screen. |
 | **Dashboard** | Click the orb, press **⌃⌥Space**, or click the Dock icon. It shows **Connected** apps with unread numbers and has the command bar. |
-| **Connected** | WhatsApp Web and each Gmail account show unread **numbers only**, read from Chrome tab titles. Calendar shows today's remaining events. |
+| **Connected** | WhatsApp (the Mac app) shows its unread **number only**, read from its Dock badge. Calendar shows today's remaining events. Mail is coming soon. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
 | **Opt-in memory** | `remember …`, `what do you remember`, `forget everything`. Memory is one plain `memory.txt` file you can read, edit, export or delete. |
@@ -23,7 +23,7 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 1. Download `Friday.dmg` and open it. Drag **Friday** into **Applications**.
 2. The first time you launch it, **right-click Friday → Open**. You only need to do this once, because the build is not notarized yet.
 3. The orb appears in a corner of your screen. Click it, or press **⌃⌥Space**.
-4. In the dashboard, click **Connect** on a tile. macOS asks once for Chrome or Calendar access.
+4. WhatsApp connects automatically while the app is open. For Calendar, click **Connect**; macOS asks once.
 
 Requires macOS 26 or later on Apple silicon.
 
@@ -49,7 +49,7 @@ Friday/
   Design/       Theme tokens, procedural 3D ribbon renderer (orb, dashboard, app icon)
   Orb/          orb window, placement rules, per-app positions, screen tracking
   Dashboard/    centred dashboard, connector tiles, command bar
-  Connections/  Chrome tab-title parser, Calendar (EventKit), live counts
+  Connections/  Dock badge reader, Calendar (EventKit), live counts
   Core/      Command parsing, Skill protocol + registry, Persona, Assistant
   Skills/    one file per skill
   Memory/    MemoryStore (memory.txt)

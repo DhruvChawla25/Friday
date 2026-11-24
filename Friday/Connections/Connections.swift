@@ -13,45 +13,53 @@ final class Connections {
         case connected
     }
 
-    private(set) var chromeStatus: Status = .notConnected
-    private(set) var calendarStatus: Status = .notConnected
+    static let whatsappBundleID = "net.whatsapp.WhatsApp"
+
+    private(set) var whatsappStatus: Status = .notConnected
     private(set) var whatsappUnread: Int?
-    private(set) var gmailAccounts: [TabTitleParser.GmailAccount] = []
+    private(set) var calendarStatus: Status = .notConnected
     private(set) var calendar: CalendarSource.Summary?
-    private(set) var lastRefresh: Date?
 
     private let calendarSource = CalendarSource()
     private var timer: Timer?
 
-    var gmailUnread: Int { gmailAccounts.reduce(0) { $0 + $1.unread } }
-    var totalUnread: Int { (whatsappUnread ?? 0) + gmailUnread }
+    var totalUnread: Int { whatsappUnread ?? 0 }
+
+    var isWhatsAppInstalled: Bool {
+        NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.whatsappBundleID) != nil
+    }
 
     func start() {
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+        // Badge reads are cheap and local, so poll often for a live feel.
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
             MainActor.assumeIsolated { self.refresh() }
         }
-        NotificationCenter.default.addObserver(
-            forName: .EKEventStoreChanged, object: nil, queue: .main
-        ) { _ in
+        let workspace = NSWorkspace.shared.notificationCenter
+        for name in [NSWorkspace.didLaunchApplicationNotification, NSWorkspace.didTerminateApplicationNotification] {
+            workspace.addObserver(forName: name, object: nil, queue: .main) { _ in
+                MainActor.assumeIsolated { self.refresh() }
+            }
+        }
+        NotificationCenter.default.addObserver(forName: .EKEventStoreChanged, object: nil, queue: .main) { _ in
             MainActor.assumeIsolated { self.refresh() }
         }
     }
 
     func refresh() {
-        refreshChrome()
+        Task { await refreshWhatsApp() }
         refreshCalendar()
-        lastRefresh = .now
     }
 
-    /// Asks macOS for permission to read Chrome tab titles (one-time prompt).
-    func connectChrome() async {
-        guard ChromeTabs.isRunning else {
-            chromeStatus = .unavailable("Open Chrome first")
+    func openWhatsApp() {
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.whatsappBundleID) else {
             return
         }
-        _ = await Task.detached { ChromeTabs.access(askIfNeeded: true) }.value
-        refreshChrome()
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = false
+        NSWorkspace.shared.openApplication(at: url, configuration: configuration) { _, _ in
+            Task { @MainActor in self.refresh() }
+        }
     }
 
     func connectCalendar() async {
@@ -59,23 +67,24 @@ final class Connections {
         refreshCalendar()
     }
 
-    private func refreshChrome() {
-        switch ChromeTabs.access(askIfNeeded: false) {
-        case .granted:
-            guard let titles = ChromeTabs.titles() else {
-                chromeStatus = .unavailable("Chrome not running")
-                return
-            }
-            chromeStatus = .connected
-            whatsappUnread = TabTitleParser.whatsappUnread(in: titles)
-            gmailAccounts = TabTitleParser.gmailAccounts(in: titles)
-        case .notDetermined:
-            chromeStatus = .notConnected
-        case .denied:
-            chromeStatus = .denied
-        case .chromeNotRunning:
-            // Keep the last known numbers; Chrome may just be closed.
-            if chromeStatus == .connected { chromeStatus = .unavailable("Chrome not running") }
+    private func refreshWhatsApp() async {
+        guard isWhatsAppInstalled else {
+            whatsappStatus = .unavailable("WhatsApp is not installed")
+            whatsappUnread = nil
+            return
+        }
+        let running = !NSRunningApplication.runningApplications(withBundleIdentifier: Self.whatsappBundleID).isEmpty
+        guard running else {
+            whatsappStatus = .unavailable("WhatsApp is closed")
+            whatsappUnread = nil
+            return
+        }
+        if let count = await DockBadge.count(forBundleID: Self.whatsappBundleID) {
+            whatsappStatus = .connected
+            whatsappUnread = count
+        } else {
+            whatsappStatus = .unavailable("Could not read the Dock badge")
+            whatsappUnread = nil
         }
     }
 

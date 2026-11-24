@@ -10,19 +10,19 @@ struct ConnectedSection: View {
             HStack(alignment: .top, spacing: Theme.Space.m) {
                 ConnectorTile(
                     name: "WhatsApp",
-                    icon: AppIcon(bundleID: "net.whatsapp.WhatsApp", fallback: "message.fill"),
-                    value: connections.chromeStatus == .connected ? connections.whatsappUnread.map(String.init) : nil,
+                    icon: AppIcon(bundleID: Connections.whatsappBundleID, fallback: "message.fill"),
+                    value: connections.whatsappUnread.map(String.init),
                     caption: whatsappCaption,
-                    action: chromeAction
+                    action: whatsappAction
                 )
                 ConnectorTile(
-                    name: "Gmail",
+                    name: "Mail",
                     icon: AppIcon(bundleID: nil, fallback: "envelope.fill"),
-                    value: connections.chromeStatus == .connected && !connections.gmailAccounts.isEmpty
-                        ? String(connections.gmailUnread) : nil,
-                    caption: gmailCaption,
-                    action: chromeAction
+                    value: nil,
+                    caption: "Coming soon: connects to your new mail app",
+                    action: nil
                 )
+                .opacity(0.55)
                 ConnectorTile(
                     name: "Calendar",
                     icon: AppIcon(bundleID: "com.apple.iCal", fallback: "calendar"),
@@ -32,17 +32,19 @@ struct ConnectedSection: View {
                 )
             }
             .fixedSize(horizontal: false, vertical: true)
-            if connections.chromeStatus == .connected, !connections.gmailAccounts.isEmpty {
-                GmailAccountsRow(accounts: connections.gmailAccounts)
-            }
         }
     }
 
-    private var chromeAction: ConnectorTile.Action? {
-        switch connections.chromeStatus {
-        case .connected: nil
-        case .denied: .init(title: "Allow in Settings") { openAutomationSettings() }
-        case .notConnected, .unavailable: .init(title: "Connect") { Task { await connections.connectChrome() } }
+    private var whatsappAction: ConnectorTile.Action? {
+        guard connections.isWhatsAppInstalled, connections.whatsappStatus != .connected else { return nil }
+        return .init(title: "Open WhatsApp") { connections.openWhatsApp() }
+    }
+
+    private var whatsappCaption: String {
+        switch connections.whatsappStatus {
+        case .connected: connections.whatsappUnread == 1 ? "unread chat" : "unread chats"
+        case .unavailable(let reason): reason
+        case .denied, .notConnected: "Reads the badge on WhatsApp's Dock icon"
         }
     }
 
@@ -54,38 +56,12 @@ struct ConnectedSection: View {
         }
     }
 
-    private var whatsappCaption: String {
-        switch connections.chromeStatus {
-        case .connected: connections.whatsappUnread == nil ? "Open WhatsApp Web in Chrome" : "unread chats"
-        case .unavailable(let reason): reason
-        case .denied: "Chrome access denied"
-        case .notConnected: "Reads the unread number from Chrome"
-        }
-    }
-
-    private var gmailCaption: String {
-        switch connections.chromeStatus {
-        case .connected:
-            connections.gmailAccounts.isEmpty
-                ? "Open your inboxes in Chrome"
-                : "unread · \(connections.gmailAccounts.count) account\(connections.gmailAccounts.count == 1 ? "" : "s")"
-        case .unavailable(let reason): reason
-        case .denied: "Chrome access denied"
-        case .notConnected: "Counts per account, from Chrome"
-        }
-    }
-
     private var calendarCaption: String {
         guard let summary = connections.calendar else {
             return connections.calendarStatus == .denied ? "Calendar access denied" : "Today's events"
         }
         guard let start = summary.nextStart, let title = summary.nextTitle else { return "nothing else today" }
         return "next \(start.formatted(date: .omitted, time: .shortened)) · \(title)"
-    }
-
-    private func openAutomationSettings() {
-        NSWorkspace.shared.open(
-            URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Automation")!)
     }
 
     private func openCalendarSettings() {
@@ -179,67 +155,5 @@ private struct ConnectButtonStyle: ButtonStyle {
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .background(Capsule().fill(Theme.orange.opacity(configuration.isPressed ? 0.7 : 1)))
-    }
-}
-
-private struct GmailAccountsRow: View {
-    let accounts: [TabTitleParser.GmailAccount]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            SectionLabel(text: "Gmail accounts")
-            FlowRow(spacing: 6) {
-                ForEach(accounts) { account in
-                    HStack(spacing: 6) {
-                        Text(account.email)
-                            .font(Theme.Font.mono)
-                            .foregroundStyle(Theme.textSecondary)
-                        Text("\(account.unread)")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(account.unread > 0 ? Theme.amber : Theme.textSecondary)
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Capsule().fill(Color.white.opacity(0.04)))
-                    .overlay(Capsule().strokeBorder(Theme.hairline))
-                }
-            }
-        }
-    }
-}
-
-/// Simple wrapping layout for account chips.
-struct FlowRow: Layout {
-    var spacing: CGFloat = 8
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let rows = arrange(subviews: subviews, width: proposal.width ?? .infinity)
-        return CGSize(width: proposal.width ?? rows.width, height: rows.height)
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let rows = arrange(subviews: subviews, width: bounds.width)
-        for (index, point) in rows.origins.enumerated() {
-            subviews[index].place(
-                at: CGPoint(x: bounds.minX + point.x, y: bounds.minY + point.y), proposal: .unspecified)
-        }
-    }
-
-    private func arrange(subviews: Subviews, width: CGFloat) -> (origins: [CGPoint], width: CGFloat, height: CGFloat) {
-        var origins: [CGPoint] = []
-        var x: CGFloat = 0, y: CGFloat = 0, rowHeight: CGFloat = 0, maxWidth: CGFloat = 0
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if x > 0, x + size.width > width {
-                x = 0
-                y += rowHeight + spacing
-                rowHeight = 0
-            }
-            origins.append(CGPoint(x: x, y: y))
-            x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
-            maxWidth = max(maxWidth, x)
-        }
-        return (origins, maxWidth, y + rowHeight)
     }
 }

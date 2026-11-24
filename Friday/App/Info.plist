@@ -22,8 +22,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
-	<key>NSAppleEventsUsageDescription</key>
-	<string>Friday reads Chrome tab titles to show unread counts for WhatsApp Web and Gmail. It never reads page or message contents.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Friday shows how many events you have left today and what is next.</string>
 	<key>NSHumanReadableCopyright</key>

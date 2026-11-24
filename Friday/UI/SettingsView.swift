@@ -46,7 +46,7 @@ struct SettingsView: View {
             Section {
                 LabeledContent("Network access", value: "None (blocked by macOS sandbox)")
                 LabeledContent("Account", value: "Not required")
-                LabeledContent("Chrome", value: "Reads tab titles for unread numbers only")
+                LabeledContent("WhatsApp", value: "Reads the Dock badge number only")
                 LabeledContent("Shortcut", value: "⌃⌥Space")
             } header: {
                 Text("Privacy")

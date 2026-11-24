@@ -13,11 +13,10 @@ Friday is designed so it cannot leak your data.
 
 ## Unread counts (v0.2)
 
-- Friday asks Chrome (through macOS Apple Events, with your one-time permission) for the **titles** of open tabs.
-- It keeps only matches such as `(74) WhatsApp` and `Inbox (5) - you@gmail.com - Gmail`: the number, plus the Gmail address so each account gets its own count. Every other title is discarded right away. Nothing is written to disk.
-- Friday never opens Chrome, never reads page contents, and never sees message text or senders.
-- Calendar: Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
-- Orb placement uses only window **positions and sizes** from macOS. It never captures window contents.
+- **WhatsApp:** Friday reads the number in the red badge on the WhatsApp Dock icon, using macOS's built-in `lsappinfo` tool. That is the same number you see in the Dock. Friday never opens WhatsApp's data, never sees messages or senders, and needs no extra permission.
+- **Mail:** not connected yet, waiting for your new mail app. It will use the same Dock badge method.
+- **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
+- **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.
 
 ## Rules for screen-reading features (planned)
 

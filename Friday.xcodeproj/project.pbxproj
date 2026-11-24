@@ -11,22 +11,20 @@
 		0AB1DEBA8A36F7BDC804C06B /* OrbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0E1EDF38458A0002E0DF88 /* OrbView.swift */; };
 		0C2040BFC5AB688CEE95D305 /* OpenAppSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */; };
 		1E3FE3DDE664232839F8CB3F /* ConnectedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB990D93016B80DD7EBD634D /* ConnectedSection.swift */; };
-		22319714F0A47756ACA25718 /* TabTitleParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF9B20B30F45F04DF30E6C0 /* TabTitleParserTests.swift */; };
 		261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D410E814C4AA2186B24A0F /* ScreenEnvironment.swift */; };
 		2B71AF4F34402FEC36047320 /* OrbPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D059FA4D739F88D013DAED8F /* OrbPlacement.swift */; };
 		2BBB29C892D9F447AB9AEDEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 946B812805534760C5456E72 /* Assets.xcassets */; };
 		305199C84107481B5F1F9BF2 /* DashboardPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */; };
 		348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */; };
+		3C62ACD764C5DF944747A300 /* DockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FED0373D3D336C21D39161 /* DockBadge.swift */; };
 		3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135996FC4EF3ACDDFA239F09 /* Theme.swift */; };
 		45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB996C209DE2B8912FD5E211 /* MemoryTests.swift */; };
 		49393E7F7133E6447A9A67AC /* MemorySkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */; };
-		56E66EB4101E26403527370E /* ChromeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8F730BEE32E040FB212306 /* ChromeTabs.swift */; };
 		5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */; };
 		5A3E4560CA09E9F8249F63D0 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A6E8584A9245DA5C0F9FDA /* DashboardView.swift */; };
 		5AAC586D378448AD4E642ED8 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */; };
 		65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */; };
 		6A18CBB7384300965BD0EDB2 /* OrbPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A453C3B03699998406DCC9 /* OrbPanel.swift */; };
-		79B7F528C9BB6D16DAF87A93 /* TabTitleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4277845D17F95101B4E307F0 /* TabTitleParser.swift */; };
 		80E8A211DC5F97930310607B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226743A219B72CB7215EF37C /* AppDelegate.swift */; };
 		84AF8168863A3D45566B94E9 /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C525E913E739ED2D8D5FB6B /* Skill.swift */; };
 		8DCD38A4E6194940442AD131 /* FridayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF83ED1F4FB77902924860 /* FridayApp.swift */; };
@@ -38,6 +36,7 @@
 		B603A0D09050A5DE255D1E7C /* OrbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB0D307216B165DF37302F5 /* OrbController.swift */; };
 		B7F6C17B57BF0CE63EA14733 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD23273C7028920FEE43D2F /* SettingsView.swift */; };
 		BC5784C57C6059AF8F73FDBF /* TimeSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2027B8EB9281D6A961D651D2 /* TimeSkill.swift */; };
+		BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4410597FB0647F6F461301A9 /* DockBadgeTests.swift */; };
 		BE786A4C9AE6031B475D72D1 /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7FD8DBCD28E3E20A6B4B20 /* MemoryStore.swift */; };
 		BF085BCFC31281AF346131F0 /* OrbPositionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FCF4B9AA371FEFEBEBD2F8 /* OrbPositionStore.swift */; };
 		D8DA4EB41B76213227FCB68A /* OpenAppSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */; };
@@ -69,7 +68,7 @@
 		3374CF421836A4DBFFF715AA /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
 		39A3B17108AF73EEF30F26A1 /* Friday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C525E913E739ED2D8D5FB6B /* Skill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skill.swift; sourceTree = "<group>"; };
-		4277845D17F95101B4E307F0 /* TabTitleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTitleParser.swift; sourceTree = "<group>"; };
+		4410597FB0647F6F461301A9 /* DockBadgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockBadgeTests.swift; sourceTree = "<group>"; };
 		45A453C3B03699998406DCC9 /* OrbPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbPanel.swift; sourceTree = "<group>"; };
 		45A79DD420EF8012D1EC36D9 /* Connections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connections.swift; sourceTree = "<group>"; };
 		47FF83ED1F4FB77902924860 /* FridayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridayApp.swift; sourceTree = "<group>"; };
@@ -77,7 +76,6 @@
 		5AB0D307216B165DF37302F5 /* OrbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbController.swift; sourceTree = "<group>"; };
 		7EDCF5601AC742BAC6480425 /* GlobalHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHotKey.swift; sourceTree = "<group>"; };
 		83062CE983E89F81BA86F706 /* RibbonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonModel.swift; sourceTree = "<group>"; };
-		8E8F730BEE32E040FB212306 /* ChromeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeTabs.swift; sourceTree = "<group>"; };
 		9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSkillTests.swift; sourceTree = "<group>"; };
 		946B812805534760C5456E72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySkill.swift; sourceTree = "<group>"; };
@@ -86,8 +84,8 @@
 		AB990D93016B80DD7EBD634D /* ConnectedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedSection.swift; sourceTree = "<group>"; };
 		B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assistant.swift; sourceTree = "<group>"; };
 		B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAppSkillTests.swift; sourceTree = "<group>"; };
-		BDF9B20B30F45F04DF30E6C0 /* TabTitleParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTitleParserTests.swift; sourceTree = "<group>"; };
 		BF0E1EDF38458A0002E0DF88 /* OrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbView.swift; sourceTree = "<group>"; };
+		C8FED0373D3D336C21D39161 /* DockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockBadge.swift; sourceTree = "<group>"; };
 		CB996C209DE2B8912FD5E211 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
 		CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAppSkill.swift; sourceTree = "<group>"; };
@@ -184,12 +182,12 @@
 			isa = PBXGroup;
 			children = (
 				CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */,
+				4410597FB0647F6F461301A9 /* DockBadgeTests.swift */,
 				CB996C209DE2B8912FD5E211 /* MemoryTests.swift */,
 				B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */,
 				F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */,
 				DA395BB71D264924177972E7 /* RibbonModelTests.swift */,
 				FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */,
-				BDF9B20B30F45F04DF30E6C0 /* TabTitleParserTests.swift */,
 				9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */,
 			);
 			path = FridayTests;
@@ -199,9 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				DE0D4D855623B5429B29D465 /* CalendarSource.swift */,
-				8E8F730BEE32E040FB212306 /* ChromeTabs.swift */,
 				45A79DD420EF8012D1EC36D9 /* Connections.swift */,
-				4277845D17F95101B4E307F0 /* TabTitleParser.swift */,
+				C8FED0373D3D336C21D39161 /* DockBadge.swift */,
 			);
 			path = Connections;
 			sourceTree = "<group>";
@@ -339,12 +336,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD2C8473D50FBCD7115385ED /* CommandTests.swift in Sources */,
+				BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */,
 				45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */,
 				0C2040BFC5AB688CEE95D305 /* OpenAppSkillTests.swift in Sources */,
 				65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */,
 				B4F6E91A1CD02B0B0596E852 /* RibbonModelTests.swift in Sources */,
 				348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */,
-				22319714F0A47756ACA25718 /* TabTitleParserTests.swift in Sources */,
 				5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,12 +353,12 @@
 				80E8A211DC5F97930310607B /* AppDelegate.swift in Sources */,
 				5AAC586D378448AD4E642ED8 /* Assistant.swift in Sources */,
 				0184D7D786BE18661D85B484 /* CalendarSource.swift in Sources */,
-				56E66EB4101E26403527370E /* ChromeTabs.swift in Sources */,
 				EF1136B74F8E1FEE26CA1694 /* Command.swift in Sources */,
 				1E3FE3DDE664232839F8CB3F /* ConnectedSection.swift in Sources */,
 				9D686FAE2AD202543E43B96B /* Connections.swift in Sources */,
 				305199C84107481B5F1F9BF2 /* DashboardPanel.swift in Sources */,
 				5A3E4560CA09E9F8249F63D0 /* DashboardView.swift in Sources */,
+				3C62ACD764C5DF944747A300 /* DockBadge.swift in Sources */,
 				8DCD38A4E6194940442AD131 /* FridayApp.swift in Sources */,
 				A67A74E86DD5B3DE07A382A6 /* GlobalHotKey.swift in Sources */,
 				49393E7F7133E6447A9A67AC /* MemorySkill.swift in Sources */,
@@ -378,7 +375,6 @@
 				261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */,
 				B7F6C17B57BF0CE63EA14733 /* SettingsView.swift in Sources */,
 				84AF8168863A3D45566B94E9 /* Skill.swift in Sources */,
-				79B7F528C9BB6D16DAF87A93 /* TabTitleParser.swift in Sources */,
 				3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */,
 				BC5784C57C6059AF8F73FDBF /* TimeSkill.swift in Sources */,
 			);
