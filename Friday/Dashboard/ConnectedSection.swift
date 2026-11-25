@@ -71,6 +71,9 @@ struct ConnectedSection: View {
             return .init(title: "Allow screen reading") { connections.requestScreenPermission() }
         }
         if connections.isReadingWhatsApp { return nil }
+        if connections.whatsappBadgeLooksOff {
+            return .init(title: "Turn on badge") { connections.openNotificationSettings() }
+        }
         return .init(title: connections.whatsappStatus == .connected ? "Check now" : "Open WhatsApp") {
             Task { await connections.readWhatsAppScreen(bringToFront: true) }
         }
@@ -78,6 +81,9 @@ struct ConnectedSection: View {
 
     private var whatsappCaption: String {
         if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
+        if connections.whatsappBadgeLooksOff {
+            return "WhatsApp's Dock badge is off: live counts need it"
+        }
         if webIsLargest, let web = connections.whatsappWebUnread {
             let label = web == 1 ? "unread chat" : "unread chats"
             if let report = connections.freshScreenReport, connections.showsNames, !report.chats.isEmpty {
@@ -100,6 +106,7 @@ struct ConnectedSection: View {
         }
         switch connections.whatsappStatus {
         case .connected:
+            if connections.whatsappBadge == 0 { return "No unread messages, or WhatsApp's Dock badge is off" }
             return connections.whatsappBadge == 1 ? "unread message (Dock badge)" : "unread messages (Dock badge)"
         case .unavailable(let reason): return reason
         case .denied, .notConnected: return "Reads WhatsApp's chat list on screen"

@@ -44,4 +44,16 @@ struct WhatsAppWebFallbackTests {
         #expect(Connections.combinedUnread(screenChats: 5, web: nil, badge: 2) == 5)
         #expect(Connections.combinedUnread(screenChats: nil, web: nil, badge: nil) == nil)
     }
+
+    /// Badge reads 0 but another source sees unread chats: the badge is off.
+    @Test func detectsBadgeTurnedOff() {
+        #expect(Connections.badgeLooksOff(badge: 0, screenChats: 3, web: nil))
+        #expect(Connections.badgeLooksOff(badge: 0, screenChats: nil, web: 86))
+        // Nothing unread anywhere: a 0 badge is believable.
+        #expect(!Connections.badgeLooksOff(badge: 0, screenChats: 0, web: 0))
+        #expect(!Connections.badgeLooksOff(badge: 0, screenChats: nil, web: nil))
+        // A badge with a number, or no badge reading at all, is not "off".
+        #expect(!Connections.badgeLooksOff(badge: 5, screenChats: 9, web: 70))
+        #expect(!Connections.badgeLooksOff(badge: nil, screenChats: 3, web: 70))
+    }
 }
