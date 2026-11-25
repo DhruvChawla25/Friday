@@ -21,6 +21,8 @@ Every published version is named after its phase:
 - **Orb never sits at the bottom.** The bottom of the screen belongs to the Dock. The orb should use the top-left, top-right or another open space only.
 - **Calendar stays connected.** Today, Calendar asks to connect again after you have connected it.
 - **Chrome as a fallback.** If the WhatsApp Mac app is not installed, read WhatsApp Web's unread count from Chrome tab titles, as in the first v0.2 build.
+- ✅ **Dashboard stays open during commands** (#46). It closes only with the minimize button, Esc, the orb or the hotkey.
+- ✅ **Latest reply on top, History below** (#47). History is kept in memory only and entries are deleted after 24 h.
 
 ## Phase 3: Commands
 
