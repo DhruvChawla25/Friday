@@ -8,15 +8,9 @@ import SwiftUI
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    let connections: Connections
-    let assistant: Assistant
-
-    override init() {
-        let connections = Connections()
-        self.connections = connections
-        assistant = Assistant.makeDefault(connections: connections)
-        super.init()
-    }
+    let assistant = Assistant.makeDefault()
+    let connections = Connections()
+    let aiUsage = AIUsageMonitor()
     private var orb: OrbController?
     private var dashboard: DashboardController?
     private var hotKey: GlobalHotKey?
@@ -33,11 +27,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let dashboard = DashboardController(
-            rootView: DashboardView(
-                assistant: assistant, connections: connections,
-                onMinimize: { [weak self] in self?.dashboard?.hide() }
-            )
-            .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
+            rootView: DashboardView(assistant: assistant, connections: connections, aiUsage: aiUsage)
+                .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
         )
         self.dashboard = dashboard
 
@@ -48,7 +39,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         self.orb = orb
 
         connections.start()
-        assistant.startPruning()
+        aiUsage.start { [weak dashboard] in dashboard?.isVisible ?? false }
         observeUnreadCount()
 
         // ⌃⌥Space toggles the dashboard from anywhere.
@@ -75,11 +66,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func toggleDashboard() {
         connections.refresh()
+        if dashboard?.isVisible == false { aiUsage.refresh() }
         dashboard?.toggle(from: orb?.frame)
     }
 
     func showDashboard() {
         connections.refresh()
+        aiUsage.refresh()
         dashboard?.show(from: orb?.frame)
     }
 

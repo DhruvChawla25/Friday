@@ -7,7 +7,7 @@ import SwiftUI
 struct DashboardView: View {
     let assistant: Assistant
     let connections: Connections
-    var onMinimize: () -> Void = {}
+    let aiUsage: AIUsageMonitor
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,8 +19,9 @@ struct DashboardView: View {
                         LatestReply(exchange: latest, onClear: assistant.clearLog)
                     }
                     ConnectedSection(connections: connections)
-                    if !assistant.history.isEmpty {
-                        HistoryLog(exchanges: assistant.history)
+                    AIUsageSection(monitor: aiUsage)
+                    if !assistant.exchanges.isEmpty {
+                        CommandLog(assistant: assistant)
                     }
                 }
                 .padding(Theme.Space.xl)
