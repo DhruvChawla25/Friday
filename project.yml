@@ -34,6 +34,19 @@ targets:
         com.apple.security.files.user-selected.read-write: true
         # Read today's events (read-only use).
         com.apple.security.personal-information.calendars: true
+        # AI usage: read-only access to exactly the files AI tools already write
+        # about their own usage. Nothing else in the home folder. See docs/PRIVACY.md.
+        com.apple.security.temporary-exception.files.home-relative-path.read-only:
+          - /.claude/projects/
+          - /.claude/sessions/
+          - /.claude/friday/
+          - /.qoder/projects/
+          - /.gemini/antigravity/conversations/
+          - /.qwen/tmp/
+          - /.local/share/opencode/opencode.db
+          - /.local/share/opencode/opencode.db-wal
+          - /.local/share/opencode/opencode.db-shm
+          - /Library/Application Support/Wispr Flow/config.json
     info:
       path: Friday/App/Info.plist
       properties:

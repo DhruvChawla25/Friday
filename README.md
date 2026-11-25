@@ -13,6 +13,7 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 | **The orb** | A small rotating 3D ribbon that floats in a screen corner. Drag it anywhere and Friday remembers the spot per app. Otherwise it avoids toolbars and desktop icons, follows your cursor between screens, and moves away or hides when a screen is full screen. |
 | **Dashboard** | Click the orb, press **⌃⌥Space**, or click the Dock icon. It shows **Connected** apps with unread numbers and has the command bar. |
 | **Connected** | WhatsApp (the Mac app) shows its unread **number only**, read from its Dock badge. Calendar shows today's remaining events. Mail is coming soon. |
+| **AI usage** | A loading bar per AI tool: Claude (Code + desktop app), Antigravity, Qwen Code, Qoder, Wispr Flow, OpenCode. Shows how much of the current limit is used, when it resets, local usage, and **LIVE** while the tool runs. Read only from files these tools already write on your Mac; limits Friday cannot know offline are labelled so, never guessed. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
 | **Opt-in memory** | `remember …`, `what do you remember`, `forget everything`. Memory is one plain `memory.txt` file you can read, edit, export or delete. |
@@ -26,6 +27,16 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 4. WhatsApp connects automatically while the app is open. For Calendar, click **Connect**; macOS asks once.
 
 Requires macOS 26 or later on Apple silicon.
+
+### Claude limits (optional, one step)
+
+Claude's real 5-hour and weekly percentages are only on Anthropic's servers, but Claude Code passes them to its status line. To let Friday show them, add this to `~/.claude/settings.json` (use the full path to your copy of the repo):
+
+```json
+"statusLine": { "type": "command", "command": "/path/to/Friday/Scripts/friday-statusline.sh" }
+```
+
+The script saves only the limit numbers to `~/.claude/friday/rate-limits.json` and prints `5h 23% · 7d 41%` as your status line. If you already have a status line, set `FRIDAY_STATUSLINE_NEXT` to its command and the script will run it too. It needs `jq` (built into macOS 15+). Without this step Friday still shows local Claude Code usage and an estimated reset time.
 
 ## Build from source
 
@@ -49,7 +60,7 @@ Friday/
   Design/       Theme tokens, procedural 3D ribbon renderer (orb, dashboard, app icon)
   Orb/          orb window, placement rules, per-app positions, screen tracking
   Dashboard/    centred dashboard, connector tiles, command bar
-  Connections/  Dock badge reader, Calendar (EventKit), live counts
+  Connections/  Dock badge reader, Calendar (EventKit), live counts, AIUsage/ (offline AI limit readers)
   Core/      Command parsing, Skill protocol + registry, Persona, Assistant
   Skills/    one file per skill
   Memory/    MemoryStore (memory.txt)

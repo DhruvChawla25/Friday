@@ -18,6 +18,29 @@ Friday is designed so it cannot leak your data.
 - **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
 - **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.
 
+## AI usage (v0.3)
+
+Friday shows how much of each AI tool's limit you have used. It never contacts those services; it only reads files the tools already write on this Mac, and only the usage numbers in them.
+
+To read those files from inside the sandbox, Friday has one extra entitlement, `com.apple.security.temporary-exception.files.home-relative-path.read-only`. It is **read-only** and limited to these paths in your home folder:
+
+| Path | Why | What Friday reads |
+|---|---|---|
+| `~/.claude/projects/` | Claude Code transcripts | Only each reply's time, ID and token counts. Message text is skipped by the decoder and never kept. |
+| `~/.claude/sessions/` | Open Claude Code sessions | Only `pid` and `status` (working / idle) from the `*.json` files. The folder also has `*.key` files; Friday never opens them. |
+| `~/.claude/friday/` | Claude plan limits from `Scripts/friday-statusline.sh` | 5-hour and weekly used % and reset time. |
+| `~/.qoder/projects/` | Qoder transcripts | Only each reply's time, ID, token counts and credits. |
+| `~/.gemini/antigravity/conversations/` | Antigravity activity | Only file **dates**, to show "last used". Contents are not read. |
+| `~/.qwen/tmp/` | Qwen Code activity | Only file **dates**. |
+| `~/.local/share/opencode/opencode.db` (+ `-wal`, `-shm`) | OpenCode usage | Opened read-only. Only per-session token and cost totals; messages are not queried. |
+| `~/Library/Application Support/Wispr Flow/config.json` | Wispr Flow usage | Only word counts, plan name, weekly-limit date and Notetaker quota. Name, email and dictionary are not decoded. |
+
+Friday does **not** get access to credentials: not `~/.claude/.credentials.json`, the Keychain, `~/.gemini`'s token file, `~/.config/opencode` (which holds a service password) or Qoder's `.auth` folder.
+
+"Live" comes from the list of running apps (`NSWorkspace`) and running process IDs (`sysctl`, the same call Activity Monitor uses). Friday reads no process arguments, memory or environment.
+
+The optional `Scripts/friday-statusline.sh` runs inside Claude Code, not Friday. It writes only `captured_at` and the `rate_limits` numbers; no prompts, paths or session IDs. Nothing is installed for you: you add it to `~/.claude/settings.json` yourself.
+
 ## Rules for screen-reading features (planned)
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
