@@ -37,8 +37,15 @@ final class Connections {
     private(set) var whatsappScreenDate: Date?
     private(set) var screenPermission = WhatsAppScreenReader.hasPermission
     private(set) var isReadingWhatsApp = false
-    /// Set only when the Mac app is missing and Friday falls back to WhatsApp Web.
+    /// The WhatsApp Web tab in Chrome. Used alongside the Mac app (its title
+    /// counts every unread chat, not just the visible ones) and on its own
+    /// when the Mac app is not installed.
     private(set) var whatsappWeb: WhatsAppWebFallback.State?
+
+    var whatsappWebUnread: Int? {
+        if case .unread(let count) = whatsappWeb { return count }
+        return nil
+    }
     private(set) var calendarStatus: Status = .notConnected
     private(set) var calendar: CalendarSource.Summary?
 
@@ -56,10 +63,17 @@ final class Connections {
         return whatsappScreen
     }
 
-    /// Unread WhatsApp messages: the fresh screen reading, else the Dock badge.
+    /// The best unread number available: the largest of the WhatsApp Web
+    /// title, the fresh screen reading and the Dock badge.
     var whatsappUnread: Int? {
-        if let report = freshScreenReport { return max(report.unreadMessages, whatsappBadge ?? 0) }
-        return whatsappBadge
+        Self.combinedUnread(screenChats: freshScreenReport?.unreadChats, web: whatsappWebUnread, badge: whatsappBadge)
+    }
+
+    /// The screen reader only sees the rows on screen and the Dock badge may be
+    /// turned off, so the largest source wins.
+    nonisolated static func combinedUnread(screenChats: Int?, web: Int?, badge: Int?) -> Int? {
+        let values = [screenChats, web, badge].compactMap { $0 }
+        return values.max()
     }
 
     var totalUnread: Int { whatsappUnread ?? 0 }
@@ -150,21 +164,31 @@ final class Connections {
             }
             return WhatsAppWebFallback.reply(for: state)
         }
+        refreshWhatsAppWeb()
+        let prefix = staysInFront ? "Opened WhatsApp. " : ""
+        // Without screen reading, the WhatsApp Web tab still gives the total.
+        let webReply = whatsappWebUnread.map { WhatsAppWebFallback.reply(for: .unread($0)) }
         guard WhatsAppScreenReader.hasPermission else {
             if staysInFront { launchWhatsApp() }
+            if let webReply { return prefix + webReply + " Allow screen reading to see who." }
             return staysInFront
                 ? "Opened WhatsApp. To read unread chats, allow screen reading in Friday's dashboard."
                 : "Screen reading is off. Allow it in Friday's dashboard to check WhatsApp."
         }
         switch await readWhatsAppScreen(bringToFront: true, staysInFront: staysInFront) {
         case .success(let report):
-            return (staysInFront ? "Opened WhatsApp. " : "") + Self.describe(report, names: showsNames)
-        case .failure(.noWindow):
-            return "WhatsApp's window did not appear. Open it once and try again."
-        case .failure(.noPermission):
-            return "Screen reading is off. Allow it in Friday's dashboard."
-        case .failure:
-            return "Could not read WhatsApp right now."
+            var reply = prefix + Self.describe(report, names: showsNames)
+            if let web = whatsappWebUnread, web > report.unreadChats {
+                reply += " WhatsApp Web shows \(web) unread chats in total."
+            }
+            return reply
+        case .failure(let failure):
+            if let webReply { return prefix + webReply }
+            switch failure {
+            case .noWindow: return "WhatsApp's window did not appear. Open it once and try again."
+            case .noPermission: return "Screen reading is off. Allow it in Friday's dashboard."
+            default: return "Could not read WhatsApp right now."
+            }
         }
     }
 
@@ -207,11 +231,8 @@ final class Connections {
     }
 
     private func refreshWhatsAppBadge() async {
-        guard isWhatsAppInstalled else {
-            refreshWhatsAppWeb()
-            return
-        }
-        whatsappWeb = nil
+        refreshWhatsAppWeb()
+        guard isWhatsAppInstalled else { return }
         let running = !NSRunningApplication.runningApplications(withBundleIdentifier: Self.whatsappBundleID).isEmpty
         guard running else {
             whatsappStatus = .unavailable("WhatsApp is closed")
@@ -239,6 +260,9 @@ final class Connections {
             chromeInstalled: ChromeTabs.isInstalled, access: access,
             titles: access == .granted ? ChromeTabs.titles() : nil)
         whatsappWeb = state
+        // With the Mac app installed, the Dock badge and screen reader own the
+        // status; the Web number is only added on top.
+        guard !isWhatsAppInstalled else { return state }
         switch state {
         case .unread(let count):
             whatsappStatus = .connected

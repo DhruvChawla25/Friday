@@ -31,8 +31,16 @@ struct WhatsAppWebFallbackTests {
     }
 
     @Test func replies() {
-        #expect(WhatsAppWebFallback.reply(for: .unread(1)) == "WhatsApp Web: 1 unread message.")
-        #expect(WhatsAppWebFallback.reply(for: .unread(5)) == "WhatsApp Web: 5 unread messages.")
-        #expect(WhatsAppWebFallback.reply(for: .unread(0)) == "WhatsApp Web: no unread messages.")
+        #expect(WhatsAppWebFallback.reply(for: .unread(1)) == "WhatsApp Web: 1 unread chat.")
+        #expect(WhatsAppWebFallback.reply(for: .unread(70)) == "WhatsApp Web: 70 unread chats.")
+        #expect(WhatsAppWebFallback.reply(for: .unread(0)) == "WhatsApp Web: no unread chats.")
+    }
+
+    /// The screen reader sees only visible rows and the Dock badge can be off
+    /// (the real case: badge empty, 3 chats on screen, 70 in the Web title).
+    @Test func largestSourceWins() {
+        #expect(Connections.combinedUnread(screenChats: 3, web: 70, badge: 0) == 70)
+        #expect(Connections.combinedUnread(screenChats: 5, web: nil, badge: 2) == 5)
+        #expect(Connections.combinedUnread(screenChats: nil, web: nil, badge: nil) == nil)
     }
 }

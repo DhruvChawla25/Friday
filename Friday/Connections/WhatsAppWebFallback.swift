@@ -4,8 +4,9 @@
 
 import Foundation
 
-/// Where WhatsApp's unread number comes from when the Mac app is not
-/// installed: a WhatsApp Web tab in Chrome. Pure logic, unit-tested.
+/// WhatsApp Web's unread-chat number from a Chrome tab title. Used with the
+/// Mac app (it counts every unread chat) and alone when the app is missing.
+/// Pure logic, unit-tested.
 enum WhatsAppWebFallback {
     enum State: Equatable {
         case noChrome
@@ -36,9 +37,9 @@ enum WhatsAppWebFallback {
         case .needsPermission: "Using WhatsApp Web in Chrome. Click Connect Chrome on the WhatsApp tile first."
         case .denied: "Friday may not read Chrome tab titles. Allow it in System Settings → Automation."
         case .noTab: "No WhatsApp Web tab is open in Chrome."
-        case .unread(0): "WhatsApp Web: no unread messages."
-        case .unread(1): "WhatsApp Web: 1 unread message."
-        case .unread(let count): "WhatsApp Web: \(count) unread messages."
+        case .unread(0): "WhatsApp Web: no unread chats."
+        case .unread(1): "WhatsApp Web: 1 unread chat."
+        case .unread(let count): "WhatsApp Web: \(count) unread chats."
         }
     }
 }
