@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Keeps the pinned GitHub Actions in ci.yml up to date (security fixes included).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies]
