@@ -51,4 +51,16 @@ struct OpenAppSkillTests {
         #expect(WorkspaceAppLauncher.find("chrome", in: [dir])?.lastPathComponent == "Google Chrome.app")
         #expect(WorkspaceAppLauncher.find("zoom", in: [dir]) == nil)
     }
+
+    @Test func findsAppInUserApplicationsFolder() throws {
+        let dir = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+        try FileManager.default.createDirectory(
+            at: dir.appending(path: "Demo.app"), withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+
+        #expect(WorkspaceAppLauncher.find("demo", in: [dir])?.lastPathComponent == "Demo.app")
+        let userApps = FileManager.default.urls(for: .applicationDirectory, in: .userDomainMask)
+        #expect(!userApps.isEmpty)
+        #expect(userApps.allSatisfy { WorkspaceAppLauncher.searchDirectories.contains($0) })
+    }
 }
