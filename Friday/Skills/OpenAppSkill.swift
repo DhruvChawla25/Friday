@@ -63,10 +63,12 @@ struct WorkspaceAppLauncher: AppLaunching {
         "xcode": "com.apple.dt.Xcode",
     ]
 
-    static let searchDirectories: [URL] = [
-        "/Applications", "/Applications/Utilities",
-        "/System/Applications", "/System/Applications/Utilities",
-    ].map { URL(filePath: $0, directoryHint: .isDirectory) }
+    static let searchDirectories: [URL] =
+        [
+            "/Applications", "/Applications/Utilities",
+            "/System/Applications", "/System/Applications/Utilities",
+        ].map { URL(filePath: $0, directoryHint: .isDirectory) }
+        + FileManager.default.urls(for: .applicationDirectory, in: .userDomainMask)
 
     @MainActor
     func launchApp(named name: String) async -> LaunchResult {
