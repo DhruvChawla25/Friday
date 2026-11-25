@@ -231,4 +231,78 @@ struct FridayOnlineWireTests {
         #expect(FridayOnlineConnector.report(fromReply: Data(isError.utf8), id: 2) == nil)
         #expect(FridayOnlineConnector.report(fromReply: Data("garbage".utf8), id: 2) == nil)
     }
+
+    @Test func switchedOffErrorCodeIsRecognised() {
+        let off = #"{"jsonrpc":"2.0","id":1,"error":{"code":-32005,"message":"Friday Online is off"}}"#
+        #expect(FridayOnlineConnector.errorCode(Data(off.utf8)) == FridayOnline.switchedOffErrorCode)
+        #expect(FridayOnlineConnector.errorCode(Data(#"{"jsonrpc":"2.0","id":1,"result":{}}"#.utf8)) == nil)
+    }
+}
+
+/// An in-process stand-in for the Friday Online app's XPC service. Answers
+/// every message with a fixed JSON-RPC reply, echoing the request id.
+private final class FakeServer: NSObject, NSXPCListenerDelegate, FridayOnlineXPCProtocol, @unchecked Sendable {
+    let listener = NSXPCListener.anonymous()
+    private let reply: @Sendable (_ method: String, _ id: Int) -> String
+
+    init(reply: @escaping @Sendable (_ method: String, _ id: Int) -> String) {
+        self.reply = reply
+        super.init()
+        listener.delegate = self
+        listener.resume()
+    }
+
+    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
+        connection.exportedInterface = NSXPCInterface(with: FridayOnlineXPCProtocol.self)
+        connection.exportedObject = self
+        connection.resume()
+        return true
+    }
+
+    func handle(_ message: Data, reply: @escaping @Sendable (Data?) -> Void) {
+        let object = (try? JSONSerialization.jsonObject(with: message)) as? [String: Any]
+        let method = object?["method"] as? String ?? ""
+        let id = object?["id"] as? Int ?? 0
+        reply(Data(self.reply(method, id).utf8))
+    }
+}
+
+struct FridayOnlineConnectorTests {
+    @Test func switchedOffAppMapsToSwitchedOff() async {
+        let server = FakeServer { _, id in
+            #"{"jsonrpc":"2.0","id":\#(id),"error":{"code":-32005,"message":"Friday Online is off"}}"#
+        }
+        let connector = FridayOnlineConnector(endpoint: server.listener.endpoint)
+        #expect(await connector.usageLimits(for: .claude) == .switchedOff)
+        #expect(LimitsMerge.problem(.switchedOff) == "Friday Online is switched off")
+        #expect(
+            ClaudeUsageProvider.source(limits: nil, online: .switchedOff, now: now)
+                == "Local Claude Code transcripts · Friday Online is switched off")
+    }
+
+    @Test func workingAppReturnsTheReport() async {
+        let server = FakeServer { method, id in
+            method == "initialize"
+                ? #"{"jsonrpc":"2.0","id":\#(id),"result":{"protocolVersion":"2025-06-18"}}"#
+                : #"{"jsonrpc":"2.0","id":\#(id),"result":{"isError":false,"structuredContent":"#
+                    + #"{"provider":"claude","status":"credentials-expired","windows":[],"source":"none"}}}"#
+        }
+        let connector = FridayOnlineConnector(endpoint: server.listener.endpoint)
+        #expect(
+            await connector.usageLimits(for: .claude) == .report(.init(provider: .claude, status: .credentialsExpired)))
+    }
+
+    @Test func otherErrorsAreUnexpectedReplies() async {
+        let server = FakeServer { _, id in #"{"jsonrpc":"2.0","id":\#(id),"error":{"code":-32602,"message":"x"}}"# }
+        let connector = FridayOnlineConnector(endpoint: server.listener.endpoint)
+        #expect(await connector.usageLimits(for: .claude) == .invalidReply)
+    }
+
+    @Test func switchedOffStopsAskingOtherToolsThisRound() async {
+        let fake = FakeConnector([.claude: .switchedOff])
+        let provider = FridayOnlineProvider(makeConnector: { fake })
+        let result = await provider.limits(for: [.claude, .qoder], now: now)
+        #expect(fake.callCount == 1)
+        #expect(result[.qoder] == .switchedOff)
+    }
 }

@@ -13,7 +13,7 @@ import Foundation
 /// decodes the reply. It uses no networking API (XPC is local kernel IPC).
 ///
 /// The wire contract (names, enums, JSON shape) mirrors Friday Online's
-/// `FridayOnlineProtocol` at commit e7c404a0a86d15c6923285ccf819af900a17aa9a.
+/// `FridayOnlineProtocol` at commit eb917a17b39f4c16c0844edc940320ab742e8e96.
 enum FridayOnline {
     static let machServiceName = "com.dhruvchawla.friday.online"
     /// Friday only talks to a server signed with this identifier.
@@ -21,6 +21,8 @@ enum FridayOnline {
     static let toolName = "get_usage_limits"
     static let protocolVersion = "2025-06-18"
     static let maxReplyBytes = 16 * 1024
+    /// JSON-RPC error the app returns for every request while its Online switch is off.
+    static let switchedOffErrorCode = -32005
 
     enum Provider: String, Codable, Sendable {
         case claude, antigravity, qoder
@@ -67,6 +69,8 @@ enum FridayOnline {
 enum OnlineLimits: Equatable, Sendable {
     /// The Friday Online app is not installed or not running.
     case notRunning
+    /// The user switched Friday Online off in its menu; it denies every request.
+    case switchedOff
     /// It answered with something Friday could not use.
     case invalidReply
     case report(FridayOnline.Report)
@@ -85,9 +89,20 @@ final class FridayOnlineConnector: FridayOnlineConnecting, @unchecked Sendable {
     private var nextID = 0
     private var initialized = false
 
-    init() {
-        connection = NSXPCConnection(machServiceName: FridayOnline.machServiceName)
+    /// Connects to the installed Friday Online app, which must be signed as `serverIdentifier`.
+    convenience init() {
+        let connection = NSXPCConnection(machServiceName: FridayOnline.machServiceName)
         connection.setCodeSigningRequirement("identifier \"\(FridayOnline.serverIdentifier)\"")
+        self.init(connection: connection)
+    }
+
+    /// Connects to an in-process listener. Tests only.
+    convenience init(endpoint: NSXPCListenerEndpoint) {
+        self.init(connection: NSXPCConnection(listenerEndpoint: endpoint))
+    }
+
+    private init(connection: NSXPCConnection) {
+        self.connection = connection
         connection.remoteObjectInterface = NSXPCInterface(with: FridayOnlineXPCProtocol.self)
         connection.resume()
     }
@@ -105,6 +120,7 @@ final class FridayOnlineConnector: FridayOnlineConnecting, @unchecked Sendable {
                 ],
             ]
             guard let reply = await send(hello) else { return .notRunning }
+            if Self.errorCode(reply) == FridayOnline.switchedOffErrorCode { return .switchedOff }
             guard Self.rpcResult(reply, id: id) != nil else { return .invalidReply }
             lock.withLock { initialized = true }
         }
@@ -114,6 +130,10 @@ final class FridayOnlineConnector: FridayOnlineConnecting, @unchecked Sendable {
             "params": ["name": FridayOnline.toolName, "arguments": ["provider": provider.rawValue]],
         ]
         guard let reply = await send(call) else { return .notRunning }
+        if Self.errorCode(reply) == FridayOnline.switchedOffErrorCode {
+            lock.withLock { initialized = false }  // handshake again once it is switched back on
+            return .switchedOff
+        }
         guard let report = Self.report(fromReply: reply, id: id), report.provider == provider else {
             return .invalidReply
         }
@@ -155,6 +175,11 @@ final class FridayOnlineConnector: FridayOnlineConnecting, @unchecked Sendable {
     private struct CallResult: Decodable {
         var structuredContent: FridayOnline.Report
         var isError: Bool
+    }
+
+    /// The JSON-RPC error code in a reply, if it is an error.
+    static func errorCode(_ data: Data) -> Int? {
+        try? decoder.decode(Envelope<Initialized>.self, from: data).error?.code
     }
 
     private static func rpcResult(_ data: Data, id: Int) -> Initialized? {

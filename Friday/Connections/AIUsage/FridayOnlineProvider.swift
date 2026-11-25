@@ -39,20 +39,18 @@ actor FridayOnlineProvider {
     }
 
     /// Limits for `tools`, from cache when asked within the last minute. If
-    /// the app is not running, the remaining tools are not asked this time.
+    /// the app is not running or switched off, the remaining tools are not asked this time.
     func limits(for tools: [AITool], now: Date = .now) async -> [AITool: OnlineLimits] {
         var result: [AITool: OnlineLimits] = [:]
-        var running = true
+        var stopped: OnlineLimits?
         for tool in tools {
             if let cached = cache[tool], now.timeIntervalSince(cached.date) < Self.minimumInterval {
                 result[tool] = cached.value
                 continue
             }
-            let value = running ? await fetch(tool.onlineProvider) : .notRunning
-            if value == .notRunning {
-                running = false
-                connector = nil  // reconnect next time, e.g. once the app has started
-            }
+            let value = if let stopped { stopped } else { await fetch(tool.onlineProvider) }
+            if value == .notRunning || value == .switchedOff { stopped = value }
+            if value == .notRunning { connector = nil }  // reconnect next time, e.g. once the app has started
             cache[tool] = (now, value)
             result[tool] = value
         }
@@ -142,6 +140,7 @@ enum LimitsMerge {
         switch online {
         case nil: nil
         case .notRunning: "Friday Online app not running"
+        case .switchedOff: "Friday Online is switched off"
         case .invalidReply: "Friday Online app sent an unexpected reply"
         case .report(let report):
             switch report.status {
