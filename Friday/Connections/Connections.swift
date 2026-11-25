@@ -42,6 +42,12 @@ final class Connections {
     /// when the Mac app is not installed.
     private(set) var whatsappWeb: WhatsAppWebFallback.State?
 
+    /// Every unread chat from the one full scan (made when the user clicks
+    /// "Scan all chats"), kept current by WhatsApp's notifications.
+    /// In memory only; never written to disk.
+    private(set) var whatsappList = WhatsAppUnreadTracker()
+    private var notificationWatcher: WhatsAppNotificationWatcher?
+
     var whatsappWebUnread: Int? {
         if case .unread(let count) = whatsappWeb { return count }
         return nil
@@ -84,6 +90,7 @@ final class Connections {
 
     func start() {
         refresh()
+        startNotificationWatcher()
         Task { await readWhatsAppScreen(bringToFront: false) }
 
         // Badge reads are cheap and local, so poll often for a live feel.
@@ -118,6 +125,7 @@ final class Connections {
 
     func refresh() {
         screenPermission = WhatsAppScreenReader.hasPermission
+        notificationWatcher?.start()  // no-op once running; picks up a late Accessibility grant
         Task { await refreshWhatsAppBadge() }
         refreshCalendar()
     }
@@ -152,6 +160,23 @@ final class Connections {
     }
 
     // MARK: - WhatsApp
+
+    func applyWhatsAppScan(_ list: WhatsAppUnreadList) {
+        whatsappList.apply(scan: list)
+        whatsappList.reconcile(total: whatsappUnread)
+    }
+
+    /// Listens for WhatsApp notification banners (chat name and time only) to
+    /// keep the scanned list current. Needs Accessibility, so it stays idle in
+    /// the sandboxed build.
+    private func startNotificationWatcher() {
+        let watcher = WhatsAppNotificationWatcher { [weak self] event in
+            guard let self else { return }
+            whatsappList.noteNotification(chat: showsNames ? event.chat : nil, kind: event.kind, at: event.date)
+        }
+        watcher.start()
+        notificationWatcher = watcher
+    }
 
     /// Opens or shows WhatsApp if needed, reads its chat list and returns
     /// Friday's reply. Used by the "check whatsapp" / "open whatsapp" commands.
@@ -253,6 +278,7 @@ final class Connections {
         let changed = whatsappBadge != nil && whatsappBadge != count
         whatsappStatus = .connected
         whatsappBadge = count
+        whatsappList.reconcile(total: whatsappUnread)
         // A badge change means a notification arrived (or chats were read):
         // recheck the chat list if the window is visible.
         if changed { await readWhatsAppScreen(bringToFront: false) }

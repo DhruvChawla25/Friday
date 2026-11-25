@@ -19,7 +19,9 @@ struct ConnectedSection: View {
                         fallback: "message.fill"),
                     value: whatsappValue,
                     caption: whatsappCaption,
-                    action: whatsappAction
+                    action: whatsappAction,
+                    onOpen: { WhatsAppUnreadPopup.shared.show(connections: connections) },
+                    openHint: "Show every unread chat"
                 )
                 ConnectorTile(
                     name: "Mail",
@@ -149,6 +151,9 @@ struct ConnectorTile: View {
     let value: String?
     let caption: String
     let action: Action?
+    /// Clicking the tile itself (outside its button) opens a detail view.
+    var onOpen: (() -> Void)? = nil
+    var openHint: String? = nil
     @State private var hovering = false
 
     var body: some View {
@@ -185,9 +190,18 @@ struct ConnectorTile: View {
             RoundedRectangle(cornerRadius: Theme.corner, style: .continuous)
                 .strokeBorder(value == nil ? Theme.hairline : Theme.orange.opacity(0.3), lineWidth: 1)
         )
-        .onHover { hovering = $0 }
+        .contentShape(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+        .onTapGesture { onOpen?() }
+        .onHover { inside in
+            hovering = inside
+            guard onOpen != nil else { return }
+            if inside { NSCursor.pointingHand.push() } else { NSCursor.pop() }
+        }
+        .help(openHint ?? "")
         .animation(.easeOut(duration: 0.15), value: hovering)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(onOpen == nil ? [] : .isButton)
+        .accessibilityAction { onOpen?() }
     }
 
     @ViewBuilder private var iconView: some View {
@@ -203,7 +217,7 @@ struct ConnectorTile: View {
     }
 }
 
-private struct ConnectButtonStyle: ButtonStyle {
+struct ConnectButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 11, weight: .semibold))

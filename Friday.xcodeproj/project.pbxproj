@@ -13,20 +13,24 @@
 		0C2040BFC5AB688CEE95D305 /* OpenAppSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */; };
 		0E58162293652CD78082ECDD /* WhatsAppSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C89226F14B1E888E8BF72F /* WhatsAppSkill.swift */; };
 		128170A51A7F1961A59F81D1 /* BadgeGlyphReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FACACC427943D2B3BBBC227 /* BadgeGlyphReader.swift */; };
+		1AD894BE0A5F1D4AF34B44AD /* WhatsAppUnreadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */; };
 		1E3FE3DDE664232839F8CB3F /* ConnectedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB990D93016B80DD7EBD634D /* ConnectedSection.swift */; };
 		261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D410E814C4AA2186B24A0F /* ScreenEnvironment.swift */; };
 		2B71AF4F34402FEC36047320 /* OrbPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D059FA4D739F88D013DAED8F /* OrbPlacement.swift */; };
 		2BBB29C892D9F447AB9AEDEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 946B812805534760C5456E72 /* Assets.xcassets */; };
 		305199C84107481B5F1F9BF2 /* DashboardPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */; };
 		348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */; };
+		3985E8687551DB7004E328F7 /* WhatsAppAccessibilityReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A277CC112C071B5BA3B5E6 /* WhatsAppAccessibilityReader.swift */; };
 		3C62ACD764C5DF944747A300 /* DockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FED0373D3D336C21D39161 /* DockBadge.swift */; };
 		3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135996FC4EF3ACDDFA239F09 /* Theme.swift */; };
+		41495A174C778E2E88FEEAB0 /* WhatsAppUnreadListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988E3E5EBD3BE5662DB0E65 /* WhatsAppUnreadListTests.swift */; };
 		45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB996C209DE2B8912FD5E211 /* MemoryTests.swift */; };
 		49393E7F7133E6447A9A67AC /* MemorySkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */; };
 		56E66EB4101E26403527370E /* ChromeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8F730BEE32E040FB212306 /* ChromeTabs.swift */; };
 		58CB36D1961AA335B819D2C5 /* WhatsAppAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EB5B7547F5A63669071209 /* WhatsAppAnalyzerTests.swift */; };
 		5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */; };
 		5A3E4560CA09E9F8249F63D0 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A6E8584A9245DA5C0F9FDA /* DashboardView.swift */; };
+		5A91DA646A714351A94EA3B0 /* WhatsAppNotificationWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */; };
 		5AAC586D378448AD4E642ED8 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */; };
 		643AC75EA8F64D49454FFFE7 /* WhatsAppChatListAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */; };
 		65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */; };
@@ -38,6 +42,7 @@
 		84AF8168863A3D45566B94E9 /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C525E913E739ED2D8D5FB6B /* Skill.swift */; };
 		8DCD38A4E6194940442AD131 /* FridayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF83ED1F4FB77902924860 /* FridayApp.swift */; };
 		8F4ACA386B486F10E86D3A6B /* WhatsAppScreenReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F5C8852C28B2078867D84 /* WhatsAppScreenReader.swift */; };
+		93A4D3EC5A4F34FC725F89BD /* WhatsAppUnreadPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF754F4F042760967D8C634 /* WhatsAppUnreadPopup.swift */; };
 		98A4BD58A7C8D53B9FF28C7E /* WhatsAppSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7D49E7201B4DC25713CB9 /* WhatsAppSkillTests.swift */; };
 		9B0D060CDD6812725E585348 /* Persona.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3374CF421836A4DBFFF715AA /* Persona.swift */; };
 		9D686FAE2AD202543E43B96B /* Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A79DD420EF8012D1EC36D9 /* Connections.swift */; };
@@ -76,6 +81,7 @@
 		2027B8EB9281D6A961D651D2 /* TimeSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSkill.swift; sourceTree = "<group>"; };
 		226743A219B72CB7215EF37C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		247A7AD35E96FFC0AC44AEC2 /* Friday.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Friday.entitlements; sourceTree = "<group>"; };
+		262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadList.swift; sourceTree = "<group>"; };
 		2D7FD8DBCD28E3E20A6B4B20 /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
 		3374CF421836A4DBFFF715AA /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
 		39A3B17108AF73EEF30F26A1 /* Friday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friday.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +102,7 @@
 		75F7D49E7201B4DC25713CB9 /* WhatsAppSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppSkillTests.swift; sourceTree = "<group>"; };
 		7EDCF5601AC742BAC6480425 /* GlobalHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHotKey.swift; sourceTree = "<group>"; };
 		83062CE983E89F81BA86F706 /* RibbonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonModel.swift; sourceTree = "<group>"; };
+		8CF754F4F042760967D8C634 /* WhatsAppUnreadPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadPopup.swift; sourceTree = "<group>"; };
 		8E8F730BEE32E040FB212306 /* ChromeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeTabs.swift; sourceTree = "<group>"; };
 		9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSkillTests.swift; sourceTree = "<group>"; };
 		946B812805534760C5456E72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -107,6 +114,7 @@
 		B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assistant.swift; sourceTree = "<group>"; };
 		B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAppSkillTests.swift; sourceTree = "<group>"; };
 		BF0E1EDF38458A0002E0DF88 /* OrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbView.swift; sourceTree = "<group>"; };
+		BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppNotificationWatcher.swift; sourceTree = "<group>"; };
 		C8FED0373D3D336C21D39161 /* DockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockBadge.swift; sourceTree = "<group>"; };
 		CB996C209DE2B8912FD5E211 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
@@ -117,6 +125,8 @@
 		DD29A0E9194A022BAC446703 /* WhatsAppWebFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppWebFallback.swift; sourceTree = "<group>"; };
 		DE0D4D855623B5429B29D465 /* CalendarSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSource.swift; sourceTree = "<group>"; };
 		E5D410E814C4AA2186B24A0F /* ScreenEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenEnvironment.swift; sourceTree = "<group>"; };
+		E988E3E5EBD3BE5662DB0E65 /* WhatsAppUnreadListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadListTests.swift; sourceTree = "<group>"; };
+		F3A277CC112C071B5BA3B5E6 /* WhatsAppAccessibilityReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppAccessibilityReader.swift; sourceTree = "<group>"; };
 		F871AAA121CEF2AF95B49076 /* FridayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FridayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbPlacementTests.swift; sourceTree = "<group>"; };
 		FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillRegistryTests.swift; sourceTree = "<group>"; };
@@ -181,6 +191,7 @@
 				AB990D93016B80DD7EBD634D /* ConnectedSection.swift */,
 				4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */,
 				14A6E8584A9245DA5C0F9FDA /* DashboardView.swift */,
+				8CF754F4F042760967D8C634 /* WhatsAppUnreadPopup.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -218,6 +229,7 @@
 				9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */,
 				59EB5B7547F5A63669071209 /* WhatsAppAnalyzerTests.swift */,
 				75F7D49E7201B4DC25713CB9 /* WhatsAppSkillTests.swift */,
+				E988E3E5EBD3BE5662DB0E65 /* WhatsAppUnreadListTests.swift */,
 				49FD1CC60F198B7937659E29 /* WhatsAppWebFallbackTests.swift */,
 			);
 			path = FridayTests;
@@ -227,8 +239,11 @@
 			isa = PBXGroup;
 			children = (
 				3FACACC427943D2B3BBBC227 /* BadgeGlyphReader.swift */,
+				F3A277CC112C071B5BA3B5E6 /* WhatsAppAccessibilityReader.swift */,
 				5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */,
+				BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */,
 				3C2F5C8852C28B2078867D84 /* WhatsAppScreenReader.swift */,
+				262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */,
 			);
 			path = WhatsApp;
 			sourceTree = "<group>";
@@ -391,6 +406,7 @@
 				5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */,
 				58CB36D1961AA335B819D2C5 /* WhatsAppAnalyzerTests.swift in Sources */,
 				98A4BD58A7C8D53B9FF28C7E /* WhatsAppSkillTests.swift in Sources */,
+				41495A174C778E2E88FEEAB0 /* WhatsAppUnreadListTests.swift in Sources */,
 				CDFB36C9BF569C3362D70D23 /* WhatsAppWebFallbackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,9 +445,13 @@
 				79B7F528C9BB6D16DAF87A93 /* TabTitleParser.swift in Sources */,
 				3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */,
 				BC5784C57C6059AF8F73FDBF /* TimeSkill.swift in Sources */,
+				3985E8687551DB7004E328F7 /* WhatsAppAccessibilityReader.swift in Sources */,
 				643AC75EA8F64D49454FFFE7 /* WhatsAppChatListAnalyzer.swift in Sources */,
+				5A91DA646A714351A94EA3B0 /* WhatsAppNotificationWatcher.swift in Sources */,
 				8F4ACA386B486F10E86D3A6B /* WhatsAppScreenReader.swift in Sources */,
 				0E58162293652CD78082ECDD /* WhatsAppSkill.swift in Sources */,
+				1AD894BE0A5F1D4AF34B44AD /* WhatsAppUnreadList.swift in Sources */,
+				93A4D3EC5A4F34FC725F89BD /* WhatsAppUnreadPopup.swift in Sources */,
 				75AD49F2295A8BBF8436EADE /* WhatsAppWebFallback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
