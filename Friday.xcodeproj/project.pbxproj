@@ -29,6 +29,7 @@
 		643AC75EA8F64D49454FFFE7 /* WhatsAppChatListAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */; };
 		65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */; };
 		6A18CBB7384300965BD0EDB2 /* OrbPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A453C3B03699998406DCC9 /* OrbPanel.swift */; };
+		6B834B3DF069F77F64382730 /* AssistantLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96F33E6251A72C5B6F526DF /* AssistantLogTests.swift */; };
 		80E8A211DC5F97930310607B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226743A219B72CB7215EF37C /* AppDelegate.swift */; };
 		84AF8168863A3D45566B94E9 /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C525E913E739ED2D8D5FB6B /* Skill.swift */; };
 		8DCD38A4E6194940442AD131 /* FridayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF83ED1F4FB77902924860 /* FridayApp.swift */; };
@@ -102,6 +103,7 @@
 		CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
 		CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAppSkill.swift; sourceTree = "<group>"; };
 		D059FA4D739F88D013DAED8F /* OrbPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbPlacement.swift; sourceTree = "<group>"; };
+		D96F33E6251A72C5B6F526DF /* AssistantLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantLogTests.swift; sourceTree = "<group>"; };
 		DA395BB71D264924177972E7 /* RibbonModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonModelTests.swift; sourceTree = "<group>"; };
 		DE0D4D855623B5429B29D465 /* CalendarSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSource.swift; sourceTree = "<group>"; };
 		E5D410E814C4AA2186B24A0F /* ScreenEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenEnvironment.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		86AD9412778AB6B1541918B7 /* FridayTests */ = {
 			isa = PBXGroup;
 			children = (
+				D96F33E6251A72C5B6F526DF /* AssistantLogTests.swift */,
 				CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */,
 				4410597FB0647F6F461301A9 /* DockBadgeTests.swift */,
 				CB996C209DE2B8912FD5E211 /* MemoryTests.swift */,
@@ -361,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B834B3DF069F77F64382730 /* AssistantLogTests.swift in Sources */,
 				FD2C8473D50FBCD7115385ED /* CommandTests.swift in Sources */,
 				BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */,
 				45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */,

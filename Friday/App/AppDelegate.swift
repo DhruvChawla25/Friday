@@ -33,8 +33,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let dashboard = DashboardController(
-            rootView: DashboardView(assistant: assistant, connections: connections)
-                .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
+            rootView: DashboardView(
+                assistant: assistant, connections: connections,
+                onMinimize: { [weak self] in self?.dashboard?.hide() }
+            )
+            .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
         )
         self.dashboard = dashboard
 
@@ -45,6 +48,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         self.orb = orb
 
         connections.start()
+        assistant.startPruning()
         observeUnreadCount()
 
         // ⌃⌥Space toggles the dashboard from anywhere.
