@@ -56,9 +56,18 @@ To reach it, Friday has a second entitlement, `com.apple.security.temporary-exce
 - Friday never sees a token. Friday Online reads Claude Code's sign-in from the Keychain itself, and macOS asks you first.
 - If Friday Online isn't installed or running, Friday says "Friday Online app not running" and uses only local data.
 
+## Screenshot and snip
+
+When you type `screenshot` / `snip` (or press the camera / crop buttons), Friday captures the screen with Apple's ScreenCaptureKit and saves **one PNG to your Desktop**. That is the only time Friday writes an image to disk, and only because you asked.
+
+- **Nothing is uploaded.** Friday still has no network entitlement. The image goes to `~/Desktop` and, so you can paste it, to the clipboard. (If you have turned on *Desktop & Documents* in iCloud, macOS itself syncs your Desktop; Friday does not.)
+- **Friday is not in the picture.** It hides its dashboard and orb first and also excludes its own windows from the capture.
+- **Permission:** macOS asks you to allow Friday under *System Settings → Privacy & Security → Screen & System Audio Recording*. Until you do, Friday replies with that path and shows an **Allow** button that opens the pane. You can turn it off there at any time.
+- **Entitlement:** `com.apple.security.temporary-exception.files.home-relative-path.read-write` with exactly one path, `/Desktop/`. It lets the sandboxed app create files in `~/Desktop` and nowhere else in your home folder. Friday only ever creates new files there; it never overwrites one (a clash becomes `… (2).png`) and never reads or deletes other files.
+
 ## Rules for screen-reading features (planned)
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
 - **Gmail:** Friday reports the *senders* of unread mail for each account. It never opens emails or reads subjects or bodies.
-- Screen captures are processed in memory and discarded right away. They are never written to disk.
+- Screen captures for screen reading are processed in memory and discarded right away. They are never written to disk. (Screenshots and snips you ask for are the one exception; see above.)
 - **Blocked:** Instagram, plus any app you add to the block list.

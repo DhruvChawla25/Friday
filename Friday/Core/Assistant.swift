@@ -74,6 +74,8 @@ final class Assistant {
     static func makeDefault(connections: Connections) -> Assistant {
         let memory = MemoryStore.standard
         let registry = SkillRegistry(skills: [
+            // First, so "open snipping tool" is a snip, not an app launch. Its phrases are strict.
+            CaptureSkill(capturer: ScreenCaptureCoordinator.shared),
             WhatsAppSkill { staysInFront in await connections.checkWhatsApp(staysInFront: staysInFront) },
             TimeSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
