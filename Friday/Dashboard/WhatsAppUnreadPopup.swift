@@ -398,8 +398,7 @@ private struct ChatRow: View {
             Spacer(minLength: Theme.Space.s)
             VStack(alignment: .trailing, spacing: 4) {
                 Text(chat.lastMessage.map { WhatsAppTimeParser.label(for: $0) } ?? "")
-                    .font(Theme.Font.mono.weight(.regular))
-                    .font(.system(size: 11))
+                    .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(Theme.textSecondary)
                 Text(chat.count > 999 ? "999+" : String(chat.count))
                     .font(.system(size: 11, weight: .bold, design: .rounded))
