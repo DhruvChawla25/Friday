@@ -1,0 +1,9 @@
+# Every change needs the owner's review before it can merge into main.
+* @DhruvChawla25
+
+# Called out explicitly: these control CI, privacy and what the app is allowed to do.
+/.github/                       @DhruvChawla25
+/Scripts/                       @DhruvChawla25
+/Friday/App/Friday.entitlements @DhruvChawla25
+/Friday/App/Info.plist          @DhruvChawla25
+/project.yml                    @DhruvChawla25

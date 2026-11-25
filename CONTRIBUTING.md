@@ -20,6 +20,22 @@ make check                            # lint + tests + no-network check (must pa
 - Add or update a test in `FridayTests/` for any logic change.
 - Never add networking code: `Scripts/check-no-network.sh` will fail the build.
 
+## How pull requests get merged
+
+`main` is protected, so nobody (including the owner) can push to it directly. To merge, a pull request must:
+
+1. **Pass CI.** That means the `build-and-test` job: no-network check, lint, tests and DMG build.
+2. **Be approved by the owner.** See [CODEOWNERS](.github/CODEOWNERS). If you push new commits after the approval, you need a fresh approval.
+3. **Have every review conversation resolved.**
+4. **Be up to date with `main`.** If it isn't, use **Update branch**.
+
+If this is your first pull request, CI waits until the owner approves the run. Fork pull requests run with a read-only token and no secrets.
+
+Please also:
+- Target **`main`**, not another pull request's branch.
+- Never commit secrets. Secret scanning blocks pushes that contain them.
+- Report security problems privately. See [SECURITY.md](SECURITY.md).
+
 ## Labels
 
 | Label | Meaning |
