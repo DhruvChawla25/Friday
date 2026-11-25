@@ -22,6 +22,8 @@ struct WhatsAppChatListAnalyzer: Sendable {
         var count: Int
         /// Someone @-mentioned you in this chat.
         var mentioned = false
+        /// The time shown on the row ("9:41 PM", "Yesterday"), if readable.
+        var timeText: String? = nil
     }
 
     struct Report: Equatable, Sendable {
@@ -60,7 +62,8 @@ struct WhatsAppChatListAnalyzer: Sendable {
             return UnreadChat(
                 name: readsNames ? name(beside: leftmost, in: image) : nil,
                 count: count ?? 1,
-                mentioned: readings.contains(.mention)
+                mentioned: readings.contains(.mention),
+                timeText: time(above: row.max { $0.rect.maxX < $1.rect.maxX }!, in: image)
             )
         }
         var railTotal: Int?
@@ -166,6 +169,20 @@ struct WhatsAppChatListAnalyzer: Sendable {
         let lines = recognizeLines(crop).sorted { $0.y < $1.y }
         let name = lines.first { !Self.looksLikeTime($0.text) }?.text.trimmingCharacters(in: .whitespaces)
         return name.flatMap { $0.isEmpty ? nil : $0 }
+    }
+
+    /// Reads the row's timestamp: WhatsApp draws it on the name line, right
+    /// above the unread bubble. Only this small strip is passed to text
+    /// recognition, and only text that parses as a time is kept.
+    func time(above bubble: Bubble, in image: CGImage) -> String? {
+        let top = max(0, bubble.rect.midY - 40 * scale)
+        let bottom = bubble.rect.midY - 8 * scale
+        let left = max(0, bubble.rect.minX - 70 * scale)
+        let right = min(CGFloat(image.width), bubble.rect.maxX + 4 * scale)
+        let strip = CGRect(x: left, y: top, width: right - left, height: bottom - top).integral
+        guard strip.width > 20, strip.height > 8, let crop = image.cropping(to: strip) else { return nil }
+        return recognizeLines(crop).map { $0.text.trimmingCharacters(in: .whitespaces) }
+            .first { WhatsAppTimeParser.date(from: $0) != nil }
     }
 
     static func looksLikeTime(_ text: String) -> Bool {
