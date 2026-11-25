@@ -63,17 +63,17 @@ final class Connections {
         return whatsappScreen
     }
 
-    /// The best unread number available: the largest of the WhatsApp Web
-    /// title, the fresh screen reading and the Dock badge.
+    /// The best unread number available (see `combinedUnread`).
     var whatsappUnread: Int? {
         Self.combinedUnread(screenChats: freshScreenReport?.unreadChats, web: whatsappWebUnread, badge: whatsappBadge)
     }
 
-    /// The screen reader only sees the rows on screen and the Dock badge may be
-    /// turned off, so the largest source wins.
+    /// WhatsApp Web's title is live and counts every unread chat, so it wins
+    /// when present (it also drops as soon as chats are read). Otherwise the
+    /// larger of the screen reading (visible rows only) and the Dock badge.
     nonisolated static func combinedUnread(screenChats: Int?, web: Int?, badge: Int?) -> Int? {
-        let values = [screenChats, web, badge].compactMap { $0 }
-        return values.max()
+        if let web { return web }
+        return [screenChats, badge].compactMap { $0 }.max()
     }
 
     var totalUnread: Int { whatsappUnread ?? 0 }
@@ -230,8 +230,14 @@ final class Connections {
         NSWorkspace.shared.openApplication(at: url, configuration: NSWorkspace.OpenConfiguration())
     }
 
+    private var lastWebRefresh = Date.distantPast
+
     private func refreshWhatsAppBadge() async {
-        refreshWhatsAppWeb()
+        // Asking Chrome is an Apple Event; every 15 s is plenty.
+        if Date.now.timeIntervalSince(lastWebRefresh) >= 15 {
+            lastWebRefresh = .now
+            refreshWhatsAppWeb()
+        }
         guard isWhatsAppInstalled else { return }
         let running = !NSRunningApplication.runningApplications(withBundleIdentifier: Self.whatsappBundleID).isEmpty
         guard running else {

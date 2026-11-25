@@ -36,10 +36,11 @@ struct WhatsAppWebFallbackTests {
         #expect(WhatsAppWebFallback.reply(for: .unread(0)) == "WhatsApp Web: no unread chats.")
     }
 
-    /// The screen reader sees only visible rows and the Dock badge can be off
-    /// (the real case: badge empty, 3 chats on screen, 70 in the Web title).
-    @Test func largestSourceWins() {
+    /// The real case: Dock badge off, 3 chats visible on screen, 70 in the Web title.
+    @Test func webTitleWinsElseLargest() {
         #expect(Connections.combinedUnread(screenChats: 3, web: 70, badge: 0) == 70)
+        // Chats were read: the live Web title drops even if a screen reading is stale.
+        #expect(Connections.combinedUnread(screenChats: 9, web: 0, badge: nil) == 0)
         #expect(Connections.combinedUnread(screenChats: 5, web: nil, badge: 2) == 5)
         #expect(Connections.combinedUnread(screenChats: nil, web: nil, badge: nil) == nil)
     }

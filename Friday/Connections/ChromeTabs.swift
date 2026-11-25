@@ -39,15 +39,23 @@ enum ChromeTabs {
         case Int(noErr): return .granted
         case -1744: return .notDetermined  // errAEEventWouldRequireUserConsent
         case -1743: return .denied  // errAEEventNotPermitted
-        default: return .chromeNotRunning
+        case Int(procNotFound): return .chromeNotRunning
+        // Any other (transient) error: offer "Connect Chrome" again rather
+        // than wrongly claiming Chrome is closed.
+        default: return .notDetermined
         }
     }
 
     /// Titles of every tab in every Chrome window, or nil if unavailable.
+    /// Capped at 2 s so a busy or hung Chrome cannot freeze Friday.
     static func titles() -> [String]? {
         guard isRunning else { return nil }
         let script = NSAppleScript(
-            source: "tell application id \"\(bundleID)\" to get title of every tab of every window")
+            source: """
+                with timeout of 2 seconds
+                    tell application id "\(bundleID)" to get title of every tab of every window
+                end timeout
+                """)
         var error: NSDictionary?
         guard let result = script?.executeAndReturnError(&error), error == nil else { return nil }
         var titles: [String] = []
