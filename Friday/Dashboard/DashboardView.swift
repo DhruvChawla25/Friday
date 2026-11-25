@@ -7,6 +7,7 @@ import SwiftUI
 struct DashboardView: View {
     let assistant: Assistant
     let connections: Connections
+    let aiUsage: AIUsageMonitor
 
     var body: some View {
         VStack(spacing: 0) {
@@ -15,6 +16,7 @@ struct DashboardView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Space.l) {
                     ConnectedSection(connections: connections)
+                    AIUsageSection(monitor: aiUsage)
                     if !assistant.exchanges.isEmpty {
                         CommandLog(assistant: assistant)
                     }
