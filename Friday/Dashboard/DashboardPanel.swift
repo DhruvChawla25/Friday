@@ -50,24 +50,21 @@ final class DashboardPanel: NSPanel {
 
 /// Shows and hides the dashboard with a short "expand from the orb" animation.
 @MainActor
-final class DashboardController: NSObject, NSWindowDelegate {
+final class DashboardController {
     private let panel: DashboardPanel
     private var lastHidden = Date.distantPast
-    private var lastShown = Date.distantPast
     /// Bumped on every show/hide so a stale animation can't finish the wrong way.
     private var generation = 0
     var isVisible: Bool { panel.isVisible && panel.alphaValue > 0.01 }
 
     init<Content: View>(rootView: Content) {
         panel = DashboardPanel(rootView: rootView)
-        super.init()
-        panel.delegate = self
         panel.onDismiss = { [weak self] in self?.hide() }
     }
 
     /// `from` is the orb frame, used as the animation origin.
     func toggle(from origin: CGRect?) {
-        // A click on the orb also makes the dashboard resign key; ignore that bounce.
+        // Ignore a second toggle straight after hiding (double clicks).
         if Date.now.timeIntervalSince(lastHidden) < 0.25 { return }
         isVisible ? hide() : show(from: origin)
     }
@@ -89,7 +86,6 @@ final class DashboardController: NSObject, NSWindowDelegate {
         }
         generation += 1
         let current = generation
-        lastShown = .now
         panel.setFrame(start, display: false)
         panel.alphaValue = 0
         NSApp.activate()
@@ -134,9 +130,8 @@ final class DashboardController: NSObject, NSWindowDelegate {
         }
     }
 
-    func windowDidResignKey(_ notification: Notification) {
-        // While Friday is still becoming the active app, focus can bounce; ignore that.
-        guard Date.now.timeIntervalSince(lastShown) > 0.4 else { return }
-        hide()
-    }
+    // The dashboard deliberately does not hide when it loses focus: commands
+    // such as "open whatsapp" bring another app forward, and the reply must
+    // stay visible. It closes with the minimize button, Esc, ⌘W/⌘M, the orb
+    // or the hot key.
 }

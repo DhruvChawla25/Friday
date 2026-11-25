@@ -7,16 +7,20 @@ import SwiftUI
 struct DashboardView: View {
     let assistant: Assistant
     let connections: Connections
+    var onMinimize: () -> Void = {}
 
     var body: some View {
         VStack(spacing: 0) {
-            DashboardHeader(connections: connections)
+            DashboardHeader(connections: connections, onMinimize: onMinimize)
             hairline
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Space.l) {
+                    if let latest = assistant.latest {
+                        LatestReply(exchange: latest, onClear: assistant.clearLog)
+                    }
                     ConnectedSection(connections: connections)
-                    if !assistant.exchanges.isEmpty {
-                        CommandLog(assistant: assistant)
+                    if !assistant.history.isEmpty {
+                        HistoryLog(exchanges: assistant.history)
                     }
                 }
                 .padding(Theme.Space.xl)
@@ -53,6 +57,7 @@ struct DashboardView: View {
 
 private struct DashboardHeader: View {
     let connections: Connections
+    let onMinimize: () -> Void
 
     var body: some View {
         HStack(spacing: Theme.Space.m) {
@@ -83,6 +88,7 @@ private struct DashboardHeader: View {
                 }
             }
             HeaderMenu(connections: connections)
+            MinimizeButton(action: onMinimize)
         }
         .padding(.horizontal, Theme.Space.xl)
         .padding(.vertical, Theme.Space.l)
@@ -112,29 +118,111 @@ private struct HeaderMenu: View {
     }
 }
 
-private struct CommandLog: View {
-    let assistant: Assistant
+private struct MinimizeButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "minus")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(Theme.textSecondary)
+                .frame(width: 26, height: 26)
+                .background(Circle().fill(Color.white.opacity(0.06)))
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .help("Minimize (Esc)")
+        .accessibilityLabel("Minimize")
+    }
+}
+
+/// The most recent command and its reply, shown first.
+private struct LatestReply: View {
+    let exchange: Assistant.Exchange
+    let onClear: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Space.s) {
             HStack {
-                SectionLabel(text: "Log")
+                SectionLabel(text: "Latest")
                 Spacer()
-                Button("Clear") { assistant.clearLog() }
+                Text(exchange.date.formatted(date: .omitted, time: .shortened))
+                    .font(Theme.Font.label)
+                    .foregroundStyle(Theme.textSecondary)
+                Button("Clear", action: onClear)
                     .buttonStyle(.plain)
                     .font(Theme.Font.label)
                     .foregroundStyle(Theme.textSecondary)
+                    .padding(.leading, Theme.Space.s)
             }
-            ForEach(assistant.exchanges.suffix(6)) { exchange in
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("› \(exchange.request)")
-                        .font(Theme.Font.mono)
-                        .foregroundStyle(Theme.amber.opacity(0.85))
-                    Text(exchange.reply)
-                        .font(Theme.Font.body)
-                        .textSelection(.enabled)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("› \(exchange.request)")
+                    .font(Theme.Font.mono)
+                    .foregroundStyle(Theme.amber)
+                Text(exchange.reply)
+                    .font(.system(size: 15))
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(Theme.Space.m)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: Theme.corner, style: .continuous)
+                    .fill(Theme.inkRaised.opacity(0.85))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.corner, style: .continuous)
+                    .strokeBorder(Theme.orange.opacity(0.35), lineWidth: 1)
+            )
+        }
+    }
+}
+
+/// Earlier exchanges, newest first. Entries expire after 24 hours.
+private struct HistoryLog: View {
+    let exchanges: [Assistant.Exchange]
+    @State private var isExpanded = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Theme.Space.s) {
+            Button {
+                withAnimation(.easeOut(duration: 0.15)) { isExpanded.toggle() }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .bold))
+                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    SectionLabel(text: "History  ·  \(exchanges.count)")
+                    Spacer()
+                    Text("CLEARS AFTER 24 H")
+                        .font(Theme.Font.label)
+                        .tracking(1.2)
+                        .foregroundStyle(Theme.textSecondary)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(Theme.textSecondary)
+
+            if isExpanded {
+                ForEach(exchanges) { exchange in
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack {
+                            Text("› \(exchange.request)")
+                                .font(Theme.Font.mono)
+                                .foregroundStyle(Theme.amber.opacity(0.85))
+                            Spacer()
+                            Text(exchange.date.formatted(date: .omitted, time: .shortened))
+                                .font(Theme.Font.label)
+                                .foregroundStyle(Theme.textSecondary)
+                        }
+                        Text(exchange.reply)
+                            .font(Theme.Font.body)
+                            .foregroundStyle(Theme.textPrimary.opacity(0.8))
+                            .textSelection(.enabled)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
     }

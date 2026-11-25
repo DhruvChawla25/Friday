@@ -14,7 +14,9 @@ struct ConnectedSection: View {
             HStack(alignment: .top, spacing: Theme.Space.m) {
                 ConnectorTile(
                     name: "WhatsApp",
-                    icon: AppIcon(bundleID: Connections.whatsappBundleID, fallback: "message.fill"),
+                    icon: AppIcon(
+                        bundleID: connections.isWhatsAppInstalled ? Connections.whatsappBundleID : ChromeTabs.bundleID,
+                        fallback: "message.fill"),
                     value: whatsappValue,
                     caption: whatsappCaption,
                     action: whatsappAction
@@ -39,13 +41,29 @@ struct ConnectedSection: View {
         }
     }
 
-    /// Unread chats from the screen reading when fresh, else the Dock badge (messages).
+    /// The largest of: WhatsApp Web title, fresh screen reading, Dock badge.
     private var whatsappValue: String? {
-        if let report = connections.freshScreenReport { return String(report.unreadChats) }
-        return connections.whatsappBadge.map(String.init)
+        connections.whatsappUnread.map(String.init)
+    }
+
+    /// True when the WhatsApp Web title gives a bigger number than the screen.
+    private var webIsLargest: Bool {
+        guard let web = connections.whatsappWebUnread else { return false }
+        return web >= (connections.freshScreenReport?.unreadChats ?? 0) && web >= (connections.whatsappBadge ?? 0)
     }
 
     private var whatsappAction: ConnectorTile.Action? {
+        // Chrome first: one click gives the full unread-chat total.
+        if connections.whatsappWeb == .needsPermission {
+            return .init(title: "Connect Chrome") { Task { await connections.connectChrome() } }
+        }
+        if !connections.isWhatsAppInstalled, let web = connections.whatsappWeb {
+            switch web {
+            case .denied: return .init(title: "Allow in Settings") { connections.openAutomationSettings() }
+            case .chromeClosed, .noTab: return .init(title: "Open WhatsApp Web") { ChromeTabs.openWhatsAppWeb() }
+            case .noChrome, .unread, .needsPermission: return nil
+            }
+        }
         guard connections.isWhatsAppInstalled else { return nil }
         if !connections.screenPermission {
             return .init(title: "Allow screen reading") { connections.requestScreenPermission() }
@@ -58,6 +76,18 @@ struct ConnectedSection: View {
 
     private var whatsappCaption: String {
         if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
+        if webIsLargest, let web = connections.whatsappWebUnread {
+            let label = web == 1 ? "unread chat" : "unread chats"
+            if let report = connections.freshScreenReport, connections.showsNames, !report.chats.isEmpty {
+                let names = report.chats.prefix(2).map { $0.name ?? "Unknown" }
+                return "\(label) (WhatsApp Web): " + names.joined(separator: ", ") + " +\(max(0, web - names.count))"
+            }
+            return "\(label) (WhatsApp Web)"
+        }
+        if connections.whatsappWeb == .needsPermission {
+            return "Connect Chrome to count every unread chat from WhatsApp Web"
+        }
+        if !connections.isWhatsAppInstalled, connections.whatsappWeb == .denied { return "Chrome access denied" }
         if let report = connections.freshScreenReport {
             guard report.unreadChats > 0 else { return "No unread chats" }
             let label = report.unreadChats == 1 ? "unread chat" : "unread chats"
