@@ -56,6 +56,18 @@ Scripts/make-icon.sh   # regenerate the app icon from the ribbon renderer
 
 Or open `Friday.xcodeproj` in Xcode and press ⌘R.
 
+### Permissions keep turning off after a rebuild?
+
+Ad-hoc signed builds look like a new app to macOS each time they're rebuilt. So Screen Recording (used by WhatsApp reading and screenshots) shows as **on** in System Settings while the new build is still refused. The fix is to sign every build with one stable local certificate:
+
+```sh
+Scripts/setup-local-signing.sh                  # once: creates "Friday Local Signing" in its own keychain
+tccutil reset ScreenCapture com.dhruvchawla.friday   # once: clears the stale grants
+make install                                    # build, sign, install /Applications/Friday.app (the only copy)
+```
+
+Then open Friday, allow Screen Recording when macOS asks, and quit and reopen Friday. Future `make install` builds keep the permission.
+
 ## Project layout
 
 ```

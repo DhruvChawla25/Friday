@@ -1,4 +1,4 @@
-.PHONY: project build test lint format check dmg run clean
+.PHONY: project build test lint format check dmg run clean install
 
 XCB = xcodebuild -project Friday.xcodeproj -scheme Friday -destination 'platform=macOS,arch=arm64' -derivedDataPath build/DerivedData
 
@@ -22,6 +22,9 @@ check: lint test    ## Everything CI runs
 
 dmg:                ## Release build packaged as build/Friday.dmg
 	Scripts/build-dmg.sh
+
+install:            ## Build Release, sign with the local identity, install to /Applications
+	Scripts/install-local.sh
 
 run: build          ## Build and launch the debug app
 	open build/DerivedData/Build/Products/Debug/Friday.app
