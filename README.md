@@ -28,15 +28,18 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 
 Requires macOS 26 or later on Apple silicon.
 
-### Claude limits (optional, one step)
+### Claude limits (optional)
 
-Claude's real 5-hour and weekly percentages are only on Anthropic's servers, but Claude Code passes them to its status line. To let Friday show them, add this to `~/.claude/settings.json` (use the full path to your copy of the repo):
+Claude's real 5-hour and weekly percentages are only on Anthropic's servers. Friday can show them in two ways, and neither gives Friday network access:
+
+1. **Friday Online app** (separate, optional): a companion app that is the only networked part. Friday asks it over local XPC while the dashboard is open. The first time, macOS asks whether Friday Online may read Claude Code's sign-in from the Keychain. Choose **Always Allow**.
+2. **Status line file**: Claude Code passes the limits to its status line. Add this to `~/.claude/settings.json` (use the full path to your copy of the repo):
 
 ```json
 "statusLine": { "type": "command", "command": "/path/to/Friday/Scripts/friday-statusline.sh" }
 ```
 
-The script saves only the limit numbers to `~/.claude/friday/rate-limits.json` and prints `5h 23% · 7d 41%` as your status line. If you already have a status line, set `FRIDAY_STATUSLINE_NEXT` to its command and the script will run it too. It needs `jq` (built into macOS 15+). Without this step Friday still shows local Claude Code usage and an estimated reset time.
+The script saves only the limit numbers to `~/.claude/friday/rate-limits.json` and prints `5h 23% · 7d 41%` as your status line. If you already have a status line, set `FRIDAY_STATUSLINE_NEXT` to its command and the script will run it too. It needs `jq` (built into macOS 15+). A status line file less than 5 minutes old takes precedence. Otherwise Friday uses Friday Online's numbers. With neither, Friday still shows local Claude Code usage and an estimated reset time.
 
 ## Build from source
 

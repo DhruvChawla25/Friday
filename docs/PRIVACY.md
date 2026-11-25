@@ -41,6 +41,17 @@ Friday does **not** get access to credentials: not `~/.claude/.credentials.json`
 
 The optional `Scripts/friday-statusline.sh` runs inside Claude Code, not Friday. It writes only `captured_at` and the `rate_limits` numbers; no prompts, paths or session IDs. Nothing is installed for you: you add it to `~/.claude/settings.json` yourself.
 
+### Friday Online (optional, separate app)
+
+Live Claude limits can also come from **Friday Online**, a separate app with its own repository, signature and permissions. **Friday itself still has no network access.** Friday Online is the only networked component, and it answers only one question: "what are the usage limits for tool X?" It replies with percentages, reset times and a status, nothing else.
+
+To reach it, Friday has a second entitlement, `com.apple.security.temporary-exception.mach-lookup.global-name`, with exactly one name: `com.dhruvchawla.friday.online`. It lets Friday look up that one local XPC service, which is kernel IPC on this Mac. It is not a network entitlement. Friday accepts replies only from a process signed as `com.dhruvchawla.friday.online`.
+
+- Friday contains only a thin connector (`Friday/Connections/AIUsage/FridayOnlineConnector.swift`). None of Friday Online's server, network or credential code is in Friday.
+- Friday asks only while the dashboard is open, at most once a minute per tool.
+- Friday never sees a token. Friday Online reads Claude Code's sign-in from the Keychain itself, and macOS asks you first.
+- If Friday Online isn't installed or running, Friday says "Friday Online app not running" and uses only local data.
+
 ## Rules for screen-reading features (planned)
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
