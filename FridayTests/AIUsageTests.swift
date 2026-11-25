@@ -236,10 +236,12 @@ struct ClaudeProviderTests {
         let snapshot = ClaudeStatusLine.Snapshot(
             fiveHour: .init(usedPercent: 15, resetsAt: now + 3600),
             sevenDay: .init(usedPercent: 60, resetsAt: now + 86400), capturedAt: now - 120)
-        let meters = ClaudeUsageProvider.meters(snapshot: snapshot, window: nil, now: now)
+        let limits = LimitsMerge.claudeLimits(statusLine: snapshot, online: nil, now: now)
+        let meters = ClaudeUsageProvider.meters(limits: limits, window: nil, now: now)
         #expect(meters.map(\.usedFraction) == [0.15, 0.6])
         #expect(meters[0].resetIsEstimate == false)
-        #expect(ClaudeUsageProvider.source(snapshot: snapshot, now: now) == "Claude Code status line · 2 min ago")
+        #expect(
+            ClaudeUsageProvider.source(limits: limits, online: nil, now: now) == "Claude Code status line · 2 min ago")
     }
 
     @Test func withoutStatusLineShowsLocalEstimateAndNoFakeLimit() {
@@ -247,7 +249,7 @@ struct ClaudeProviderTests {
         let window = TranscriptUsage.Window(
             start: date("2026-01-01T10:00:00Z"), end: date("2026-01-01T15:00:00Z"), messages: 3, tokens: 1500,
             credits: 0, lastActivity: now)
-        let meters = ClaudeUsageProvider.meters(snapshot: nil, window: window, now: now)
+        let meters = ClaudeUsageProvider.meters(limits: nil, window: window, now: now)
         #expect(meters.allSatisfy { $0.usedFraction == nil })
         #expect(meters[0].resetsAt == window.end)
         #expect(meters[0].resetIsEstimate)

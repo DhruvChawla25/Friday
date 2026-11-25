@@ -66,15 +66,17 @@ struct ClaudeUsageProvider: UsageProvider {
             inDirectory: env.url(Self.projectsPath), modifiedSince: env.now - 24 * 3600)
         let window = TranscriptUsage.activeWindow(
             events: events, now: env.now, length: Self.sessionLength, calendar: env.calendar)
-        let snapshot = ClaudeStatusLine.read(home: env.home)
+        let online = env.online[tool]
+        let limits = LimitsMerge.claudeLimits(
+            statusLine: ClaudeStatusLine.read(home: env.home), online: online, now: env.now)
 
         return ToolUsage(
             tool: tool,
             isInstalled: true,
             isLive: sessions.open > 0 || desktopOpen,
             liveDetail: Self.liveDetail(sessions: sessions, desktopOpen: desktopOpen),
-            meters: Self.meters(snapshot: snapshot, window: window, now: env.now),
-            source: Self.source(snapshot: snapshot, now: env.now),
+            meters: Self.meters(limits: limits, window: window, now: env.now),
+            source: Self.source(limits: limits, online: online, now: env.now),
             lastActive: events.last?.date
         )
     }
@@ -90,14 +92,13 @@ struct ClaudeUsageProvider: UsageProvider {
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 
-    static func meters(snapshot: ClaudeStatusLine.Snapshot?, window: TranscriptUsage.Window?, now: Date)
-        -> [UsageMeter]
-    {
+    /// Limit % and reset come from `limits` (status line or Friday Online);
+    /// the local usage line always comes from this window's transcripts.
+    static func meters(limits: LimitsMerge.Limits?, window: TranscriptUsage.Window?, now: Date) -> [UsageMeter] {
         let activity = window.map { UsageFormat.activity(messages: $0.messages, tokens: $0.tokens) }
         var session = UsageMeter(window: "5-hour session", detail: activity)
-        if let limit = snapshot?.fiveHour.map({ ClaudeStatusLine.current($0, now: now) }) {
-            session.usedFraction = limit.usedPercent / 100
-            session.resetsAt = limit.resetsAt
+        if let limit = limits?.fiveHour {
+            session = LimitsMerge.meter("5-hour session", limit, now: now, detail: activity)
         } else if let window {
             session.resetsAt = window.end
             session.resetIsEstimate = true
@@ -107,18 +108,32 @@ struct ClaudeUsageProvider: UsageProvider {
         }
 
         var weekly = UsageMeter(window: "Weekly")
-        if let limit = snapshot?.sevenDay.map({ ClaudeStatusLine.current($0, now: now) }) {
-            weekly.usedFraction = limit.usedPercent / 100
-            weekly.resetsAt = limit.resetsAt
+        if let limit = limits?.weekly {
+            weekly = LimitsMerge.meter("Weekly", limit, now: now)
         } else {
-            weekly.note = "Not available offline · set up the status line"
+            weekly.note = "Not available offline · set up the status line or Friday Online"
         }
-        return [session, weekly]
+        var meters = [session, weekly]
+        if let opus = limits?.weeklyOpus { meters.append(LimitsMerge.meter("Weekly · Opus", opus, now: now)) }
+        if let sonnet = limits?.weeklySonnet {
+            meters.append(LimitsMerge.meter("Weekly · Sonnet", sonnet, now: now))
+        }
+        return meters
     }
 
-    static func source(snapshot: ClaudeStatusLine.Snapshot?, now: Date) -> String {
-        guard let snapshot else { return "Local Claude Code transcripts · limits need the status line" }
-        let age = snapshot.capturedAt.map { " · " + UsageFormat.ago($0, now: now) } ?? ""
-        return "Claude Code status line\(age)"
+    /// e.g. "Friday Online app · 1 min ago", or the local fallback plus why
+    /// Friday Online had nothing ("… · Friday Online app not running").
+    static func source(limits: LimitsMerge.Limits?, online: OnlineLimits?, now: Date) -> String {
+        let age = limits?.updatedAt.map { " · " + UsageFormat.ago($0, now: now) } ?? ""
+        switch limits?.origin {
+        case .fridayOnline:
+            return "Friday Online app\(age)"
+        case .statusLine:
+            let problem = LimitsMerge.problem(online).map { " · " + $0 } ?? ""
+            return "Claude Code status line\(age)\(problem)"
+        case nil:
+            let problem = LimitsMerge.problem(online) ?? "limits need the status line or Friday Online"
+            return "Local Claude Code transcripts · \(problem)"
+        }
     }
 }

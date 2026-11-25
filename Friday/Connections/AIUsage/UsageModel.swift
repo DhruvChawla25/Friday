@@ -77,6 +77,8 @@ struct UsageEnvironment: Sendable {
     var installedBundleIDs: Set<String> = []
     /// Running processes, or nil if macOS would not list them.
     var processes: ProcessList.Snapshot?
+    /// What the separate Friday Online app reported, if it was asked.
+    var online: [AITool: OnlineLimits] = [:]
     var calendar: Calendar = .current
 
     func url(_ relativePath: String) -> URL {
