@@ -84,6 +84,17 @@ final class Connections {
 
     var totalUnread: Int { whatsappUnread ?? 0 }
 
+    /// True when WhatsApp's Dock badge reads 0 while another source sees
+    /// unread chats: the badge (or WhatsApp's notifications) is turned off.
+    var whatsappBadgeLooksOff: Bool {
+        Self.badgeLooksOff(badge: whatsappBadge, screenChats: freshScreenReport?.unreadChats, web: whatsappWebUnread)
+    }
+
+    nonisolated static func badgeLooksOff(badge: Int?, screenChats: Int?, web: Int?) -> Bool {
+        guard badge == 0 else { return false }
+        return (screenChats ?? 0) > 0 || (web ?? 0) > 0
+    }
+
     var isWhatsAppInstalled: Bool {
         NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.whatsappBundleID) != nil
     }
@@ -135,6 +146,11 @@ final class Connections {
         let access = await Task.detached { ChromeTabs.access(askIfNeeded: true) }.value
         if access == .denied { openAutomationSettings() }
         refresh()
+    }
+
+    /// System Settings → Notifications, where "Badge application icon" lives.
+    func openNotificationSettings() {
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!)
     }
 
     func openAutomationSettings() {
