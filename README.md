@@ -43,8 +43,6 @@ Or open `Friday.xcodeproj` in Xcode and press ⌘R.
 
 ## Project layout
 
-For a full, plain-English tour of every folder and file, see the [developer guide](docs/ARCHITECTURE.md).
-
 ```
 Friday/
   App/          entry point, app delegate, global hot key, entitlements
@@ -58,7 +56,7 @@ Friday/
   UI/        SwiftUI views, floating panel
 FridayTests/ Swift Testing unit tests
 Scripts/     build-dmg.sh, check-no-network.sh
-docs/        ARCHITECTURE.md, PRIVACY.md, PLANNED_UPDATES.md, ROADMAP.md
+docs/        PRIVACY.md, ROADMAP.md
 ```
 
 ### Adding a skill
