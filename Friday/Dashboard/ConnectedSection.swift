@@ -14,7 +14,9 @@ struct ConnectedSection: View {
             HStack(alignment: .top, spacing: Theme.Space.m) {
                 ConnectorTile(
                     name: "WhatsApp",
-                    icon: AppIcon(bundleID: Connections.whatsappBundleID, fallback: "message.fill"),
+                    icon: AppIcon(
+                        bundleID: connections.whatsappWeb == nil ? Connections.whatsappBundleID : ChromeTabs.bundleID,
+                        fallback: "message.fill"),
                     value: whatsappValue,
                     caption: whatsappCaption,
                     action: whatsappAction
@@ -46,6 +48,14 @@ struct ConnectedSection: View {
     }
 
     private var whatsappAction: ConnectorTile.Action? {
+        if let web = connections.whatsappWeb {
+            switch web {
+            case .needsPermission: return .init(title: "Connect Chrome") { Task { await connections.connectChrome() } }
+            case .denied: return .init(title: "Allow in Settings") { connections.openAutomationSettings() }
+            case .chromeClosed, .noTab: return .init(title: "Open WhatsApp Web") { ChromeTabs.openWhatsAppWeb() }
+            case .noChrome, .unread: return nil
+            }
+        }
         guard connections.isWhatsAppInstalled else { return nil }
         if !connections.screenPermission {
             return .init(title: "Allow screen reading") { connections.requestScreenPermission() }
@@ -58,6 +68,15 @@ struct ConnectedSection: View {
 
     private var whatsappCaption: String {
         if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
+        if let web = connections.whatsappWeb {
+            switch web {
+            case .unread(let count):
+                return count == 1 ? "unread message (WhatsApp Web)" : "unread messages (WhatsApp Web)"
+            case .needsPermission: return "App not installed · reads the WhatsApp Web tab title in Chrome"
+            case .denied: return "Chrome access denied"
+            case .noChrome, .chromeClosed, .noTab: break
+            }
+        }
         if let report = connections.freshScreenReport {
             guard report.unreadChats > 0 else { return "No unread chats" }
             let label = report.unreadChats == 1 ? "unread chat" : "unread chats"

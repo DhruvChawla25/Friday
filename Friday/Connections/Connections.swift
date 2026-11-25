@@ -15,6 +15,8 @@ import Observation
 ///   mentions, names). It runs when you ask, when the badge changes, on wake,
 ///   and every 10 minutes. In the background it only reads an already-visible
 ///   window and never changes what is on screen.
+/// - If the Mac app is not installed: the unread number in a WhatsApp Web
+///   tab's title in Chrome (titles only, via Apple Events).
 @MainActor
 @Observable
 final class Connections {
@@ -35,6 +37,8 @@ final class Connections {
     private(set) var whatsappScreenDate: Date?
     private(set) var screenPermission = WhatsAppScreenReader.hasPermission
     private(set) var isReadingWhatsApp = false
+    /// Set only when the Mac app is missing and Friday falls back to WhatsApp Web.
+    private(set) var whatsappWeb: WhatsAppWebFallback.State?
     private(set) var calendarStatus: Status = .notConnected
     private(set) var calendar: CalendarSource.Summary?
 
@@ -104,6 +108,18 @@ final class Connections {
         refreshCalendar()
     }
 
+    /// Asks macOS once for permission to read Chrome's tab titles.
+    func connectChrome() async {
+        let access = await Task.detached { ChromeTabs.access(askIfNeeded: true) }.value
+        if access == .denied { openAutomationSettings() }
+        refresh()
+    }
+
+    func openAutomationSettings() {
+        NSWorkspace.shared.open(
+            URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Automation")!)
+    }
+
     func openWhatsApp() {
         Task { _ = await checkWhatsApp(staysInFront: true) }
     }
@@ -126,7 +142,14 @@ final class Connections {
     /// Opens or shows WhatsApp if needed, reads its chat list and returns
     /// Friday's reply. Used by the "check whatsapp" / "open whatsapp" commands.
     func checkWhatsApp(staysInFront: Bool) async -> String {
-        guard isWhatsAppInstalled else { return "WhatsApp is not installed." }
+        guard isWhatsAppInstalled else {
+            let state = refreshWhatsAppWeb()
+            if staysInFront, ChromeTabs.isInstalled, state == .chromeClosed || state == .noTab {
+                ChromeTabs.openWhatsAppWeb()
+                return "WhatsApp is not installed. Opened WhatsApp Web in Chrome."
+            }
+            return WhatsAppWebFallback.reply(for: state)
+        }
         guard WhatsAppScreenReader.hasPermission else {
             if staysInFront { launchWhatsApp() }
             return staysInFront
@@ -185,10 +208,10 @@ final class Connections {
 
     private func refreshWhatsAppBadge() async {
         guard isWhatsAppInstalled else {
-            whatsappStatus = .unavailable("WhatsApp is not installed")
-            whatsappBadge = nil
+            refreshWhatsAppWeb()
             return
         }
+        whatsappWeb = nil
         let running = !NSRunningApplication.runningApplications(withBundleIdentifier: Self.whatsappBundleID).isEmpty
         guard running else {
             whatsappStatus = .unavailable("WhatsApp is closed")
@@ -206,6 +229,37 @@ final class Connections {
         // A badge change means a notification arrived (or chats were read):
         // recheck the chat list if the window is visible.
         if changed { await readWhatsAppScreen(bringToFront: false) }
+    }
+
+    /// Fallback: reads the unread number from a WhatsApp Web tab title in Chrome.
+    @discardableResult
+    private func refreshWhatsAppWeb() -> WhatsAppWebFallback.State {
+        let access = ChromeTabs.isRunning ? ChromeTabs.access(askIfNeeded: false) : .chromeNotRunning
+        let state = WhatsAppWebFallback.state(
+            chromeInstalled: ChromeTabs.isInstalled, access: access,
+            titles: access == .granted ? ChromeTabs.titles() : nil)
+        whatsappWeb = state
+        switch state {
+        case .unread(let count):
+            whatsappStatus = .connected
+            whatsappBadge = count
+        case .needsPermission:
+            whatsappStatus = .notConnected
+            whatsappBadge = nil
+        case .denied:
+            whatsappStatus = .denied
+            whatsappBadge = nil
+        case .noChrome:
+            whatsappStatus = .unavailable("WhatsApp is not installed")
+            whatsappBadge = nil
+        case .chromeClosed:
+            whatsappStatus = .unavailable("Open WhatsApp Web in Chrome")
+            whatsappBadge = nil
+        case .noTab:
+            whatsappStatus = .unavailable("No WhatsApp Web tab in Chrome")
+            whatsappBadge = nil
+        }
+        return state
     }
 
     private func refreshCalendar() {
