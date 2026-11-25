@@ -50,7 +50,7 @@ struct MemoryStore: Sendable {
         guard let text = try? String(contentsOf: fileURL, encoding: .utf8) else { return [] }
         return
             text
-            .split(separator: "\n")
+            .split(whereSeparator: \.isNewline)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty && !$0.hasPrefix("#") }
             .map { line in

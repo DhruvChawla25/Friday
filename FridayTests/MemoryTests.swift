@@ -56,6 +56,19 @@ struct MemoryTests {
         #expect(store.facts() == ["a fact typed by hand"])
     }
 
+    @Test func windowsLineEndingsAreRead() throws {
+        try store.ensureFile()
+        let text = "# comment\r\n2026-11-25 01:10 | first\r\nsecond\r\n"
+        try Data(text.utf8).write(to: store.fileURL)
+        #expect(store.facts() == ["first", "second"])
+    }
+
+    @Test func factContainingSeparatorKeepsItsText() throws {
+        try store.ensureFile()
+        try Data("2026-11-25 01:10 | a | b\n".utf8).write(to: store.fileURL)
+        #expect(store.facts() == ["a | b"])
+    }
+
     @Test func askingWithoutFactPrompts() async {
         store.isEnabled = true
         #expect(await skill.handle(Command("remember")) == Persona.rememberWhat)
