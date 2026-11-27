@@ -14,9 +14,11 @@ struct RibbonView: View {
     var showsStars = true
     var paused = false
     var frameRate: Double = 30
+    /// With Reduce Motion on, the ribbon holds still (a single frame).
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1 / frameRate, paused: paused)) { timeline in
+        TimelineView(.animation(minimumInterval: 1 / frameRate, paused: paused || reduceMotion)) { timeline in
             let time = timeline.date.timeIntervalSinceReferenceDate
             Canvas { context, size in
                 RibbonPainter.draw(
@@ -150,8 +152,10 @@ struct SeededRandom {
 
 /// A slow, twinkling star field for backgrounds.
 struct StarfieldView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1 / 8)) { timeline in
+        TimelineView(.animation(minimumInterval: 1 / 8, paused: reduceMotion)) { timeline in
             Canvas { context, size in
                 RibbonPainter.drawStars(in: &context, size: size, time: timeline.date.timeIntervalSinceReferenceDate)
             }

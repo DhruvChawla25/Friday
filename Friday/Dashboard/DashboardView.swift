@@ -8,6 +8,7 @@ struct DashboardView: View {
     let assistant: Assistant
     let connections: Connections
     let aiUsage: AIUsageMonitor
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     var body: some View {
         VStack(spacing: 0) {
@@ -29,11 +30,16 @@ struct DashboardView: View {
         }
         .foregroundStyle(Theme.textPrimary)
         .background {
-            ZStack {
-                Theme.backgroundGradient
-                StarfieldView()
-                    .opacity(0.5)
-                    .allowsHitTesting(false)
+            if reduceTransparency {
+                // Reduce Transparency: one solid colour, no see-through star layer.
+                Theme.ink
+            } else {
+                ZStack {
+                    Theme.backgroundGradient
+                    StarfieldView()
+                        .opacity(0.5)
+                        .allowsHitTesting(false)
+                }
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
