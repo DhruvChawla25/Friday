@@ -166,6 +166,7 @@ private struct CommandBar: View {
             if assistant.isWorking {
                 ProgressView().controlSize(.small)
             }
+            CaptureButtons(assistant: assistant)
             Text("⌃⌥Space")
                 .font(Theme.Font.label)
                 .foregroundStyle(Theme.textSecondary)

@@ -47,6 +47,9 @@ targets:
           - /.local/share/opencode/opencode.db-wal
           - /.local/share/opencode/opencode.db-shm
           - /Library/Application Support/Wispr Flow/config.json
+        # Screenshot and snip: write PNGs to ~/Desktop only. Nothing else in the home folder.
+        com.apple.security.temporary-exception.files.home-relative-path.read-write:
+          - /Desktop/
         # Look up ONE local XPC service: the separate Friday Online app, which is the only
         # networked component and answers only usage-limit questions. Not a network entitlement.
         com.apple.security.temporary-exception.mach-lookup.global-name:
