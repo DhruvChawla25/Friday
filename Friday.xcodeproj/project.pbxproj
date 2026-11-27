@@ -20,6 +20,7 @@
 		2B71AF4F34402FEC36047320 /* OrbPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D059FA4D739F88D013DAED8F /* OrbPlacement.swift */; };
 		2BBB29C892D9F447AB9AEDEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 946B812805534760C5456E72 /* Assets.xcassets */; };
 		305199C84107481B5F1F9BF2 /* DashboardPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */; };
+		329342C38BB754CB0878AE0E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 568A4FEE52899BCBC6765174 /* PrivacyInfo.xcprivacy */; };
 		348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */; };
 		3C62ACD764C5DF944747A300 /* DockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FED0373D3D336C21D39161 /* DockBadge.swift */; };
 		3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135996FC4EF3ACDDFA239F09 /* Theme.swift */; };
@@ -97,6 +98,7 @@
 		47FF83ED1F4FB77902924860 /* FridayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridayApp.swift; sourceTree = "<group>"; };
 		4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPanel.swift; sourceTree = "<group>"; };
 		4DD1E1BE99C9F49FBDCBFB3A /* QoderUsageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QoderUsageProvider.swift; sourceTree = "<group>"; };
+		568A4FEE52899BCBC6765174 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5AB0D307216B165DF37302F5 /* OrbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbController.swift; sourceTree = "<group>"; };
 		682F6486CAE6E9C5CCA126BE /* ClaudeStatusLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeStatusLine.swift; sourceTree = "<group>"; };
 		6CA0BD30364E6798E9843718 /* FridayOnlineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridayOnlineProvider.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				946B812805534760C5456E72 /* Assets.xcassets */,
+				568A4FEE52899BCBC6765174 /* PrivacyInfo.xcprivacy */,
 				5D02AA155B707F259F9F2EF6 /* App */,
 				BCCC87523661DE6C3FB3BD62 /* Connections */,
 				1AD2680FEAC920DC6B7E8F09 /* Core */,
@@ -387,6 +390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BBB29C892D9F447AB9AEDEC /* Assets.xcassets in Resources */,
+				329342C38BB754CB0878AE0E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
