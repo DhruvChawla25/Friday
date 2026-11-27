@@ -16,6 +16,7 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 | **AI usage** | A loading bar per AI tool: Claude (Code + desktop app), Antigravity, Qwen Code, Qoder, Wispr Flow, OpenCode. Shows how much of the current limit is used, when it resets, local usage, and **LIVE** while the tool runs. Read only from files these tools already write on your Mac; limits Friday cannot know offline are labelled so, never guessed. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
+| **Screenshot & snip** | `screenshot` (or `ss`) saves the screen under the pointer; `snip` (or `snipping tool`, `capture area`) lets you drag out an area, Esc cancels. Both save a PNG to your Desktop, e.g. `Friday Snip 2026-11-26 at 10.15.03.png`, and copy it to the clipboard. Also two buttons in the command bar. Needs Screen Recording permission. |
 | **Opt-in memory** | `remember …`, `what do you remember`, `forget everything`. Memory is one plain `memory.txt` file you can read, edit, export or delete. |
 | **Offline by design** | No network entitlement. CI fails if any networking API is added. |
 
@@ -78,6 +79,7 @@ Friday/
   Connections/  Dock badge reader, Calendar (EventKit), live counts, AIUsage/ (offline AI limit readers)
   Core/      Command parsing, Skill protocol + registry, Persona, Assistant
   Skills/    one file per skill
+  Capture/   screenshot + snip: command phrases, file naming, rect maths, ScreenCaptureKit, snip overlay
   Memory/    MemoryStore (memory.txt)
   UI/        SwiftUI views, floating panel
 FridayTests/ Swift Testing unit tests
