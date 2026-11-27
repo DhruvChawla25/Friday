@@ -42,6 +42,8 @@ final class Assistant {
     static func makeDefault() -> Assistant {
         let memory = MemoryStore.standard
         let registry = SkillRegistry(skills: [
+            // First, so "open snipping tool" is a snip, not an app launch. Its phrases are strict.
+            CaptureSkill(capturer: ScreenCaptureCoordinator.shared),
             TimeSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
             MemorySkill(memory: memory),
