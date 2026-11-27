@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Applies Friday's GitHub safety settings. Run by the owner (Claude is blocked
-# from changing repo settings). Safe to run more than once.
+# Applies Friday's GitHub safety settings. Run by the owner only.
+# Safe to run more than once.
 set -euo pipefail
 R=repos/DhruvChawla25/Friday
 

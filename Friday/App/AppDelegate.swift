@@ -8,12 +8,22 @@ import SwiftUI
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    let assistant = Assistant.makeDefault()
-    let connections = Connections()
+    let connections: Connections
+    let assistant: Assistant
     let aiUsage = AIUsageMonitor()
+
+    override init() {
+        let connections = Connections()
+        self.connections = connections
+        assistant = Assistant.makeDefault(connections: connections)
+        super.init()
+    }
     private var orb: OrbController?
     private var dashboard: DashboardController?
     private var hotKey: GlobalHotKey?
+
+    /// False when ⌃⌥Space could not be registered (another app owns it).
+    var shortcutAvailable: Bool { hotKey?.isRegistered ?? false }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // When hosting unit tests, do nothing visible.
@@ -27,8 +37,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let dashboard = DashboardController(
-            rootView: DashboardView(assistant: assistant, connections: connections, aiUsage: aiUsage)
-                .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
+            rootView: DashboardView(
+                assistant: assistant, connections: connections, aiUsage: aiUsage,
+                onMinimize: { [weak self] in self?.dashboard?.hide() }
+            )
+            .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
         )
         self.dashboard = dashboard
 
@@ -40,6 +53,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         connections.start()
         aiUsage.start { [weak dashboard] in dashboard?.isVisible ?? false }
+        assistant.startPruning()
         observeUnreadCount()
 
         // ⌃⌥Space toggles the dashboard from anywhere.

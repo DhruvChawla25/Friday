@@ -54,12 +54,18 @@ targets:
         # networked component and answers only usage-limit questions. Not a network entitlement.
         com.apple.security.temporary-exception.mach-lookup.global-name:
           - com.dhruvchawla.friday.online
+        # Fallback when WhatsApp for Mac is missing: read Chrome tab titles
+        # (the WhatsApp Web unread number only).
+        com.apple.security.automation.apple-events: true
+        com.apple.security.temporary-exception.apple-events:
+          - com.google.Chrome
     info:
       path: Friday/App/Info.plist
       properties:
         CFBundleDisplayName: Friday
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSAppleEventsUsageDescription: If WhatsApp for Mac is not installed, Friday reads Chrome tab titles to show WhatsApp Web's unread number. It never reads page or message contents.
         NSCalendarsFullAccessUsageDescription: Friday shows how many events you have left today and what is next.
         LSApplicationCategoryType: public.app-category.productivity
         NSHumanReadableCopyright: "© 2026 Dhruv Chawla. MIT License."
