@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     let memory: MemoryStore
+    var shortcutAvailable = true
     var onResetOrb: () -> Void = {}
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
     @State private var exporting = false
@@ -51,7 +52,12 @@ struct SettingsView: View {
                 LabeledContent("Network access", value: "None (blocked by macOS sandbox)")
                 LabeledContent("Account", value: "Not required")
                 LabeledContent("WhatsApp", value: "Reads the Dock badge number only")
-                LabeledContent("Shortcut", value: "⌃⌥Space")
+                LabeledContent("Shortcut", value: shortcutAvailable ? "⌃⌥Space" : "⌃⌥Space (unavailable)")
+                if !shortcutAvailable {
+                    Text("Another app is using ⌃⌥Space. Quit it and reopen Friday, or click the orb.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             } header: {
                 Text("Privacy")
             }

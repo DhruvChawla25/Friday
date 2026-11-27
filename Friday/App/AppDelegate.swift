@@ -15,6 +15,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var dashboard: DashboardController?
     private var hotKey: GlobalHotKey?
 
+    /// False when ⌃⌥Space could not be registered (another app owns it).
+    var shortcutAvailable: Bool { hotKey?.isRegistered ?? false }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         // When hosting unit tests, do nothing visible.
         guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
