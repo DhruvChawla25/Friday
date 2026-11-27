@@ -4,6 +4,8 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<key>com.apple.security.automation.apple-events</key>
+	<true/>
 	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 	<key>com.apple.security.personal-information.calendars</key>
@@ -28,6 +30,10 @@
 	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
 	<array>
 		<string>com.dhruvchawla.friday.online</string>
+	</array>
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.google.Chrome</string>
 	</array>
 </dict>
 </plist>
