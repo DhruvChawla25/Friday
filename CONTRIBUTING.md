@@ -48,4 +48,4 @@ Please also:
 
 ## Asking for help
 
-Stuck? Comment on the issue with what you tried and the error you saw. With Claude Code, you can also open the repo and say "help me with issue #42".
+Stuck? Comment on the issue with what you tried and the error you saw.

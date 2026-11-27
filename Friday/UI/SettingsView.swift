@@ -7,10 +7,13 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     let memory: MemoryStore
+    var shortcutAvailable = true
     var onResetOrb: () -> Void = {}
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
+    @AppStorage(Connections.showNamesKey) private var whatsappShowNames = true
     @State private var exporting = false
     @State private var status: String?
+    @State private var confirmingWipe = false
 
     var body: some View {
         Form {
@@ -29,15 +32,36 @@ struct SettingsView: View {
                         try? memory.ensureFile()
                         NSWorkspace.shared.activateFileViewerSelecting([memory.fileURL])
                     }
+                    .accessibilityHint("Shows memory.txt in a Finder window")
                     Button("Export…") { exporting = true }
+                        .accessibilityHint("Saves a copy of your remembered facts as a text file")
                     Spacer()
-                    Button("Wipe", role: .destructive) {
-                        status = (try? memory.wipe()) != nil ? "Memory wiped." : "Wipe failed."
-                    }
+                    Button("Wipe", role: .destructive) { confirmingWipe = true }
+                        .accessibilityHint("Deletes every fact Friday remembers. Asks first.")
+                        .confirmationDialog(
+                            "Wipe all remembered facts?",
+                            isPresented: $confirmingWipe
+                        ) {
+                            Button("Wipe", role: .destructive) {
+                                status = (try? memory.wipe()) != nil ? "Memory wiped." : "Wipe failed."
+                            }
+                            Button("Cancel", role: .cancel) {}
+                        } message: {
+                            Text("This deletes memory.txt's facts. It can't be undone.")
+                        }
                 }
                 if let status {
                     Text(status).font(.caption).foregroundStyle(.secondary)
                 }
+            }
+
+            Section {
+                Toggle("Show who sent unread messages", isOn: $whatsappShowNames)
+                Text("Friday reads only chat names and unread numbers from WhatsApp's chat list, never messages.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("WhatsApp")
             }
 
             Section {
@@ -50,14 +74,23 @@ struct SettingsView: View {
             Section {
                 LabeledContent("Network access", value: "None (blocked by macOS sandbox)")
                 LabeledContent("Account", value: "Not required")
-                LabeledContent("WhatsApp", value: "Reads the Dock badge number only")
-                LabeledContent("Shortcut", value: "⌃⌥Space")
+                LabeledContent("WhatsApp", value: "Chat names and unread numbers only")
+                LabeledContent("Shortcut", value: shortcutAvailable ? "⌃⌥Space" : "⌃⌥Space (unavailable)")
+                if !shortcutAvailable {
+                    Text("Another app is using ⌃⌥Space. Quit it and reopen Friday, or click the orb.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             } header: {
                 Text("Privacy")
             }
         }
         .formStyle(.grouped)
         .frame(width: 460)
+        .onChange(of: status) { _, newValue in
+            guard let newValue else { return }
+            AccessibilityNotification.Announcement(newValue).post()
+        }
         .fileExporter(
             isPresented: $exporting,
             document: MemoryDocument(text: memoryText()),

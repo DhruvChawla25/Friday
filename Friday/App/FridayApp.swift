@@ -10,7 +10,11 @@ struct FridayApp: App {
 
     var body: some Scene {
         Settings {
-            SettingsView(memory: appDelegate.assistant.memory, onResetOrb: appDelegate.resetAllOrbPositions)
+            SettingsView(
+                memory: appDelegate.assistant.memory,
+                shortcutAvailable: appDelegate.shortcutAvailable,
+                onResetOrb: appDelegate.resetAllOrbPositions
+            )
         }
         .commands {
             CommandGroup(replacing: .newItem) {
