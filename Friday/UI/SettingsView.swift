@@ -11,6 +11,7 @@ struct SettingsView: View {
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
     @State private var exporting = false
     @State private var status: String?
+    @State private var confirmingWipe = false
 
     var body: some View {
         Form {
@@ -29,11 +30,23 @@ struct SettingsView: View {
                         try? memory.ensureFile()
                         NSWorkspace.shared.activateFileViewerSelecting([memory.fileURL])
                     }
+                    .accessibilityHint("Shows memory.txt in a Finder window")
                     Button("Export…") { exporting = true }
+                        .accessibilityHint("Saves a copy of your remembered facts as a text file")
                     Spacer()
-                    Button("Wipe", role: .destructive) {
-                        status = (try? memory.wipe()) != nil ? "Memory wiped." : "Wipe failed."
-                    }
+                    Button("Wipe", role: .destructive) { confirmingWipe = true }
+                        .accessibilityHint("Deletes every fact Friday remembers. Asks first.")
+                        .confirmationDialog(
+                            "Wipe all remembered facts?",
+                            isPresented: $confirmingWipe
+                        ) {
+                            Button("Wipe", role: .destructive) {
+                                status = (try? memory.wipe()) != nil ? "Memory wiped." : "Wipe failed."
+                            }
+                            Button("Cancel", role: .cancel) {}
+                        } message: {
+                            Text("This deletes memory.txt's facts. It can't be undone.")
+                        }
                 }
                 if let status {
                     Text(status).font(.caption).foregroundStyle(.secondary)
@@ -58,6 +71,10 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .frame(width: 460)
+        .onChange(of: status) { _, newValue in
+            guard let newValue else { return }
+            AccessibilityNotification.Announcement(newValue).post()
+        }
         .fileExporter(
             isPresented: $exporting,
             document: MemoryDocument(text: memoryText()),
