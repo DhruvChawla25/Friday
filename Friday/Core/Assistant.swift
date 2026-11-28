@@ -78,6 +78,7 @@ final class Assistant {
             CaptureSkill(capturer: ScreenCaptureCoordinator.shared),
             WhatsAppSkill { staysInFront in await connections.checkWhatsApp(staysInFront: staysInFront) },
             TimeSkill(),
+            InstallSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
             MemorySkill(memory: memory),
         ])
