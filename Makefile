@@ -1,4 +1,4 @@
-.PHONY: project build test lint format check dmg run clean install
+.PHONY: bump project build test lint format check dmg run clean install
 
 XCB = xcodebuild -project Friday.xcodeproj -scheme Friday -destination 'platform=macOS,arch=arm64' -derivedDataPath build/DerivedData
 
@@ -28,6 +28,9 @@ install:            ## Build Release, sign with the local identity, install to /
 
 run: build          ## Build and launch the debug app
 	open build/DerivedData/Build/Products/Debug/Friday.app
+
+bump:               ## Bump version: make bump VERSION=x.y.z [DRY=--dry-run]
+	Scripts/bump-version.sh $(DRY) $(VERSION)
 
 clean:
 	rm -rf build
