@@ -36,6 +36,13 @@ Please also:
 - Never commit secrets. Secret scanning blocks pushes that contain them.
 - Report security problems privately. See [SECURITY.md](SECURITY.md).
 
+## Releasing
+
+1. Make sure `CHANGELOG.md` lists the changes under `## [Unreleased]`.
+2. Run `make bump VERSION=x.y.z` (add `DRY=--dry-run` to preview). It updates `project.yml`, adds a dated changelog section and regenerates the project.
+3. Review, commit and open a pull request.
+4. After it merges, a maintainer tags `vx.y.z` and publishes the release.
+
 ## Labels
 
 | Label | Meaning |
