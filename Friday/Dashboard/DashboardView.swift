@@ -82,6 +82,16 @@ private struct DashboardHeader: View {
                         .tracking(1.2)
                         .foregroundStyle(Theme.textSecondary)
                 }
+                HStack(spacing: 6) {
+                    Circle()
+                        .fill(AIStatus.current.isReady ? Theme.online : Theme.amber)
+                        .frame(width: 6, height: 6)
+                    Text(AIStatus.current.label)
+                        .font(Theme.Font.label)
+                        .tracking(1.2)
+                        .foregroundStyle(Theme.textSecondary)
+                }
+                .help(AIStatus.current.detail)
             }
             Spacer()
             TimelineView(.everyMinute) { context in
