@@ -16,14 +16,25 @@ final class CalendarSource {
 
     private let store = EKEventStore()
 
-    var isAuthorized: Bool {
-        EKEventStore.authorizationStatus(for: .event) == .fullAccess
+    /// What Friday does with a macOS calendar permission state. Pure so it
+    /// can be tested. Read access is the only state that lets Friday load
+    /// events without prompting; legacy `.authorized` counts as read access.
+    enum Access: Equatable {
+        case granted, denied, needsPrompt
+
+        init(_ status: EKAuthorizationStatus) {
+            switch status {
+            case .fullAccess, .authorized: self = .granted
+            case .denied, .restricted: self = .denied
+            case .notDetermined, .writeOnly: self = .needsPrompt
+            @unknown default: self = .needsPrompt
+            }
+        }
     }
 
-    var isDenied: Bool {
-        let status = EKEventStore.authorizationStatus(for: .event)
-        return status == .denied || status == .restricted
-    }
+    var access: Access { Access(EKEventStore.authorizationStatus(for: .event)) }
+    var isAuthorized: Bool { access == .granted }
+    var isDenied: Bool { access == .denied }
 
     func requestAccess() async -> Bool {
         (try? await store.requestFullAccessToEvents()) ?? false
