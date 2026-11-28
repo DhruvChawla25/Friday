@@ -24,14 +24,6 @@ struct ConnectedSection: View {
                     openHint: "Show every unread chat"
                 )
                 ConnectorTile(
-                    name: "Mail",
-                    icon: AppIcon(bundleID: nil, fallback: "envelope.fill"),
-                    value: nil,
-                    caption: "Coming soon: connects to your new mail app",
-                    action: nil
-                )
-                .opacity(0.55)
-                ConnectorTile(
                     name: "Calendar",
                     icon: AppIcon(bundleID: "com.apple.iCal", fallback: "calendar"),
                     value: connections.calendar.map { String($0.remainingToday) },
