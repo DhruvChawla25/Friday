@@ -41,6 +41,10 @@ targets:
           - /.claude/sessions/
           - /.claude/friday/
           - /Library/Application Support/Wispr Flow/config.json
+          # WhatsApp for Mac's own chat database: unread counts only, opened read-only.
+          - /Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite
+          - /Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-wal
+          - /Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-shm
         # Screenshot and snip: write PNGs to ~/Desktop only. Nothing else in the home folder.
         com.apple.security.temporary-exception.files.home-relative-path.read-write:
           - /Desktop/

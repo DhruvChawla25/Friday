@@ -9,15 +9,13 @@ Friday is designed so it cannot leak your data.
 3. **Memory is opt-in and yours.** Memory is off until you enable it in Settings. Once enabled, everything Friday remembers is in one plain-text file:
    `~/Library/Containers/com.dhruvchawla.friday/Data/Library/Application Support/Friday/memory.txt`
    You can open it with **Settings → Show in Finder**, edit it in any text editor, export it, or wipe it.
-4. **Other apps do their own networking.** When Friday opens Chrome or WhatsApp, those apps connect to the internet as they normally would. Friday itself only opens them and, in later versions, reads what is on screen.
+4. **Other apps do their own networking.** When Friday opens Chrome or WhatsApp, those apps connect to the internet as they normally would. Friday itself only opens them.
 
 ## Unread counts (v0.2)
 
-- **WhatsApp, Dock badge:** Friday reads the number in the red badge on the WhatsApp Dock icon, using macOS's built-in `lsappinfo` tool. That is the same number you see in the Dock, and it needs no permission.
-- **WhatsApp, chat list (Screen Recording permission):** to see *which* chats are unread, Friday captures **only WhatsApp's own window**, never the whole screen. It finds the green unread bubbles, reads the number inside each one, and reads **only the chat-name line** next to it. Message previews and the open conversation are never passed to text recognition. The capture stays in memory for under a second and is never saved. Names can be turned off in Settings → WhatsApp.
-- **WhatsApp, the unread pop-up (Accessibility permission; not available in the sandboxed build yet, see issue #6):** clicking the WhatsApp tile opens a list of unread chats. With Accessibility allowed, Friday reads WhatsApp's chat-list labels and keeps **only the chat name, the unread count, the last-message time and whether it is a group**. The labels also contain message previews; those are cut away while parsing and are never stored, logged or shown. A full scan of every unread chat runs **only when you click "Scan all chats"**: WhatsApp's list switches to its Unread filter and scrolls while Friday reads it, then goes back. Afterwards Friday keeps the list current from WhatsApp's notification banners, taking only the chat name and the time (never the message text). The list lives in memory only. Without Accessibility, the pop-up lists the chats visible in WhatsApp's window (screen reading, above).
+- **WhatsApp (the Mac app), read-only from its own data:** Friday opens WhatsApp for Mac's database on this Mac (`~/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite`) **read-only** and asks it for one thing: the unread chats, with each chat's name (only if "show names" is on), unread number, mute state and last-message time. Message text is never queried. Friday cannot send, post, mark as read or change anything; it has no internet access and uses no AI. The sandbox allows exactly this one file (plus its `-wal`/`-shm` journal) and nothing else in WhatsApp's folder. Readings stay in memory and are never saved or logged. No Screen Recording or Accessibility permission is needed.
 - **WhatsApp Web fallback (Automation permission for Chrome):** only if WhatsApp for Mac is not installed, Friday asks Chrome for its tab titles and keeps just the number in a WhatsApp tab's title, such as `(3) WhatsApp`. Every other title is discarded at once. Friday never reads page contents, and it never opens Chrome unless you say "open whatsapp".
-- **When it checks:** when you ask ("check whatsapp", "open whatsapp"), when the Dock badge changes, after the Mac wakes, and every 10 minutes. Background checks only read a window that is already visible and never change what is on your screen.
+- **When it checks:** every 5 seconds while Friday runs (a small local query), and when you ask ("check whatsapp"). It never brings WhatsApp forward unless you say "open whatsapp".
 - **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
 - **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.
 
@@ -64,5 +62,5 @@ When you type `screenshot` / `snip` (or press the camera / crop buttons), Friday
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
 - **Gmail:** Friday reports the *senders* of unread mail for each account. It never opens emails or reads subjects or bodies.
-- Screen captures for screen reading are processed in memory and discarded right away. They are never written to disk. (Screenshots and snips you ask for are the one exception; see above.)
+- Screen captures are made only for screenshots and snips you ask for (see above).
 - **Blocked:** Instagram, plus any app you add to the block list.

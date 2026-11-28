@@ -35,74 +35,51 @@ struct ConnectedSection: View {
         }
     }
 
-    /// The largest of: WhatsApp Web title, fresh screen reading, Dock badge.
     private var whatsappValue: String? {
         connections.whatsappUnread.map(String.init)
     }
 
-    /// True when the WhatsApp Web title gives a bigger number than the screen.
-    private var webIsLargest: Bool {
-        guard let web = connections.whatsappWebUnread else { return false }
-        return web >= (connections.freshScreenReport?.unreadChats ?? 0) && web >= (connections.whatsappBadge ?? 0)
-    }
-
     private var whatsappAction: ConnectorTile.Action? {
-        // Chrome first: one click gives the full unread-chat total.
-        if connections.whatsappWeb == .needsPermission {
-            return .init(title: "Connect Chrome") { Task { await connections.connectChrome() } }
-        }
-        if !connections.isWhatsAppInstalled, let web = connections.whatsappWeb {
-            switch web {
-            case .denied: return .init(title: "Allow in Settings") { connections.openAutomationSettings() }
-            case .chromeClosed, .noTab: return .init(title: "Open WhatsApp Web") { ChromeTabs.openWhatsAppWeb() }
-            case .noChrome, .unread, .needsPermission: return nil
+        if connections.isWhatsAppInstalled {
+            switch connections.whatsappStatus {
+            case .denied: return .init(title: "Allow access") { connections.openPrivacySettings() }
+            case .unavailable: return .init(title: "Open WhatsApp") { connections.openWhatsApp() }
+            case .connected, .notConnected: return nil
             }
         }
-        guard connections.isWhatsAppInstalled else { return nil }
-        if !connections.screenPermission {
-            return .init(title: "Allow screen reading") { connections.requestScreenPermission() }
-        }
-        if connections.isReadingWhatsApp { return nil }
-        if connections.whatsappBadgeLooksOff {
-            return .init(title: "Turn on badge") { connections.openNotificationSettings() }
-        }
-        return .init(title: connections.whatsappStatus == .connected ? "Check now" : "Open WhatsApp") {
-            Task { await connections.readWhatsAppScreen(bringToFront: true) }
+        switch connections.whatsappWeb {
+        case .needsPermission: return .init(title: "Connect Chrome") { Task { await connections.connectChrome() } }
+        case .denied: return .init(title: "Allow in Settings") { connections.openAutomationSettings() }
+        case .chromeClosed, .noTab: return .init(title: "Open WhatsApp Web") { ChromeTabs.openWhatsAppWeb() }
+        case .noChrome, .unread, nil: return nil
         }
     }
 
     private var whatsappCaption: String {
-        if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
-        if connections.whatsappBadgeLooksOff {
-            return "WhatsApp's Dock badge is off: live counts need it"
+        if let report = connections.whatsappReport {
+            return Self.caption(for: report, names: connections.showsNames)
         }
-        if webIsLargest, let web = connections.whatsappWebUnread {
-            let label = web == 1 ? "unread chat" : "unread chats"
-            if let report = connections.freshScreenReport, connections.showsNames, !report.chats.isEmpty {
-                let names = report.chats.prefix(2).map { $0.name ?? "Unknown" }
-                return "\(label) (WhatsApp Web): " + names.joined(separator: ", ") + " +\(max(0, web - names.count))"
-            }
-            return "\(label) (WhatsApp Web)"
-        }
-        if connections.whatsappWeb == .needsPermission {
-            return "Connect Chrome to count every unread chat from WhatsApp Web"
-        }
-        if !connections.isWhatsAppInstalled, connections.whatsappWeb == .denied { return "Chrome access denied" }
-        if let report = connections.freshScreenReport {
-            guard report.unreadChats > 0 else { return "No unread chats" }
-            let label = report.unreadChats == 1 ? "unread chat" : "unread chats"
-            guard connections.showsNames else { return "\(label) · \(report.unreadMessages) messages" }
-            let names = report.chats.prefix(2).map { $0.name ?? "Unknown" }
-            let more = report.chats.count > 2 ? " +\(report.chats.count - 2)" : ""
-            return "\(label): " + names.joined(separator: ", ") + more
+        if let web = connections.whatsappWebUnread {
+            return web == 1 ? "unread chat (WhatsApp Web)" : "unread chats (WhatsApp Web)"
         }
         switch connections.whatsappStatus {
-        case .connected:
-            if connections.whatsappBadge == 0 { return "No unread messages, or WhatsApp's Dock badge is off" }
-            return connections.whatsappBadge == 1 ? "unread message (Dock badge)" : "unread messages (Dock badge)"
+        case .denied: return "macOS blocked Friday from WhatsApp's data. Allow it, then reopen Friday"
         case .unavailable(let reason): return reason
-        case .denied, .notConnected: return "Reads WhatsApp's chat list on screen"
+        case .notConnected:
+            return connections.isWhatsAppInstalled
+                ? "Reading WhatsApp…" : "Connect Chrome to count unread chats from WhatsApp Web"
+        case .connected: return "No unread chats"
         }
+    }
+
+    static func caption(for report: WhatsAppDatabase.Report, names: Bool) -> String {
+        guard report.unreadChats > 0 else { return "No unread chats" }
+        let label = report.unreadChats == 1 ? "unread chat" : "unread chats"
+        let muted = report.mutedChats > 0 ? " · \(report.mutedChats) muted" : ""
+        guard names else { return "\(label) · \(report.unreadMessages) messages" + muted }
+        let latest = report.chats.prefix(2).map { $0.name ?? "Unknown" }
+        let more = report.unreadChats > 2 ? " +\(report.unreadChats - 2)" : ""
+        return "\(label): " + latest.joined(separator: ", ") + more
     }
 
     private var calendarAction: ConnectorTile.Action? {

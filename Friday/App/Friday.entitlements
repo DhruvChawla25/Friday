@@ -20,6 +20,9 @@
 		<string>/.claude/sessions/</string>
 		<string>/.claude/friday/</string>
 		<string>/Library/Application Support/Wispr Flow/config.json</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-wal</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-shm</string>
 	</array>
 	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
 	<array>

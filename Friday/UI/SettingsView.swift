@@ -57,9 +57,11 @@ struct SettingsView: View {
 
             Section {
                 Toggle("Show who sent unread messages", isOn: $whatsappShowNames)
-                Text("Friday reads only chat names and unread numbers from WhatsApp's chat list, never messages.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Text(
+                    "Friday reads unread numbers (and chat names, if on) from WhatsApp's own data on this Mac, read-only. Never messages, never online."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
             } header: {
                 Text("WhatsApp")
             }

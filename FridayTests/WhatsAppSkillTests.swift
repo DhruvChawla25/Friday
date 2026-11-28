@@ -23,16 +23,18 @@ struct WhatsAppSkillTests {
     }
 
     @MainActor @Test func describesReport() {
-        let report = WhatsAppChatListAnalyzer.Report(
+        let report = WhatsAppDatabase.Report(
             chats: [
-                .init(name: "Rahul", count: 3),
-                .init(name: "Project Group", count: 12, mentioned: true),
+                .init(id: 0, name: "Rahul", count: 3, kind: .person, muted: false, lastMessage: nil),
+                .init(id: 1, name: "Project Group", count: 12, kind: .group, muted: true, lastMessage: nil),
+                .init(id: 2, name: "Mum", count: 0, kind: .person, muted: false, lastMessage: nil),
             ],
-            railTotal: nil)
+            archivedUnreadChats: 4)
         #expect(
-            Connections.describe(report, names: true)
-                == "WhatsApp: 2 unread chats, 15 messages. Rahul (3), Project Group (12, mentioned you).")
-        #expect(Connections.describe(report, names: false) == "WhatsApp: 2 unread chats, 15 messages.")
-        #expect(Connections.describe(.init(chats: [], railTotal: nil), names: true) == "WhatsApp: no unread chats.")
+            Connections.describe(report, names: true, limit: 2)
+                == "WhatsApp: 3 unread chats, 15 messages. 1 muted. Latest: Rahul (3), Project Group (12), +1 more.")
+        #expect(Connections.describe(report, names: false) == "WhatsApp: 3 unread chats, 15 messages. 1 muted.")
+        #expect(
+            Connections.describe(.init(chats: [], archivedUnreadChats: 0), names: true) == "WhatsApp: no unread chats.")
     }
 }
