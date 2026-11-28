@@ -36,6 +36,9 @@ final class Connections {
     private(set) var whatsappScreen: WhatsAppChatListAnalyzer.Report?
     private(set) var whatsappScreenDate: Date?
     private(set) var screenPermission = WhatsAppScreenReader.hasPermission
+    private(set) var screenPermissionStage = ScreenPermissionFlow.stage(
+        preflight: WhatsAppScreenReader.hasPermission, captureWorks: nil, asked: false)
+    private var askedForScreenPermission = false
     private(set) var isReadingWhatsApp = false
     /// The WhatsApp Web tab in Chrome. Used alongside the Mac app (its title
     /// counts every unread chat, not just the visible ones) and on its own
@@ -132,10 +135,20 @@ final class Connections {
         NotificationCenter.default.addObserver(forName: .EKEventStoreChanged, object: nil, queue: .main) { _ in
             MainActor.assumeIsolated { self.refresh() }
         }
+        // Back from System Settings: see whether Screen Recording is on now.
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main
+        ) { _ in
+            MainActor.assumeIsolated {
+                self.refresh()
+                Task { await self.recheckScreenPermission() }
+            }
+        }
     }
 
     func refresh() {
         screenPermission = WhatsAppScreenReader.hasPermission
+        if screenPermission { screenPermissionStage = .granted }
         notificationWatcher?.start()  // no-op once running; picks up a late Accessibility grant
         Task { await refreshWhatsAppBadge() }
         refreshCalendar()
@@ -162,12 +175,33 @@ final class Connections {
         Task { _ = await checkWhatsApp(staysInFront: true) }
     }
 
+    /// "Allow screen reading": prompts if macOS still will, makes sure Friday
+    /// is listed under Screen Recording, and opens that list when access is
+    /// still off (macOS prompts only once, so the toggle is the way after).
     func requestScreenPermission() {
-        screenPermission = WhatsAppScreenReader.requestPermission()
-        if !screenPermission {
-            NSWorkspace.shared.open(
-                URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")!)
+        askedForScreenPermission = true
+        let granted = WhatsAppScreenReader.requestPermission()
+        Task {
+            let captureWorks = await WhatsAppScreenReader.probeCapture()
+            updateScreenPermission(preflight: granted || WhatsAppScreenReader.hasPermission, captureWorks: captureWorks)
+            if screenPermissionStage == .waitingForSettings {
+                NSWorkspace.shared.open(ScreenCaptureCoordinator.screenRecordingSettings)
+            }
         }
+    }
+
+    /// Only probes after the user asked, so coming back to Friday never
+    /// raises a prompt by itself.
+    private func recheckScreenPermission() async {
+        let preflight = WhatsAppScreenReader.hasPermission
+        let captureWorks = askedForScreenPermission && !preflight ? await WhatsAppScreenReader.probeCapture() : nil
+        updateScreenPermission(preflight: preflight, captureWorks: captureWorks)
+    }
+
+    private func updateScreenPermission(preflight: Bool, captureWorks: Bool?) {
+        screenPermission = preflight
+        screenPermissionStage = ScreenPermissionFlow.stage(
+            preflight: preflight, captureWorks: captureWorks, asked: askedForScreenPermission)
     }
 
     func connectCalendar() async {

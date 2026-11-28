@@ -81,6 +81,11 @@ struct ConnectedSection: View {
 
     private var whatsappCaption: String {
         if connections.isReadingWhatsApp { return "Reading WhatsApp…" }
+        if connections.isWhatsAppInstalled, !connections.screenPermission,
+            let caption = ScreenPermissionFlow.caption(for: connections.screenPermissionStage)
+        {
+            return caption
+        }
         if connections.whatsappBadgeLooksOff {
             return "WhatsApp's Dock badge is off: live counts need it"
         }

@@ -469,7 +469,8 @@ private struct NoticeBar: View {
         case .needsAccessibility:
             "Allow Friday in System Settings → Privacy & Security → Accessibility to list every unread chat."
         case .needsScreenPermission:
-            "Allow screen reading so Friday can list the chats visible in WhatsApp's window."
+            ScreenPermissionFlow.caption(for: loader.connections.screenPermissionStage).map { $0 + "." }
+                ?? "Allow screen reading so Friday can list the chats visible in WhatsApp's window."
         case .noWindow:
             "Open WhatsApp's window on this desktop so Friday can read its chat list."
         case .notRunning:
