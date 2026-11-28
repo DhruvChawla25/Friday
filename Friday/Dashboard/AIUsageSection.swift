@@ -4,14 +4,10 @@
 
 import SwiftUI
 
-/// "AI usage": one card per installed AI tool, with a bar per limit window.
+/// "AI usage": one card per installed AI tool (Claude and Wispr Flow), side
+/// by side at the same height so the row reads as one block.
 struct AIUsageSection: View {
     let monitor: AIUsageMonitor
-
-    private let columns = [
-        GridItem(.flexible(), spacing: Theme.Space.m, alignment: .top),
-        GridItem(.flexible(), spacing: Theme.Space.m, alignment: .top),
-    ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Space.m) {
@@ -30,11 +26,12 @@ struct AIUsageSection: View {
                     .foregroundStyle(Theme.textSecondary)
             } else {
                 TimelineView(.everyMinute) { context in
-                    LazyVGrid(columns: columns, alignment: .leading, spacing: Theme.Space.m) {
+                    HStack(alignment: .top, spacing: Theme.Space.m) {
                         ForEach(monitor.installed) { usage in
                             ToolUsageCard(usage: usage, now: context.date)
                         }
                     }
+                    .fixedSize(horizontal: false, vertical: true)
                 }
             }
             if !monitor.notInstalled.isEmpty {
@@ -66,9 +63,10 @@ private struct ToolUsageCard: View {
                 .font(.system(size: 9.5))
                 .foregroundStyle(Theme.textSecondary.opacity(0.8))
                 .lineLimit(2)
+            Spacer(minLength: 0)
         }
         .padding(Theme.Space.m)
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(
             RoundedRectangle(cornerRadius: Theme.corner, style: .continuous)
                 .fill(Color.white.opacity(0.035))

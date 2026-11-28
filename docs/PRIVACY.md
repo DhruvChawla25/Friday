@@ -18,7 +18,6 @@ Friday is designed so it cannot leak your data.
 - **WhatsApp, the unread pop-up (Accessibility permission; not available in the sandboxed build yet, see issue #6):** clicking the WhatsApp tile opens a list of unread chats. With Accessibility allowed, Friday reads WhatsApp's chat-list labels and keeps **only the chat name, the unread count, the last-message time and whether it is a group**. The labels also contain message previews; those are cut away while parsing and are never stored, logged or shown. A full scan of every unread chat runs **only when you click "Scan all chats"**: WhatsApp's list switches to its Unread filter and scrolls while Friday reads it, then goes back. Afterwards Friday keeps the list current from WhatsApp's notification banners, taking only the chat name and the time (never the message text). The list lives in memory only. Without Accessibility, the pop-up lists the chats visible in WhatsApp's window (screen reading, above).
 - **WhatsApp Web fallback (Automation permission for Chrome):** only if WhatsApp for Mac is not installed, Friday asks Chrome for its tab titles and keeps just the number in a WhatsApp tab's title, such as `(3) WhatsApp`. Every other title is discarded at once. Friday never reads page contents, and it never opens Chrome unless you say "open whatsapp".
 - **When it checks:** when you ask ("check whatsapp", "open whatsapp"), when the Dock badge changes, after the Mac wakes, and every 10 minutes. Background checks only read a window that is already visible and never change what is on your screen.
-- **Mail:** not connected yet, waiting for your new mail app. It will use the same Dock badge method.
 - **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
 - **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.
 
@@ -33,13 +32,9 @@ To read those files from inside the sandbox, Friday has one extra entitlement, `
 | `~/.claude/projects/` | Claude Code transcripts | Only each reply's time, ID and token counts. Message text is skipped by the decoder and never kept. |
 | `~/.claude/sessions/` | Open Claude Code sessions | Only `pid` and `status` (working / idle) from the `*.json` files. The folder also has `*.key` files; Friday never opens them. |
 | `~/.claude/friday/` | Claude plan limits from `Scripts/friday-statusline.sh` | 5-hour and weekly used % and reset time. |
-| `~/.qoder/projects/` | Qoder transcripts | Only each reply's time, ID, token counts and credits. |
-| `~/.gemini/antigravity/conversations/` | Antigravity activity | Only file **dates**, to show "last used". Contents are not read. |
-| `~/.qwen/tmp/` | Qwen Code activity | Only file **dates**. |
-| `~/.local/share/opencode/opencode.db` (+ `-wal`, `-shm`) | OpenCode usage | Opened read-only. Only per-session token and cost totals; messages are not queried. |
 | `~/Library/Application Support/Wispr Flow/config.json` | Wispr Flow usage | Only word counts, plan name, weekly-limit date and Notetaker quota. Name, email and dictionary are not decoded. |
 
-Friday does **not** get access to credentials: not `~/.claude/.credentials.json`, the Keychain, `~/.gemini`'s token file, `~/.config/opencode` (which holds a service password) or Qoder's `.auth` folder.
+Friday does **not** get access to credentials: not `~/.claude/.credentials.json` or the Keychain.
 
 "Live" comes from the list of running apps (`NSWorkspace`) and running process IDs (`sysctl`, the same call Activity Monitor uses). Friday reads no process arguments, memory or environment.
 

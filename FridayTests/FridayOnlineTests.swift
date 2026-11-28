@@ -145,11 +145,11 @@ struct ClaudeBarMergeTests {
 
 struct OtherToolsMergeTests {
     private let local = ToolUsage(
-        tool: .qoder, isInstalled: true, meters: [UsageMeter(window: "Today", detail: "3 credits")],
-        source: "Local Qoder transcripts")
+        tool: .wisprFlow, isInstalled: true, meters: [UsageMeter(window: "Today", detail: "3 credits")],
+        source: "Local Wispr Flow config")
 
     @Test func unsupportedLeavesLocalReadingAlone() {
-        let unsupported = OnlineLimits.report(.init(provider: .qoder, status: .unsupported))
+        let unsupported = OnlineLimits.report(.init(provider: .wisprFlow, status: .unsupported))
         #expect(LimitsMerge.apply(unsupported, to: local, now: now) == local)
         #expect(LimitsMerge.apply(.notRunning, to: local, now: now) == local)
         #expect(LimitsMerge.apply(nil, to: local, now: now) == local)
@@ -157,14 +157,14 @@ struct OtherToolsMergeTests {
 
     @Test func okReportAddsBarsOnTop() {
         var report = okReport()
-        report.provider = .qoder
+        report.provider = .wisprFlow
         let merged = LimitsMerge.apply(.report(report), to: local, now: now)
         #expect(merged.meters.map(\.window) == ["5-hour session", "Weekly", "Today"])
         #expect(merged.source == "Friday Online app · just now")
     }
 
     @Test func notInstalledToolStaysHidden() {
-        let missing = ToolUsage.notInstalled(.qoder)
+        let missing = ToolUsage.notInstalled(.wisprFlow)
         #expect(LimitsMerge.apply(.report(okReport()), to: missing, now: now) == missing)
     }
 }
@@ -185,7 +185,7 @@ struct FridayOnlineProviderTests {
         let fake = FakeConnector([:])
         let provider = FridayOnlineProvider(makeConnector: { fake })
         let result = await provider.limits(for: AITool.allCases, now: now)
-        #expect(Set(fake.calls) == [.claude, .antigravity, .qwenCode, .qoder, .wisprFlow, .openCode])
+        #expect(Set(fake.calls) == [.claude, .wisprFlow])
         #expect(result[.wisprFlow] == .report(.init(provider: .wisprFlow, status: .unsupported)))
     }
 
@@ -301,8 +301,8 @@ struct FridayOnlineConnectorTests {
     @Test func switchedOffStopsAskingOtherToolsThisRound() async {
         let fake = FakeConnector([.claude: .switchedOff])
         let provider = FridayOnlineProvider(makeConnector: { fake })
-        let result = await provider.limits(for: [.claude, .qoder], now: now)
+        let result = await provider.limits(for: [.claude, .wisprFlow], now: now)
         #expect(fake.callCount == 1)
-        #expect(result[.qoder] == .switchedOff)
+        #expect(result[.wisprFlow] == .switchedOff)
     }
 }

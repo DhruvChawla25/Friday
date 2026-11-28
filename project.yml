@@ -40,12 +40,6 @@ targets:
           - /.claude/projects/
           - /.claude/sessions/
           - /.claude/friday/
-          - /.qoder/projects/
-          - /.gemini/antigravity/conversations/
-          - /.qwen/tmp/
-          - /.local/share/opencode/opencode.db
-          - /.local/share/opencode/opencode.db-wal
-          - /.local/share/opencode/opencode.db-shm
           - /Library/Application Support/Wispr Flow/config.json
         # Screenshot and snip: write PNGs to ~/Desktop only. Nothing else in the home folder.
         com.apple.security.temporary-exception.files.home-relative-path.read-write:
