@@ -12,8 +12,9 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 |---|---|
 | **The orb** | A small rotating 3D ribbon that floats in a screen corner. Drag it anywhere and Friday remembers the spot per app. Otherwise it avoids toolbars and desktop icons, follows your cursor between screens, and moves away or hides when a screen is full screen. |
 | **Dashboard** | Click the orb, press **⌃⌥Space**, or click the Dock icon. It shows **Connected** apps with unread numbers and has the command bar. |
-| **Connected** | WhatsApp (the Mac app) shows its unread **number only**, read from its Dock badge. Calendar shows today's remaining events. Mail is coming soon. |
-| **AI usage** | A loading bar per AI tool: Claude (Code + desktop app), Antigravity, Qwen Code, Qoder, Wispr Flow, OpenCode. Shows how much of the current limit is used, when it resets, local usage, and **LIVE** while the tool runs. Read only from files these tools already write on your Mac; limits Friday cannot know offline are labelled so, never guessed. |
+| **Connected** | WhatsApp (the Mac app) shows unread chats read **read-only from WhatsApp's own data on this Mac**: no internet, no screen recording. Click the tile for the list. Calendar shows today's remaining events. |
+| **Now playing** | Spotify and every YouTube / YouTube Music tab in Chrome: what is playing, with play/pause, next, previous and a button to jump to it. Say `what's playing`, `pause music`, `next song`. Local Apple Events only, no internet. |
+| **AI usage** | A loading bar per AI tool: Claude (Code + desktop app) and Wispr Flow. Shows how much of the current limit is used, when it resets, local usage, and **LIVE** while the tool runs. Read only from files these tools already write on your Mac; limits Friday cannot know offline are labelled so, never guessed. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
 | **Screenshot & snip** | `screenshot` (or `ss`) saves the screen under the pointer; `snip` (or `snipping tool`, `capture area`) lets you drag out an area, Esc cancels. Both save a PNG to your Desktop, e.g. `Friday Snip 2026-11-26 at 10.15.03.png`, and copy it to the clipboard. Also two buttons in the command bar. Needs Screen Recording permission. |
@@ -58,7 +59,7 @@ Or open `Friday.xcodeproj` in Xcode and press ⌘R.
 
 ### Permissions keep turning off after a rebuild?
 
-Ad-hoc signed builds look like a new app to macOS each time they're rebuilt. So Screen Recording (used by WhatsApp reading and screenshots) shows as **on** in System Settings while the new build is still refused. The fix is to sign every build with one stable local certificate:
+Ad-hoc signed builds look like a new app to macOS each time they're rebuilt. So Screen Recording (used by screenshots and snips) shows as **on** in System Settings while the new build is still refused. The fix is to sign every build with one stable local certificate:
 
 ```sh
 Scripts/setup-local-signing.sh                  # once: creates "Friday Local Signing" in its own keychain

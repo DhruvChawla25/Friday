@@ -23,7 +23,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>If WhatsApp for Mac is not installed, Friday reads Chrome tab titles to show WhatsApp Web's unread number. It never reads page or message contents.</string>
+	<string>Friday asks Spotify and Chrome what is playing so it can show it and play, pause or skip when you ask. Without WhatsApp for Mac it reads WhatsApp Web's unread number from Chrome tab titles. It never reads messages or page text, and never saves what you play.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Friday shows how many events you have left today and what is next.</string>
 	<key>NSHumanReadableCopyright</key>

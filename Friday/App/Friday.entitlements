@@ -10,18 +10,20 @@
 	<true/>
 	<key>com.apple.security.personal-information.calendars</key>
 	<true/>
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.google.Chrome</string>
+		<string>com.spotify.client</string>
+	</array>
 	<key>com.apple.security.temporary-exception.files.home-relative-path.read-only</key>
 	<array>
 		<string>/.claude/projects/</string>
 		<string>/.claude/sessions/</string>
 		<string>/.claude/friday/</string>
-		<string>/.qoder/projects/</string>
-		<string>/.gemini/antigravity/conversations/</string>
-		<string>/.qwen/tmp/</string>
-		<string>/.local/share/opencode/opencode.db</string>
-		<string>/.local/share/opencode/opencode.db-wal</string>
-		<string>/.local/share/opencode/opencode.db-shm</string>
 		<string>/Library/Application Support/Wispr Flow/config.json</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-wal</string>
+		<string>/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite-shm</string>
 	</array>
 	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
 	<array>
@@ -30,10 +32,6 @@
 	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
 	<array>
 		<string>com.dhruvchawla.friday.online</string>
-	</array>
-	<key>com.apple.security.temporary-exception.apple-events</key>
-	<array>
-		<string>com.google.Chrome</string>
 	</array>
 </dict>
 </plist>

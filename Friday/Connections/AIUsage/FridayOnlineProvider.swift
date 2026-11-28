@@ -9,11 +9,7 @@ extension AITool {
     var onlineProvider: FridayOnline.Provider {
         switch self {
         case .claude: .claude
-        case .antigravity: .antigravity
-        case .qwenCode: .qwenCode
-        case .qoder: .qoder
         case .wisprFlow: .wisprFlow
-        case .openCode: .openCode
         }
     }
 }

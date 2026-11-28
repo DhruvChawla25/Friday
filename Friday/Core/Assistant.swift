@@ -71,12 +71,20 @@ final class Assistant {
         exchanges.removeAll()
     }
 
-    static func makeDefault(connections: Connections) -> Assistant {
+    static func makeDefault(connections: Connections, media: MediaCenter) -> Assistant {
         let memory = MemoryStore.standard
         let registry = SkillRegistry(skills: [
             // First, so "open snipping tool" is a snip, not an app launch. Its phrases are strict.
             CaptureSkill(capturer: ScreenCaptureCoordinator.shared),
             WhatsAppSkill { staysInFront in await connections.checkWhatsApp(staysInFront: staysInFront) },
+            MediaSkill { action in
+                switch action {
+                case .nowPlaying: await media.describeNowPlaying()
+                case .playPause: await media.send(.playPause)
+                case .next: await media.send(.next)
+                case .previous: await media.send(.previous)
+                }
+            },
             TimeSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
             MemorySkill(memory: memory),

@@ -9,16 +9,14 @@ Friday is designed so it cannot leak your data.
 3. **Memory is opt-in and yours.** Memory is off until you enable it in Settings. Once enabled, everything Friday remembers is in one plain-text file:
    `~/Library/Containers/com.dhruvchawla.friday/Data/Library/Application Support/Friday/memory.txt`
    You can open it with **Settings → Show in Finder**, edit it in any text editor, export it, or wipe it.
-4. **Other apps do their own networking.** When Friday opens Chrome or WhatsApp, those apps connect to the internet as they normally would. Friday itself only opens them and, in later versions, reads what is on screen.
+4. **Other apps do their own networking.** When Friday opens Chrome or WhatsApp, those apps connect to the internet as they normally would. Friday itself only opens them.
 
 ## Unread counts (v0.2)
 
-- **WhatsApp, Dock badge:** Friday reads the number in the red badge on the WhatsApp Dock icon, using macOS's built-in `lsappinfo` tool. That is the same number you see in the Dock, and it needs no permission.
-- **WhatsApp, chat list (Screen Recording permission):** to see *which* chats are unread, Friday captures **only WhatsApp's own window**, never the whole screen. It finds the green unread bubbles, reads the number inside each one, and reads **only the chat-name line** next to it. Message previews and the open conversation are never passed to text recognition. The capture stays in memory for under a second and is never saved. Names can be turned off in Settings → WhatsApp.
-- **WhatsApp, the unread pop-up (Accessibility permission; not available in the sandboxed build yet, see issue #6):** clicking the WhatsApp tile opens a list of unread chats. With Accessibility allowed, Friday reads WhatsApp's chat-list labels and keeps **only the chat name, the unread count, the last-message time and whether it is a group**. The labels also contain message previews; those are cut away while parsing and are never stored, logged or shown. A full scan of every unread chat runs **only when you click "Scan all chats"**: WhatsApp's list switches to its Unread filter and scrolls while Friday reads it, then goes back. Afterwards Friday keeps the list current from WhatsApp's notification banners, taking only the chat name and the time (never the message text). The list lives in memory only. Without Accessibility, the pop-up lists the chats visible in WhatsApp's window (screen reading, above).
+- **WhatsApp (the Mac app), read-only from its own data:** Friday opens WhatsApp for Mac's database on this Mac (`~/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite`) **read-only** and asks it for one thing: the unread chats, with each chat's name (only if "show names" is on), unread number, mute state and last-message time. Message text is never queried. Friday cannot send, post, mark as read or change anything; it has no internet access and uses no AI. The sandbox allows exactly this one file (plus its `-wal`/`-shm` journal) and nothing else in WhatsApp's folder. Readings stay in memory and are never saved or logged. No Screen Recording or Accessibility permission is needed.
 - **WhatsApp Web fallback (Automation permission for Chrome):** only if WhatsApp for Mac is not installed, Friday asks Chrome for its tab titles and keeps just the number in a WhatsApp tab's title, such as `(3) WhatsApp`. Every other title is discarded at once. Friday never reads page contents, and it never opens Chrome unless you say "open whatsapp".
-- **When it checks:** when you ask ("check whatsapp", "open whatsapp"), when the Dock badge changes, after the Mac wakes, and every 10 minutes. Background checks only read a window that is already visible and never change what is on your screen.
-- **Mail:** not connected yet, waiting for your new mail app. It will use the same Dock badge method.
+- **When it checks:** every 5 seconds while Friday runs (a small local query), and when you ask ("check whatsapp"). It never brings WhatsApp forward unless you say "open whatsapp".
+- **Now playing (Spotify and YouTube in Chrome, Automation permission):** Friday asks Spotify for its play state, track name and artist, and asks Chrome for the tabs whose address is a YouTube or YouTube Music video. Every other tab is skipped **inside** the AppleScript, so its title and address never reach Friday. If you turn on Chrome's *View → Developer → Allow JavaScript from Apple Events*, Friday runs fixed, built-in snippets in those media tabs that return only "paused or playing" and the Media Session title and artist, never page text; the play, pause, next and previous buttons use the same fixed snippets. Note that this Chrome setting lets any app you have allowed to control Chrome run JavaScript in its pages. Titles stay in memory, are shown only in the dashboard, and are never saved, logged or added to memory. Friday never launches Spotify or Chrome, polls only while the dashboard is open, and asks for permission only when you click **Connect**.
 - **Calendar:** Friday reads today's events (count, plus the next event's time and title) through macOS Calendar access. It never changes them.
 - **Orb placement** uses only window **positions and sizes** from macOS. It never captures window contents.
 
@@ -33,13 +31,9 @@ To read those files from inside the sandbox, Friday has one extra entitlement, `
 | `~/.claude/projects/` | Claude Code transcripts | Only each reply's time, ID and token counts. Message text is skipped by the decoder and never kept. |
 | `~/.claude/sessions/` | Open Claude Code sessions | Only `pid` and `status` (working / idle) from the `*.json` files. The folder also has `*.key` files; Friday never opens them. |
 | `~/.claude/friday/` | Claude plan limits from `Scripts/friday-statusline.sh` | 5-hour and weekly used % and reset time. |
-| `~/.qoder/projects/` | Qoder transcripts | Only each reply's time, ID, token counts and credits. |
-| `~/.gemini/antigravity/conversations/` | Antigravity activity | Only file **dates**, to show "last used". Contents are not read. |
-| `~/.qwen/tmp/` | Qwen Code activity | Only file **dates**. |
-| `~/.local/share/opencode/opencode.db` (+ `-wal`, `-shm`) | OpenCode usage | Opened read-only. Only per-session token and cost totals; messages are not queried. |
 | `~/Library/Application Support/Wispr Flow/config.json` | Wispr Flow usage | Only word counts, plan name, weekly-limit date and Notetaker quota. Name, email and dictionary are not decoded. |
 
-Friday does **not** get access to credentials: not `~/.claude/.credentials.json`, the Keychain, `~/.gemini`'s token file, `~/.config/opencode` (which holds a service password) or Qoder's `.auth` folder.
+Friday does **not** get access to credentials: not `~/.claude/.credentials.json` or the Keychain.
 
 "Live" comes from the list of running apps (`NSWorkspace`) and running process IDs (`sysctl`, the same call Activity Monitor uses). Friday reads no process arguments, memory or environment.
 
@@ -69,5 +63,5 @@ When you type `screenshot` / `snip` (or press the camera / crop buttons), Friday
 
 - **WhatsApp:** Friday reports *who* has sent unread messages. It never reads or reports message text.
 - **Gmail:** Friday reports the *senders* of unread mail for each account. It never opens emails or reads subjects or bodies.
-- Screen captures for screen reading are processed in memory and discarded right away. They are never written to disk. (Screenshots and snips you ask for are the one exception; see above.)
+- Screen captures are made only for screenshots and snips you ask for (see above).
 - **Blocked:** Instagram, plus any app you add to the block list.

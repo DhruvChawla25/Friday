@@ -28,10 +28,7 @@ final class AIUsageMonitor {
         self.online = online
     }
 
-    nonisolated static let defaultProviders: [any UsageProvider] = [
-        ClaudeUsageProvider(), AntigravityUsageProvider(), QwenCodeUsageProvider(), QoderUsageProvider(),
-        WisprFlowUsageProvider(), OpenCodeUsageProvider(),
-    ]
+    nonisolated static let defaultProviders: [any UsageProvider] = [ClaudeUsageProvider(), WisprFlowUsageProvider()]
 
     var installed: [ToolUsage] { tools.filter(\.isInstalled) }
     var notInstalled: [ToolUsage] { tools.filter { !$0.isInstalled } }

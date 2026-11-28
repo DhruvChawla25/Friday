@@ -6,18 +6,14 @@ import Foundation
 
 /// The AI tools Friday shows usage for, in display order.
 enum AITool: String, CaseIterable, Sendable, Identifiable {
-    case claude, antigravity, qwenCode, qoder, wisprFlow, openCode
+    case claude, wisprFlow
 
     var id: String { rawValue }
 
     var displayName: String {
         switch self {
         case .claude: "Claude"
-        case .antigravity: "Antigravity"
-        case .qwenCode: "Qwen Code"
-        case .qoder: "Qoder"
         case .wisprFlow: "Wispr Flow"
-        case .openCode: "OpenCode"
         }
     }
 
@@ -25,10 +21,7 @@ enum AITool: String, CaseIterable, Sendable, Identifiable {
     var bundleID: String? {
         switch self {
         case .claude: "com.anthropic.claudefordesktop"
-        case .antigravity: "com.google.antigravity"
-        case .qoder: "com.qoder.app"
         case .wisprFlow: "com.electron.wispr-flow"
-        case .qwenCode, .openCode: nil
         }
     }
 }

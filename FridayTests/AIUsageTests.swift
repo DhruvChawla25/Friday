@@ -350,50 +350,6 @@ struct WisprFlowProviderTests {
     }
 }
 
-struct OpenCodeProviderTests {
-    @Test func corruptDatabaseIsUnreadable() throws {
-        let home = try makeHome()
-        defer { try? FileManager.default.removeItem(at: home) }
-        try write("not a database", to: OpenCodeUsageProvider.databasePath, in: home)
-        #expect(
-            OpenCodeUsageProvider.totals(
-                databaseAt: home.appending(path: OpenCodeUsageProvider.databasePath), since: .distantPast) == nil)
-        let env = UsageEnvironment(home: home, now: .now, runningBundleIDs: [], processes: nil)
-        let usage = OpenCodeUsageProvider().usage(in: env)
-        #expect(usage.isInstalled)
-        #expect(usage.meters.isEmpty)
-    }
-
-    @Test func sumsTodaysSessions() throws {
-        let home = try makeHome()
-        defer { try? FileManager.default.removeItem(at: home) }
-        let url = home.appending(path: "opencode.db")
-        var db: OpaquePointer?
-        #expect(sqlite3_open(url.path, &db) == SQLITE_OK)
-        let sql = """
-            CREATE TABLE session_v2 (id TEXT, title TEXT, cost REAL, tokens_input INTEGER, tokens_output INTEGER,
-              tokens_reasoning INTEGER, tokens_cache_read INTEGER, tokens_cache_write INTEGER, time_updated INTEGER);
-            INSERT INTO session_v2 VALUES ('a', 't', 0.5, 100, 50, 10, 9999, 5, 2000000);
-            INSERT INTO session_v2 VALUES ('b', 't', 0.25, 1, 1, 0, 0, 0, 3000000);
-            INSERT INTO session_v2 VALUES ('c', 't', 9, 1000, 1000, 0, 0, 0, 10);
-            """
-        #expect(sqlite3_exec(db, sql, nil, nil, nil) == SQLITE_OK)
-        sqlite3_close(db)
-        let totals = try #require(
-            OpenCodeUsageProvider.totals(databaseAt: url, since: Date(timeIntervalSince1970: 1000)))
-        #expect(totals.sessions == 2)
-        #expect(totals.tokens == 167)
-        #expect(totals.cost == 0.75)
-        #expect(totals.lastUpdated == Date(timeIntervalSince1970: 3000))
-    }
-
-    @Test func meterText() {
-        let meter = OpenCodeUsageProvider.meter(today: .init(sessions: 2, tokens: 48_000, cost: 0))
-        #expect(meter.detail == "2 sessions · 48K tokens")
-        #expect(meter.usedFraction == nil)
-    }
-}
-
 struct ProcessListTests {
     @Test func listsThisProcess() throws {
         let snapshot = try #require(ProcessList.current())
