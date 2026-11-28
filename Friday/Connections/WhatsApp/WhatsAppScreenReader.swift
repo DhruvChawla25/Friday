@@ -25,6 +25,14 @@ enum WhatsAppScreenReader {
     @discardableResult
     static func requestPermission() -> Bool { CGRequestScreenCaptureAccess() }
 
+    /// Asks ScreenCaptureKit for the list of windows. This is what makes
+    /// macOS list Friday under Screen Recording (and prompt, if it still
+    /// can); it also tells whether access works now, which the cached
+    /// `hasPermission` does not until Friday is reopened. Reads no pixels.
+    static func probeCapture() async -> Bool {
+        (try? await SCShareableContent.excludingDesktopWindows(true, onScreenWindowsOnly: true)) != nil
+    }
+
     /// Reads the chat list.
     /// - Parameter bringToFront: open/show WhatsApp if its window is closed or
     ///   hidden. When false (background rechecks), only an already-visible

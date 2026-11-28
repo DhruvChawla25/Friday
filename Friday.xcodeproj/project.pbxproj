@@ -30,6 +30,7 @@
 		3985E8687551DB7004E328F7 /* WhatsAppAccessibilityReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A277CC112C071B5BA3B5E6 /* WhatsAppAccessibilityReader.swift */; };
 		3C62ACD764C5DF944747A300 /* DockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FED0373D3D336C21D39161 /* DockBadge.swift */; };
 		3D738DDBBB946E2983DE62B0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135996FC4EF3ACDDFA239F09 /* Theme.swift */; };
+		3E8AD64BC5DF0161672C40B4 /* ScreenPermissionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB41B3F8FB058D2DBC45A664 /* ScreenPermissionFlow.swift */; };
 		41495A174C778E2E88FEEAB0 /* WhatsAppUnreadListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988E3E5EBD3BE5662DB0E65 /* WhatsAppUnreadListTests.swift */; };
 		45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB996C209DE2B8912FD5E211 /* MemoryTests.swift */; };
 		49393E7F7133E6447A9A67AC /* MemorySkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */; };
@@ -40,6 +41,7 @@
 		5A3E4560CA09E9F8249F63D0 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A6E8584A9245DA5C0F9FDA /* DashboardView.swift */; };
 		5A91DA646A714351A94EA3B0 /* WhatsAppNotificationWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */; };
 		5AAC586D378448AD4E642ED8 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */; };
+		5E1555CDC6B01DB3CBA2B4A3 /* ScreenPermissionFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D3284B0D60C9E2DCB512AF /* ScreenPermissionFlowTests.swift */; };
 		643AC75EA8F64D49454FFFE7 /* WhatsAppChatListAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */; };
 		65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */; };
 		6A18CBB7384300965BD0EDB2 /* OrbPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A453C3B03699998406DCC9 /* OrbPanel.swift */; };
@@ -107,6 +109,7 @@
 		19DD924E3B4A6014153DD926 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		2027B8EB9281D6A961D651D2 /* TimeSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSkill.swift; sourceTree = "<group>"; };
 		21BEA190B996515741F782EB /* SnipOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnipOverlay.swift; sourceTree = "<group>"; };
+		21D3284B0D60C9E2DCB512AF /* ScreenPermissionFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenPermissionFlowTests.swift; sourceTree = "<group>"; };
 		226743A219B72CB7215EF37C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		247A7AD35E96FFC0AC44AEC2 /* Friday.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Friday.entitlements; sourceTree = "<group>"; };
 		262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadList.swift; sourceTree = "<group>"; };
@@ -177,6 +180,7 @@
 		F871AAA121CEF2AF95B49076 /* FridayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FridayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbPlacementTests.swift; sourceTree = "<group>"; };
 		FAABAEF55B59579C582A9309 /* ClaudeUsageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeUsageProvider.swift; sourceTree = "<group>"; };
+		FB41B3F8FB058D2DBC45A664 /* ScreenPermissionFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenPermissionFlow.swift; sourceTree = "<group>"; };
 		FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillRegistryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -290,6 +294,7 @@
 				F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */,
 				3A12D130F3EDA527C905FF67 /* OrbPositionStoreTests.swift */,
 				DA395BB71D264924177972E7 /* RibbonModelTests.swift */,
+				21D3284B0D60C9E2DCB512AF /* ScreenPermissionFlowTests.swift */,
 				FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */,
 				9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */,
 				59EB5B7547F5A63669071209 /* WhatsAppAnalyzerTests.swift */,
@@ -304,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				3FACACC427943D2B3BBBC227 /* BadgeGlyphReader.swift */,
+				FB41B3F8FB058D2DBC45A664 /* ScreenPermissionFlow.swift */,
 				F3A277CC112C071B5BA3B5E6 /* WhatsAppAccessibilityReader.swift */,
 				5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */,
 				BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */,
@@ -494,6 +500,7 @@
 				65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */,
 				045D0AF92A2D88A12FAE4E33 /* OrbPositionStoreTests.swift in Sources */,
 				B4F6E91A1CD02B0B0596E852 /* RibbonModelTests.swift in Sources */,
+				5E1555CDC6B01DB3CBA2B4A3 /* ScreenPermissionFlowTests.swift in Sources */,
 				348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */,
 				5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */,
 				58CB36D1961AA335B819D2C5 /* WhatsAppAnalyzerTests.swift in Sources */,
@@ -546,6 +553,7 @@
 				A6768B7D08C5B4FD67FC6D4B /* RibbonView.swift in Sources */,
 				E42DA4068A0C4FB37E1FDB16 /* ScreenCapture.swift in Sources */,
 				261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */,
+				3E8AD64BC5DF0161672C40B4 /* ScreenPermissionFlow.swift in Sources */,
 				B7F6C17B57BF0CE63EA14733 /* SettingsView.swift in Sources */,
 				84AF8168863A3D45566B94E9 /* Skill.swift in Sources */,
 				29407B68D8E13307BB9431AA /* SnipOverlay.swift in Sources */,
