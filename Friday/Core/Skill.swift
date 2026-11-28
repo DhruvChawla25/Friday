@@ -29,6 +29,8 @@ struct SkillRegistry: Sendable {
         for skill in skills where skill.canHandle(command) {
             return await skill.handle(command)
         }
-        return Persona.unrecognised(examples: skills.map(\.example))
+        let examples = skills.map(\.example)
+        let suggestion = CommandSuggester.suggest(for: text, examples: examples)
+        return Persona.unrecognised(examples: examples, suggestion: suggestion)
     }
 }
