@@ -14,8 +14,9 @@ enum Persona {
         "Available commands:\n" + examples.map { "• \($0)" }.joined(separator: "\n")
     }
 
-    static func unrecognised(examples: [String]) -> String {
-        "Command not recognised. " + help(examples: examples)
+    static func unrecognised(examples: [String], suggestion: String? = nil) -> String {
+        if let suggestion { return "Command not recognised. Did you mean \"\(suggestion)\"?" }
+        return "Command not recognised. " + help(examples: examples)
     }
 
     static let memoryDisabled = "Memory is off. Enable it in Settings to store facts."

@@ -40,6 +40,7 @@
 		5A3E4560CA09E9F8249F63D0 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A6E8584A9245DA5C0F9FDA /* DashboardView.swift */; };
 		5A91DA646A714351A94EA3B0 /* WhatsAppNotificationWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */; };
 		5AAC586D378448AD4E642ED8 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */; };
+		5F6FCDDC7E1D0365578D1C3A /* CommandSuggesterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E887BE2C6B5156E6BCB68 /* CommandSuggesterTests.swift */; };
 		643AC75EA8F64D49454FFFE7 /* WhatsAppChatListAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8EE746BD32A9ADD9D92D01 /* WhatsAppChatListAnalyzer.swift */; };
 		65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */; };
 		6A18CBB7384300965BD0EDB2 /* OrbPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A453C3B03699998406DCC9 /* OrbPanel.swift */; };
@@ -77,6 +78,7 @@
 		C1308CD6A77B39C7001CCB9B /* FridayOnlineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA0BD30364E6798E9843718 /* FridayOnlineProvider.swift */; };
 		C9F5733C699D437DA106C177 /* AIUsageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29EA19B87E54AAF1C92A1ED /* AIUsageSection.swift */; };
 		CDFB36C9BF569C3362D70D23 /* WhatsAppWebFallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD1CC60F198B7937659E29 /* WhatsAppWebFallbackTests.swift */; };
+		D25B31EEADB93773819CC608 /* CommandSuggester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88DEC7BD4B3676D43FE4BC4D /* CommandSuggester.swift */; };
 		D8DA4EB41B76213227FCB68A /* OpenAppSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */; };
 		E1C986B1C9584A36F221BE01 /* FridayOnlineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */; };
 		E42DA4068A0C4FB37E1FDB16 /* ScreenCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D700A4363656EFD5248817 /* ScreenCapture.swift */; };
@@ -141,6 +143,7 @@
 		835BC0BD5F0D222A95542219 /* CaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureTests.swift; sourceTree = "<group>"; };
 		851D0D8100DB1FF6269859F9 /* ActivityUsageProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityUsageProviders.swift; sourceTree = "<group>"; };
 		86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridayOnlineTests.swift; sourceTree = "<group>"; };
+		88DEC7BD4B3676D43FE4BC4D /* CommandSuggester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSuggester.swift; sourceTree = "<group>"; };
 		8CCB9B91D4AC778F6E6AD9C1 /* CaptureSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSkill.swift; sourceTree = "<group>"; };
 		8CF754F4F042760967D8C634 /* WhatsAppUnreadPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadPopup.swift; sourceTree = "<group>"; };
 		8E8F730BEE32E040FB212306 /* ChromeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeTabs.swift; sourceTree = "<group>"; };
@@ -163,6 +166,7 @@
 		CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
 		CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAppSkill.swift; sourceTree = "<group>"; };
 		D059FA4D739F88D013DAED8F /* OrbPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbPlacement.swift; sourceTree = "<group>"; };
+		D42E887BE2C6B5156E6BCB68 /* CommandSuggesterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSuggesterTests.swift; sourceTree = "<group>"; };
 		D96F33E6251A72C5B6F526DF /* AssistantLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantLogTests.swift; sourceTree = "<group>"; };
 		DA395BB71D264924177972E7 /* RibbonModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonModelTests.swift; sourceTree = "<group>"; };
 		DB9867A146876E905D0AFEF5 /* AIUsageMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIUsageMonitor.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 			children = (
 				B00F4AABFBF52F3E1F9ED396 /* Assistant.swift */,
 				19DD924E3B4A6014153DD926 /* Command.swift */,
+				88DEC7BD4B3676D43FE4BC4D /* CommandSuggester.swift */,
 				3374CF421836A4DBFFF715AA /* Persona.swift */,
 				3C525E913E739ED2D8D5FB6B /* Skill.swift */,
 			);
@@ -282,6 +287,7 @@
 				0D17F3384E4838436BE10089 /* AIUsageTests.swift */,
 				D96F33E6251A72C5B6F526DF /* AssistantLogTests.swift */,
 				835BC0BD5F0D222A95542219 /* CaptureTests.swift */,
+				D42E887BE2C6B5156E6BCB68 /* CommandSuggesterTests.swift */,
 				CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */,
 				4410597FB0647F6F461301A9 /* DockBadgeTests.swift */,
 				86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */,
@@ -486,6 +492,7 @@
 				8DD62DB9BE3792E225525103 /* AIUsageTests.swift in Sources */,
 				6B834B3DF069F77F64382730 /* AssistantLogTests.swift in Sources */,
 				0D92A1D85688EE8C0182E374 /* CaptureTests.swift in Sources */,
+				5F6FCDDC7E1D0365578D1C3A /* CommandSuggesterTests.swift in Sources */,
 				FD2C8473D50FBCD7115385ED /* CommandTests.swift in Sources */,
 				BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */,
 				E1C986B1C9584A36F221BE01 /* FridayOnlineTests.swift in Sources */,
@@ -521,6 +528,7 @@
 				FBF8B12D9AC441DFFDD81849 /* ClaudeStatusLine.swift in Sources */,
 				ADCBB748CD6F3D81CFD01DEC /* ClaudeUsageProvider.swift in Sources */,
 				EF1136B74F8E1FEE26CA1694 /* Command.swift in Sources */,
+				D25B31EEADB93773819CC608 /* CommandSuggester.swift in Sources */,
 				1E3FE3DDE664232839F8CB3F /* ConnectedSection.swift in Sources */,
 				9D686FAE2AD202543E43B96B /* Connections.swift in Sources */,
 				305199C84107481B5F1F9BF2 /* DashboardPanel.swift in Sources */,
