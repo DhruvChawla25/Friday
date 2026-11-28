@@ -8,6 +8,7 @@ struct DashboardView: View {
     let assistant: Assistant
     let connections: Connections
     let aiUsage: AIUsageMonitor
+    let media: MediaCenter
     var onMinimize: () -> Void = {}
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
@@ -21,6 +22,7 @@ struct DashboardView: View {
                         LatestReply(exchange: latest, onClear: assistant.clearLog)
                     }
                     ConnectedSection(connections: connections)
+                    MediaSection(media: media)
                     AIUsageSection(monitor: aiUsage)
                     if !assistant.history.isEmpty {
                         HistoryLog(exchanges: assistant.history)

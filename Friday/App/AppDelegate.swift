@@ -11,11 +11,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let connections: Connections
     let assistant: Assistant
     let aiUsage = AIUsageMonitor()
+    let media: MediaCenter
 
     override init() {
         let connections = Connections()
         self.connections = connections
-        assistant = Assistant.makeDefault(connections: connections)
+        let media = MediaCenter()
+        self.media = media
+        assistant = Assistant.makeDefault(connections: connections, media: media)
         super.init()
     }
     private var orb: OrbController?
@@ -38,7 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let dashboard = DashboardController(
             rootView: DashboardView(
-                assistant: assistant, connections: connections, aiUsage: aiUsage,
+                assistant: assistant, connections: connections, aiUsage: aiUsage, media: media,
                 onMinimize: { [weak self] in self?.dashboard?.hide() }
             )
             .frame(width: DashboardPanel.size.width, height: DashboardPanel.size.height)
@@ -53,6 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         connections.start()
         aiUsage.start { [weak dashboard] in dashboard?.isVisible ?? false }
+        media.start { [weak dashboard] in dashboard?.isVisible ?? false }
         assistant.startPruning()
         observeUnreadCount()
 
@@ -80,13 +84,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func toggleDashboard() {
         connections.refresh()
-        if dashboard?.isVisible == false { aiUsage.refresh() }
+        if dashboard?.isVisible == false {
+            aiUsage.refresh()
+            media.refresh()
+        }
         dashboard?.toggle(from: orb?.frame)
     }
 
     func showDashboard() {
         connections.refresh()
         aiUsage.refresh()
+        media.refresh()
         dashboard?.show(from: orb?.frame)
     }
 

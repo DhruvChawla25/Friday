@@ -13,6 +13,7 @@ Friday is a native Swift menu bar app that runs entirely on your Mac. You type a
 | **The orb** | A small rotating 3D ribbon that floats in a screen corner. Drag it anywhere and Friday remembers the spot per app. Otherwise it avoids toolbars and desktop icons, follows your cursor between screens, and moves away or hides when a screen is full screen. |
 | **Dashboard** | Click the orb, press **⌃⌥Space**, or click the Dock icon. It shows **Connected** apps with unread numbers and has the command bar. |
 | **Connected** | WhatsApp (the Mac app) shows unread chats read **read-only from WhatsApp's own data on this Mac**: no internet, no screen recording. Click the tile for the list. Calendar shows today's remaining events. |
+| **Now playing** | Spotify and every YouTube / YouTube Music tab in Chrome: what is playing, with play/pause, next, previous and a button to jump to it. Say `what's playing`, `pause music`, `next song`. Local Apple Events only, no internet. |
 | **AI usage** | A loading bar per AI tool: Claude (Code + desktop app) and Wispr Flow. Shows how much of the current limit is used, when it resets, local usage, and **LIVE** while the tool runs. Read only from files these tools already write on your Mac; limits Friday cannot know offline are labelled so, never guessed. |
 | **Time & date** | `what time is it`, `what's the date` |
 | **Open apps** | `open WhatsApp`, `launch Chrome`. Some apps are blocked by policy (Instagram). |
