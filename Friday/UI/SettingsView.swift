@@ -11,12 +11,22 @@ struct SettingsView: View {
     var onResetOrb: () -> Void = {}
     @AppStorage(MemoryStore.enabledKey) private var memoryEnabled = false
     @AppStorage(Connections.showNamesKey) private var whatsappShowNames = true
+    @State private var launchAtLogin = LaunchAtLogin().isEnabled
     @State private var exporting = false
     @State private var status: String?
     @State private var confirmingWipe = false
 
     var body: some View {
         Form {
+            Section {
+                Toggle("Open Friday when I log in", isOn: $launchAtLogin)
+                    .onChange(of: launchAtLogin) { _, wanted in
+                        launchAtLogin = LaunchAtLogin().set(wanted)
+                    }
+            } header: {
+                Text("General")
+            }
+
             Section {
                 Toggle("Remember facts I tell Friday", isOn: $memoryEnabled)
                 Text("Stored as plain text in memory.txt on this Mac only. Off by default.")
