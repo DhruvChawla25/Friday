@@ -19,6 +19,7 @@
 		1AD894BE0A5F1D4AF34B44AD /* WhatsAppUnreadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */; };
 		1E3FE3DDE664232839F8CB3F /* ConnectedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB990D93016B80DD7EBD634D /* ConnectedSection.swift */; };
 		22CBEF9AD7FB227554F31C35 /* QoderUsageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD1E1BE99C9F49FBDCBFB3A /* QoderUsageProvider.swift */; };
+		2399D3D171716BB5EA27BE56 /* InstallSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5561C54DA7451F35932BA182 /* InstallSkillTests.swift */; };
 		261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D410E814C4AA2186B24A0F /* ScreenEnvironment.swift */; };
 		27AF72630AC35A76DE356E76 /* UsageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397F48C978CB15F61E73F15 /* UsageModel.swift */; };
 		29407B68D8E13307BB9431AA /* SnipOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BEA190B996515741F782EB /* SnipOverlay.swift */; };
@@ -81,6 +82,7 @@
 		E1C986B1C9584A36F221BE01 /* FridayOnlineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */; };
 		E42DA4068A0C4FB37E1FDB16 /* ScreenCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D700A4363656EFD5248817 /* ScreenCapture.swift */; };
 		EF1136B74F8E1FEE26CA1694 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DD924E3B4A6014153DD926 /* Command.swift */; };
+		F3FEDBD70FD4AE5534BE2DA6 /* InstallSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27509C31942CB29C759AFBDC /* InstallSkill.swift */; };
 		F6B1BD0305E6DBCA64CCAD97 /* RibbonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83062CE983E89F81BA86F706 /* RibbonModel.swift */; };
 		FBF8B12D9AC441DFFDD81849 /* ClaudeStatusLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F6486CAE6E9C5CCA126BE /* ClaudeStatusLine.swift */; };
 		FD2C8473D50FBCD7115385ED /* CommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */; };
@@ -110,6 +112,7 @@
 		226743A219B72CB7215EF37C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		247A7AD35E96FFC0AC44AEC2 /* Friday.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Friday.entitlements; sourceTree = "<group>"; };
 		262F3DF6326687F79DB838D4 /* WhatsAppUnreadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppUnreadList.swift; sourceTree = "<group>"; };
+		27509C31942CB29C759AFBDC /* InstallSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallSkill.swift; sourceTree = "<group>"; };
 		2D7FD8DBCD28E3E20A6B4B20 /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
 		3374CF421836A4DBFFF715AA /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
 		39A3B17108AF73EEF30F26A1 /* Friday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friday.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +129,7 @@
 		49FD1CC60F198B7937659E29 /* WhatsAppWebFallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppWebFallbackTests.swift; sourceTree = "<group>"; };
 		4A99A8D5F21E5DC809B063D9 /* DashboardPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPanel.swift; sourceTree = "<group>"; };
 		4DD1E1BE99C9F49FBDCBFB3A /* QoderUsageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QoderUsageProvider.swift; sourceTree = "<group>"; };
+		5561C54DA7451F35932BA182 /* InstallSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallSkillTests.swift; sourceTree = "<group>"; };
 		568A4FEE52899BCBC6765174 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		59EB5B7547F5A63669071209 /* WhatsAppAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppAnalyzerTests.swift; sourceTree = "<group>"; };
 		5AB0D307216B165DF37302F5 /* OrbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbController.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 		45423A9CD4005F1424266A9B /* Skills */ = {
 			isa = PBXGroup;
 			children = (
+				27509C31942CB29C759AFBDC /* InstallSkill.swift */,
 				98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */,
 				CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */,
 				2027B8EB9281D6A961D651D2 /* TimeSkill.swift */,
@@ -285,6 +290,7 @@
 				CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */,
 				4410597FB0647F6F461301A9 /* DockBadgeTests.swift */,
 				86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */,
+				5561C54DA7451F35932BA182 /* InstallSkillTests.swift */,
 				CB996C209DE2B8912FD5E211 /* MemoryTests.swift */,
 				B0492698DD4E4C100A147DEF /* OpenAppSkillTests.swift */,
 				F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */,
@@ -489,6 +495,7 @@
 				FD2C8473D50FBCD7115385ED /* CommandTests.swift in Sources */,
 				BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */,
 				E1C986B1C9584A36F221BE01 /* FridayOnlineTests.swift in Sources */,
+				2399D3D171716BB5EA27BE56 /* InstallSkillTests.swift in Sources */,
 				45367CAE60BC6F8FAC66E673 /* MemoryTests.swift in Sources */,
 				0C2040BFC5AB688CEE95D305 /* OpenAppSkillTests.swift in Sources */,
 				65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */,
@@ -530,6 +537,7 @@
 				7628F79DA2603DA623DCF6D4 /* FridayOnlineConnector.swift in Sources */,
 				C1308CD6A77B39C7001CCB9B /* FridayOnlineProvider.swift in Sources */,
 				A67A74E86DD5B3DE07A382A6 /* GlobalHotKey.swift in Sources */,
+				F3FEDBD70FD4AE5534BE2DA6 /* InstallSkill.swift in Sources */,
 				49393E7F7133E6447A9A67AC /* MemorySkill.swift in Sources */,
 				BE786A4C9AE6031B475D72D1 /* MemoryStore.swift in Sources */,
 				D8DA4EB41B76213227FCB68A /* OpenAppSkill.swift in Sources */,

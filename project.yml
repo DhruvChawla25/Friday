@@ -32,6 +32,8 @@ targets:
         # Sandboxed with NO network entitlement: macOS itself blocks Friday from the internet.
         com.apple.security.app-sandbox: true
         com.apple.security.files.user-selected.read-write: true
+        # List DMGs in Downloads (read-only).
+        com.apple.security.files.downloads.read-only: true
         # Read today's events (read-only use).
         com.apple.security.personal-information.calendars: true
         # AI usage: read-only access to exactly the files AI tools already write
