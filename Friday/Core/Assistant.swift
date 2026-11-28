@@ -79,6 +79,7 @@ final class Assistant {
             WhatsAppSkill { staysInFront in await connections.checkWhatsApp(staysInFront: staysInFront) },
             TimeSkill(),
             OpenAppSkill(launcher: WorkspaceAppLauncher()),
+            RunningAppsSkill(lister: WorkspaceRunningAppLister()),
             MemorySkill(memory: memory),
         ])
         return Assistant(memory: memory, registry: registry)
