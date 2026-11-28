@@ -73,6 +73,7 @@
 		B603A0D09050A5DE255D1E7C /* OrbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB0D307216B165DF37302F5 /* OrbController.swift */; };
 		B68234F124D860A1B05AFB72 /* CaptureLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4EEC3BB30C3BD1A1925DD4 /* CaptureLogic.swift */; };
 		B7F6C17B57BF0CE63EA14733 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD23273C7028920FEE43D2F /* SettingsView.swift */; };
+		B93A5D01CBF3280BC37FD3A8 /* RunningAppsSkillTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EE77D4EF7FAD37E1A5B901 /* RunningAppsSkillTests.swift */; };
 		BC5784C57C6059AF8F73FDBF /* TimeSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2027B8EB9281D6A961D651D2 /* TimeSkill.swift */; };
 		BC9242CCEDF8867F46FCE59B /* DockBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4410597FB0647F6F461301A9 /* DockBadgeTests.swift */; };
 		BE786A4C9AE6031B475D72D1 /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7FD8DBCD28E3E20A6B4B20 /* MemoryStore.swift */; };
@@ -83,6 +84,7 @@
 		CDFB36C9BF569C3362D70D23 /* WhatsAppWebFallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD1CC60F198B7937659E29 /* WhatsAppWebFallbackTests.swift */; };
 		D8DA4EB41B76213227FCB68A /* OpenAppSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */; };
 		E1C986B1C9584A36F221BE01 /* FridayOnlineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86625B1279646F91E7EA9B2A /* FridayOnlineTests.swift */; };
+		E360C6DAABD96936B0931E8D /* RunningAppsSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56AC21A2E5A972026019440 /* RunningAppsSkill.swift */; };
 		E42DA4068A0C4FB37E1FDB16 /* ScreenCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D700A4363656EFD5248817 /* ScreenCapture.swift */; };
 		EF1136B74F8E1FEE26CA1694 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DD924E3B4A6014153DD926 /* Command.swift */; };
 		F6B1BD0305E6DBCA64CCAD97 /* RibbonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83062CE983E89F81BA86F706 /* RibbonModel.swift */; };
@@ -158,6 +160,7 @@
 		94C89226F14B1E888E8BF72F /* WhatsAppSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppSkill.swift; sourceTree = "<group>"; };
 		98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySkill.swift; sourceTree = "<group>"; };
 		9A9A06BBEE6F26F2A79A0D02 /* RibbonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonView.swift; sourceTree = "<group>"; };
+		A2EE77D4EF7FAD37E1A5B901 /* RunningAppsSkillTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningAppsSkillTests.swift; sourceTree = "<group>"; };
 		A6F89319B5B9FAA9DEFC790D /* FridayOnlineConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridayOnlineConnector.swift; sourceTree = "<group>"; };
 		A87D36FC3D4F16DEB105DC67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AB990D93016B80DD7EBD634D /* ConnectedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedSection.swift; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		B29EA19B87E54AAF1C92A1ED /* AIUsageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIUsageSection.swift; sourceTree = "<group>"; };
 		BF0E1EDF38458A0002E0DF88 /* OrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbView.swift; sourceTree = "<group>"; };
 		BF4B186B90F69C228D75947B /* WhatsAppNotificationWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsAppNotificationWatcher.swift; sourceTree = "<group>"; };
+		C56AC21A2E5A972026019440 /* RunningAppsSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningAppsSkill.swift; sourceTree = "<group>"; };
 		C8FED0373D3D336C21D39161 /* DockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockBadge.swift; sourceTree = "<group>"; };
 		CB996C209DE2B8912FD5E211 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		CDF4EF88DE54CFBA4F0516B3 /* CommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 			children = (
 				98286E4BBCFEA9B59EF34CE4 /* MemorySkill.swift */,
 				CFCB40F41E8FB9246D4B1D80 /* OpenAppSkill.swift */,
+				C56AC21A2E5A972026019440 /* RunningAppsSkill.swift */,
 				2027B8EB9281D6A961D651D2 /* TimeSkill.swift */,
 				94C89226F14B1E888E8BF72F /* WhatsAppSkill.swift */,
 			);
@@ -304,6 +309,7 @@
 				F948FBCEECC0E97CFDC17AF5 /* OrbPlacementTests.swift */,
 				3A12D130F3EDA527C905FF67 /* OrbPositionStoreTests.swift */,
 				DA395BB71D264924177972E7 /* RibbonModelTests.swift */,
+				A2EE77D4EF7FAD37E1A5B901 /* RunningAppsSkillTests.swift */,
 				FF5CE295E6CA98A16AFBB632 /* SkillRegistryTests.swift */,
 				9039C31EA05E5C5CD732742A /* TimeSkillTests.swift */,
 				59EB5B7547F5A63669071209 /* WhatsAppAnalyzerTests.swift */,
@@ -520,6 +526,7 @@
 				65419276AC95629F95C82B1F /* OrbPlacementTests.swift in Sources */,
 				045D0AF92A2D88A12FAE4E33 /* OrbPositionStoreTests.swift in Sources */,
 				B4F6E91A1CD02B0B0596E852 /* RibbonModelTests.swift in Sources */,
+				B93A5D01CBF3280BC37FD3A8 /* RunningAppsSkillTests.swift in Sources */,
 				348DCD7D2B649325918CB79C /* SkillRegistryTests.swift in Sources */,
 				5A0ED6E3FCD265656BC330D3 /* TimeSkillTests.swift in Sources */,
 				58CB36D1961AA335B819D2C5 /* WhatsAppAnalyzerTests.swift in Sources */,
@@ -572,6 +579,7 @@
 				22CBEF9AD7FB227554F31C35 /* QoderUsageProvider.swift in Sources */,
 				F6B1BD0305E6DBCA64CCAD97 /* RibbonModel.swift in Sources */,
 				A6768B7D08C5B4FD67FC6D4B /* RibbonView.swift in Sources */,
+				E360C6DAABD96936B0931E8D /* RunningAppsSkill.swift in Sources */,
 				E42DA4068A0C4FB37E1FDB16 /* ScreenCapture.swift in Sources */,
 				261FA5FCA0C671BA25AED95D /* ScreenEnvironment.swift in Sources */,
 				B7F6C17B57BF0CE63EA14733 /* SettingsView.swift in Sources */,
